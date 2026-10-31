@@ -1,0 +1,2089 @@
+{
+  "@@locale": "en",
+  "tabHome": "Home",
+  "tabFiles": "My files",
+  "tabSettings": "Settings",
+  "homeTitle": "Tunely",
+  "proBadge": "PRO",
+  "proChip": "Pro",
+  "freeCounter": "{remaining} of {total} free today",
+  "@freeCounter": {
+    "placeholders": {
+      "remaining": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "dismiss": "Dismiss",
+  "continueAction": "Continue",
+  "share": "Share",
+  "notNow": "Not now",
+  "galleryTitle": "Component gallery",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "themeSystem": "System",
+  "showToast": "Show toast",
+  "toastSaved": "Saved on this iPhone",
+  "undo": "Undo",
+  "showSheet": "Show sheet",
+  "showDialog": "Show dialog",
+  "sheetTitle": "Trim and fade",
+  "sheetBody": "Drag the handles to keep the best part.",
+  "dialogTitle": "Stop converting?",
+  "dialogBody": "The original file stays unchanged.",
+  "stop": "Stop",
+  "audioFile": "Audio file",
+  "ringtone": "Ringtone",
+  "highQuality": "High",
+  "highQualityDetail": "256 kbps",
+  "sizeEstimate": "1.3 MB",
+  "originalSafe": "Your original file is safe and unchanged",
+  "heroTitle": "Make a ringtone from any video",
+  "heroButton": "Choose a video",
+  "playerTitle": "Summer concert",
+  "playerMeta": "MP3 · 256 kbps · 1.3 MB",
+  "playerElapsed": "0:12",
+  "playerDuration": "3:05",
+  "toolVideo": "Video to MP3",
+  "toolConvert": "Convert",
+  "toolTrim": "Trim",
+  "trialToday": "Today",
+  "trialDay2": "Day 2",
+  "trialDay3": "Day 3",
+  "trialStart": "Start your plan",
+  "trialReminder": "We remind you",
+  "trialCharge": "Plan continues",
+  "galleryButtons": "Buttons",
+  "gallerySegmented": "Segmented control",
+  "galleryFormats": "Format chips",
+  "galleryQuality": "Quality",
+  "galleryTools": "Tools",
+  "galleryBadges": "Badges",
+  "galleryStatus": "Status",
+  "galleryHero": "Hero",
+  "galleryPlayer": "Player",
+  "galleryWaveform": "Waveform",
+  "galleryTrial": "Trial timeline",
+  "galleryOverlays": "Toast, sheet, dialog",
+  "formatMp3": "MP3",
+  "formatM4a": "M4A",
+  "formatFlac": "FLAC",
+  "formatWav": "WAV",
+  "formatOgg": "OGG",
+  "formatM4r": "M4R",
+  "play": "Play",
+  "pause": "Pause",
+  "waveformRange": "Selected range",
+  "formatAac": "AAC",
+  "engineDebugTitle": "Audio engine",
+  "enginePickVideo": "Pick a video",
+  "enginePickAudio": "Pick an audio file",
+  "engineConvertAll": "Convert to every format",
+  "engineChooseFolder": "Choose Tunely folder",
+  "engineCopyToFolder": "Save to folder",
+  "engineSavedTo": "Saved to {folder} as {name}",
+  "@engineSavedTo": {
+    "placeholders": {
+      "folder": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "engineInfo": "{seconds} s · {sampleRate} Hz · {channels} ch · {bitrate}",
+  "@engineInfo": {
+    "placeholders": {
+      "seconds": {
+        "type": "String"
+      },
+      "sampleRate": {
+        "type": "int"
+      },
+      "channels": {
+        "type": "int"
+      },
+      "bitrate": {
+        "type": "String"
+      }
+    }
+  },
+  "engineBitrate": "{kbps} kbps",
+  "@engineBitrate": {
+    "placeholders": {
+      "kbps": {
+        "type": "int"
+      }
+    }
+  },
+  "engineBitrateUnknown": "bitrate unknown",
+  "engineNoAudio": "This video has no sound",
+  "engineProtected": "This file is copy-protected",
+  "engineResult": "{format} · {size} · {seconds} s",
+  "@engineResult": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      },
+      "size": {
+        "type": "String"
+      },
+      "seconds": {
+        "type": "String"
+      }
+    }
+  },
+  "engineFailed": "{format} failed: {code}",
+  "@engineFailed": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      },
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "engineUnavailable": "{format} encoder not bundled",
+  "@engineUnavailable": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      }
+    }
+  },
+  "engineFreeSpace": "Free space: {size}",
+  "@engineFreeSpace": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "cancel": "Cancel",
+  "back": "Back",
+  "close": "Close",
+  "done": "Done",
+  "heroEyebrow": "Your favourite tool",
+  "heroTitleRingtone": "Make a ringtone from any video",
+  "heroTitleMp3": "Turn any video into an MP3",
+  "heroTitleConvert": "Convert audio to any format",
+  "heroCtaRingtone": "Choose a video or song",
+  "heroCtaMp3": "Choose a video",
+  "heroCtaConvert": "Choose an audio file",
+  "homeTools": "Tools",
+  "homeRecent": "Recent",
+  "seeAll": "See all",
+  "toolVideoToMp3": "Video to MP3",
+  "toolConvertFormat": "Convert format",
+  "toolTrimFade": "Trim & fade",
+  "toolMerge": "Merge audio",
+  "toolBoost": "Volume boost",
+  "toolBatch": "Batch convert",
+  "metaFormatBitrateSize": "{format} · {kbps} kbps · {size}",
+  "@metaFormatBitrateSize": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      },
+      "kbps": {
+        "type": "int"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "metaFormatSize": "{format} · {size}",
+  "@metaFormatSize": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "metaRingtone": "Ringtone · {duration}",
+  "@metaRingtone": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "toneRingtone": "Ringtone",
+  "toneAlarm": "Alarm",
+  "toneTextTone": "Text tone",
+  "pickerTitle": "Choose a file",
+  "pickerVideos": "Videos",
+  "pickerAudio": "Audio files",
+  "pickerRecent": "Recent",
+  "pickerChooseVideos": "Choose from Photos",
+  "pickerBrowseFiles": "Browse Files",
+  "pickerBrowseFilesHint": "Pick audio from Files, iCloud Drive or other apps",
+  "pickerVideosHint": "Pick a video from your library. Tunely only sees the videos you choose.",
+  "pickerRecentEmpty": "Your converted files will show up here.",
+  "pickerVideoSelected": "1 video selected · {duration}",
+  "@pickerVideoSelected": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "pickerAudioSelected": "1 audio file selected",
+  "pickerNothingSelected": "Nothing selected yet",
+  "pickerBatchHint": "Batch up to 50 files with Pro",
+  "pickerOpenFiles": "Open Files",
+  "pickerLoading": "Getting your file ready",
+  "sourceVideoMeta": "Video · {duration} · {size}",
+  "@sourceVideoMeta": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "sourceAudioMeta": "{format} · {duration} · {size}",
+  "@sourceAudioMeta": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      },
+      "duration": {
+        "type": "String"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "convertTitleAudio": "Convert to audio",
+  "convertTitleRingtone": "Make a ringtone",
+  "convertFormat": "Format",
+  "convertQuality": "Quality",
+  "qualityStandard": "Standard",
+  "qualityStandardDetail": "128 kbps · voice, podcasts",
+  "qualityHigh": "High",
+  "qualityHighDetail": "256 kbps · music (recommended)",
+  "qualityBest": "Best",
+  "qualityBestDetail": "320 kbps · same as the original",
+  "qualityLossless": "Lossless",
+  "qualityWavDetail": "Uncompressed · 16-bit, 44.1 kHz",
+  "qualityFlacDetail": "Compressed without losing quality",
+  "trimFade": "Trim & fade",
+  "trimSummaryFull": "Full {duration}",
+  "@trimSummaryFull": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "trimSummaryRange": "{start} – {end}",
+  "@trimSummaryRange": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
+    }
+  },
+  "fadeNone": "No fade",
+  "fadeInOnly": "Fade in",
+  "fadeOutOnly": "Fade out",
+  "fadeBoth": "Fade in & out",
+  "trimSummary": "{range} · {fade}",
+  "@trimSummary": {
+    "placeholders": {
+      "range": {
+        "type": "String"
+      },
+      "fade": {
+        "type": "String"
+      }
+    }
+  },
+  "summaryLossy": "{format} · {kbps} kbps · {duration}",
+  "@summaryLossy": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      },
+      "kbps": {
+        "type": "int"
+      },
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "summaryLossless": "{format} · {duration}",
+  "@summaryLossless": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      },
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "summarySize": "{estimate} (from {source})",
+  "@summarySize": {
+    "placeholders": {
+      "estimate": {
+        "type": "String"
+      },
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "summaryRingtone": "M4R ringtone · {seconds} s",
+  "@summaryRingtone": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "readyForIphone": "Ready for iPhone",
+  "convertCta": "Convert to {format}",
+  "@convertCta": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      }
+    }
+  },
+  "createRingtone": "Create ringtone",
+  "selectedPart": "Selected part",
+  "selectedRange": "{start} – {end} · {seconds} s",
+  "@selectedRange": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "selectedRangeLong": "Selected {start} – {end} · {seconds} s",
+  "@selectedRangeLong": {
+    "placeholders": {
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      },
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "fadeIn": "Fade in",
+  "fadeOut": "Fade out",
+  "fadeSeconds": "{seconds} seconds",
+  "@fadeSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "volumeBoost": "Volume boost",
+  "volumeBoostDetail": "Pro · up to +{db} dB",
+  "@volumeBoostDetail": {
+    "placeholders": {
+      "db": {
+        "type": "int"
+      }
+    }
+  },
+  "volumeBoostDetailPro": "Up to +{db} dB",
+  "@volumeBoostDetailPro": {
+    "placeholders": {
+      "db": {
+        "type": "int"
+      }
+    }
+  },
+  "ringtoneInfo": "iPhone ringtones can be up to {seconds} seconds. After saving we'll guide you step by step to set it.",
+  "@ringtoneInfo": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "minusOneSecond": "−1 s",
+  "plusOneSecond": "+1 s",
+  "minusOneSecondLabel": "Back 1 second",
+  "plusOneSecondLabel": "Forward 1 second",
+  "convertingTitle": "Converting",
+  "secondsLeft": "about {seconds} s left",
+  "@secondsLeft": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "almostDone": "almost done",
+  "convertingFile": "{source} → {format}",
+  "@convertingFile": {
+    "placeholders": {
+      "source": {
+        "type": "String"
+      },
+      "format": {
+        "type": "String"
+      }
+    }
+  },
+  "convertingMeta": "{kbps} kbps · {size}",
+  "@convertingMeta": {
+    "placeholders": {
+      "kbps": {
+        "type": "int"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "convertingPrivacy": "Converting on your iPhone · nothing is uploaded",
+  "runInBackground": "Run in background",
+  "backgroundCaption": "On iOS 26 it keeps going. On older iOS it may pause until you come back.",
+  "stopTitle": "Stop converting?",
+  "stopBody": "The original file stays unchanged. Nothing is saved and it doesn't use a free conversion.",
+  "stopConfirm": "Stop",
+  "keepConverting": "Keep converting",
+  "resultTitle": "Done",
+  "resultReadyAudio": "Your {format} is ready",
+  "@resultReadyAudio": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      }
+    }
+  },
+  "resultReadyRingtone": "Your ringtone is ready",
+  "resultSubAudio": "Converted on your iPhone · nothing uploaded",
+  "resultSubRingtone": "{seconds} seconds · {fade}",
+  "@resultSubRingtone": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      },
+      "fade": {
+        "type": "String"
+      }
+    }
+  },
+  "fadeBothLower": "fade in and out",
+  "fadeInLower": "fade in",
+  "fadeOutLower": "fade out",
+  "noFadeLower": "no fade",
+  "resultMetaRingtone": "Ringtone · M4R · {duration}",
+  "@resultMetaRingtone": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "statVideo": "Video",
+  "statAudio": "Audio",
+  "statTook": "Took",
+  "makeItRingtone": "Make it a ringtone",
+  "makeItRingtoneDetail": "Pick the best {seconds} seconds",
+  "@makeItRingtoneDetail": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "alsoSaveMp3": "Also save as MP3",
+  "alsoSaveMp3Detail": "Keep a copy to share or play anywhere",
+  "saveToFiles": "Save to Files",
+  "setAsRingtone": "Set as ringtone",
+  "freeLeftLine": "{remaining} of {total} free conversions left today",
+  "@freeLeftLine": {
+    "placeholders": {
+      "remaining": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "goUnlimited": "Go unlimited",
+  "savedToFolder": "Saved to Files › {folder}",
+  "@savedToFolder": {
+    "placeholders": {
+      "folder": {
+        "type": "String"
+      }
+    }
+  },
+  "folderGoneTitle": "We can't find your Tunely folder",
+  "folderGoneBody": "It may have been moved or deleted. Your file is still in My files.",
+  "chooseFolderAgain": "Choose folder again",
+  "jobReady": "Your {format} is ready",
+  "@jobReady": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      }
+    }
+  },
+  "open": "Open",
+  "jobFailedToast": "Couldn't convert this file",
+  "details": "Details",
+  "proGateTitle": "{feature} is part of Tunely Pro",
+  "@proGateTitle": {
+    "placeholders": {
+      "feature": {
+        "type": "String"
+      }
+    }
+  },
+  "proGateBody": "Pro unlocks every format, alarms and text tones, volume boost, merge, batch and unlimited conversions. No ads.",
+  "proGateCta": "See Tunely Pro",
+  "useMp3Instead": "Use MP3 instead",
+  "featureFormat": "{format}",
+  "@featureFormat": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      }
+    }
+  },
+  "limitTitle": "You've used today's {total} free conversions",
+  "@limitTitle": {
+    "placeholders": {
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "limitBody": "New free conversions arrive at midnight. Your file is still here when you come back.",
+  "ok": "OK",
+  "errorUnreadableTitle": "We couldn't convert this file",
+  "errorUnreadableBody": "The file may be damaged or in a format we can't read.",
+  "errorNoAudioTitle": "This video has no sound",
+  "errorNoAudioBody": "There's no audio track to turn into a file. Try a different video.",
+  "errorProtectedTitle": "This file is copy-protected",
+  "errorProtectedBody": "Purchased or rented videos and songs can't be converted.",
+  "errorIcloudTitle": "Couldn't download from iCloud",
+  "errorIcloudBody": "Check your connection and try again.",
+  "errorNoSpaceTitle": "Not enough space on your iPhone",
+  "errorNoSpaceBody": "Free up {mb} MB and try again.",
+  "@errorNoSpaceBody": {
+    "placeholders": {
+      "mb": {
+        "type": "int"
+      }
+    }
+  },
+  "errorNoSpaceBodyGeneric": "Free up some space and try again.",
+  "errorSaveTitle": "Couldn't save the file",
+  "errorSaveBody": "Something went wrong while writing the file.",
+  "errorInterruptedTitle": "The conversion was interrupted",
+  "errorInterruptedBody": "iOS paused Tunely before it finished. Nothing was counted.",
+  "errorCode": "Code {code}",
+  "@errorCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "sourceBitrateCaption": "Source is {kbps} kbps. Higher won't improve it.",
+  "@sourceBitrateCaption": {
+    "placeholders": {
+      "kbps": {
+        "type": "int"
+      }
+    }
+  },
+  "e1Title": "Couldn't convert {name}",
+  "@e1Title": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "e1Body": "It stopped at {percent}%. This sometimes happens with screen recordings that use a variable frame rate.",
+  "@e1Body": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "e1BodyNoProgress": "This sometimes happens with screen recordings that use a variable frame rate.",
+  "e1CardLabel": "What you can do",
+  "e1Card": "Try again in compatibility mode (AAC). It works for almost every video. Error code {code} is attached if you contact us.",
+  "@e1Card": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "e1CardRetried": "Compatibility mode couldn't read this file either. Error code {code} is attached if you contact us.",
+  "@e1CardRetried": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "e1Cta": "Try compatibility mode",
+  "contactSupport": "Contact support",
+  "supportCopied": "Copied {email} and the error code",
+  "@supportCopied": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "e2Title": "Free up {mb} MB to continue",
+  "@e2Title": {
+    "placeholders": {
+      "mb": {
+        "type": "int"
+      }
+    }
+  },
+  "e2Body": "Converting needs a little room for a temporary copy. It's deleted as soon as the file is ready.",
+  "e2CardLabel": "Quick ways to make room",
+  "e2Tip1": "Empty Recently Deleted in Photos",
+  "e2Tip2": "Remove old files in My files",
+  "e2Tip3": "Choose Standard quality (smaller file)",
+  "e2Cta": "Check again",
+  "e2Help": "How to free up space",
+  "e2HelpTitle": "How to free up space",
+  "e2HelpBody": "Open Settings › General › iPhone Storage to see what uses the most space. Offloading unused apps keeps their data, and emptying Recently Deleted in Photos frees space right away.",
+  "e2StillShort": "Still {mb} MB short",
+  "@e2StillShort": {
+    "placeholders": {
+      "mb": {
+        "type": "int"
+      }
+    }
+  },
+  "e3Title": "This video is still in iCloud",
+  "e3Body": "Tunely couldn't download {name} from iCloud. Check your connection, or open it once in Photos so it downloads.",
+  "@e3Body": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "e3BodyGeneric": "Tunely couldn't download this file from iCloud. Check your connection, or open it once in Photos so it downloads.",
+  "e3CardLabel": "Size to download",
+  "e3Card": "{size} over Wi-Fi or mobile data",
+  "@e3Card": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "pickAnotherFile": "Pick another file",
+  "e4TitleSong": "This song is copy-protected",
+  "e4TitleVideo": "This video is copy-protected",
+  "e4Body": "Songs from Apple Music and other streaming services are protected, so no app can convert them. Your own videos, voice memos and DRM-free music files work fine.",
+  "e4CardLabel": "File",
+  "e4Card": "{name} · .{ext}",
+  "@e4Card": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "ext": {
+        "type": "String"
+      }
+    }
+  },
+  "whatCanIConvert": "What can I convert?",
+  "convertibleTitle": "What Tunely can convert",
+  "convertibleBody": "Videos you recorded or saved (MOV, MP4, M4V), voice memos and DRM-free audio (MP3, M4A, WAV, AIFF, CAF, FLAC, AAC). Purchased or streamed songs and rented videos are copy-protected.",
+  "e4bTitle": "This video has no sound",
+  "e4bBody": "There's no audio track in this video, so there's nothing to convert. Try another video, or check the sound wasn't muted when it was recorded.",
+  "e4bCard": "{name} · no audio track",
+  "@e4bCard": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "getHelp": "Get help",
+  "noSoundHelpBody": "Some screen recordings and muted clips are saved without an audio track. Record again with the microphone on, or pick a different video.",
+  "e5Title": "Couldn't save to Files",
+  "e5BodyFull": "Saving was interrupted because the destination is full.",
+  "e5Body": "Something went wrong while saving to Files.",
+  "e5bTitle": "Can't find your Tunely folder",
+  "e5bBody": "The folder you chose in Files was moved, renamed or deleted, so Tunely can't save there.",
+  "e5Safe": "Your {format} is safe in Tunely",
+  "@e5Safe": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      }
+    }
+  },
+  "e5SafeDetail": "Kept for {days} days · no need to convert again",
+  "@e5SafeDetail": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "saveOnIphoneInstead": "Save on this iPhone instead",
+  "saveOnIphone": "Save on this iPhone",
+  "shareInstead": "Share instead",
+  "savedOnIphone": "Saved on this iPhone · Files › On My iPhone › Tunely",
+  "stopBodyProgress": "You're {percent}% done. This won't use one of your free conversions.",
+  "@stopBodyProgress": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "deleteTitle": "Delete {name}?",
+  "@deleteTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteBody": "It's removed from My files on this iPhone. Copies you saved to your Tunely folder in Files are kept, and the original video in Photos is not touched.",
+  "deleteConfirm": "Delete from Tunely",
+  "keep": "Keep",
+  "filesEmptyTitle": "No sounds yet",
+  "filesEmptyBody": "Your MP3s, ringtones and converted files show up here, and a copy is saved to your Tunely folder in Files.",
+  "makeFirstSound": "Make your first sound",
+  "moreFromMarberx": "More from Marberx · {pitch}",
+  "@moreFromMarberx": {
+    "placeholders": {
+      "pitch": {
+        "type": "String"
+      }
+    }
+  },
+  "moreFromMarberxShort": "More from Marberx",
+  "get": "Get",
+  "moreActions": "More actions for {name}",
+  "@moreActions": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "delete": "Delete",
+  "toastRingtoneAdded": "Ringtone added — find it in Sounds",
+  "toastCopied": "Copied to clipboard",
+  "toastFreeLeft": "{remaining} of {total} free conversions left today",
+  "@toastFreeLeft": {
+    "placeholders": {
+      "remaining": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "goPro": "Go Pro",
+  "toastWelcomePro": "Welcome to Tunely Pro!",
+  "toastIcloud": "File is still downloading from iCloud…",
+  "galleryToasts": "Toast catalogue",
+  "chooseAnotherFile": "Choose another file",
+  "tryAgain": "Try again",
+  "skip": "Skip",
+  "o1Title": "Any video,\nyour ringtone",
+  "o1Body": "Pull the sound out of any video, keep the best part and set it in seconds. MP3 and other formats too.",
+  "o1DemoTitle": "Dance night",
+  "o1DemoMeta": "Ringtone · 0:30",
+  "o2Title": "What do you want to make?",
+  "o2Body": "We'll put your favourite tool first.",
+  "goalRingtones": "Ringtones",
+  "goalRingtonesDetail": "Ringtones, alarms and text tones",
+  "goalMp3": "MP3 from videos",
+  "goalMp3Detail": "Keep just the sound of a video",
+  "goalConvert": "Convert audio files",
+  "goalConvertDetail": "MP3, M4A, WAV and more",
+  "o2Footer": "You can change this anytime in Settings.",
+  "o3Title": "How often will you use Tunely?",
+  "o3Body": "So we only suggest what's worth it for you.",
+  "freqDaily": "Every day",
+  "freqDailyDetail": "Music, clips and ringtones all the time",
+  "freqWeekly": "A few times a week",
+  "freqWeeklyDetail": "Whenever something catches my ear",
+  "freqRarely": "Just once in a while",
+  "freqRarelyDetail": "A ringtone or a file now and then",
+  "o4Title": "Honest and simple.\nNo surprises.",
+  "o4FreeTitle": "{count} free conversions every day",
+  "@o4FreeTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "o4FreeBody": "Full quality, no watermark. Your free uses come back every morning.",
+  "o4AdsTitle": "Short ads, never mid-task",
+  "o4AdsBody": "Ads only appear between tasks, after your file is saved. Pro removes them.",
+  "o4TrialTitle": "A reminder before any trial ends",
+  "o4TrialBody": "Allow notifications and we'll remind you a day before. Cancel in two taps.",
+  "o4DeviceTitle": "Made on your iPhone",
+  "o4DeviceBody": "Your files are converted on the device and never uploaded.",
+  "soundsGood": "Sounds good",
+  "o5Title": "Your library stays private",
+  "o5Body": "Tunely only sees the videos and songs you choose. No full photo-library access needed, and nothing is uploaded.",
+  "o5Pill": "Only the file you pick",
+  "getStarted": "Get started",
+  "convertedOnIphone": "Converted on your iPhone",
+  "onboardingStep": "Step {step} of {total}",
+  "@onboardingStep": {
+    "placeholders": {
+      "step": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "proCardTitle": "Tunely Pro",
+  "proCardBody": "Unlimited, no ads, all formats",
+  "settingsPreferences": "Your preferences",
+  "settingsWhatIMake": "What I make",
+  "settingsDefaultFormat": "Default format",
+  "settingsSaveTo": "Save to",
+  "settingsSaveToNone": "Choose a folder",
+  "settingsSaveToFolder": "Files › {folder}",
+  "@settingsSaveToFolder": {
+    "placeholders": {
+      "folder": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsHelpMore": "Help & more",
+  "settingsHowRingtone": "How to set a ringtone",
+  "settingsHelp": "Help & FAQ",
+  "settingsRate": "Rate Tunely",
+  "settingsSubscription": "Subscription",
+  "settingsManage": "Manage subscription",
+  "settingsTerms": "Terms",
+  "settingsPrivacy": "Privacy",
+  "settingsLicences": "Licences",
+  "settingsVersion": "Version {version}",
+  "@settingsVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsDebug": "Debug",
+  "formatKbps": "{format} · {kbps} kbps",
+  "@formatKbps": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      },
+      "kbps": {
+        "type": "int"
+      }
+    }
+  },
+  "defaultFormatTitle": "Default format",
+  "defaultFormatBody": "New conversions start with this format and quality. You can still change them each time.",
+  "save": "Save",
+  "couldNotOpen": "Couldn't open that link",
+  "prefsTitle": "Your preferences",
+  "prefsWhat": "What do you make most?",
+  "prefsGoalRingtones": "Ringtones, alarms and text tones",
+  "prefsGoalMp3": "MP3 from videos",
+  "prefsGoalConvert": "Converting audio files",
+  "prefsHowOften": "How often?",
+  "prefsDaily": "Daily",
+  "prefsWeekly": "Weekly",
+  "prefsRarely": "Rarely",
+  "prefsInfo": "Your choice decides which tool is first on Home and the default settings for new conversions.",
+  "filterAll": "All",
+  "filterAudio": "Audio",
+  "filterRingtones": "Ringtones",
+  "filterAlarms": "Alarms",
+  "search": "Search",
+  "searchFiles": "Search your files",
+  "filesFooter": "Copies saved to your Tunely folder in Files, kept even if you delete the app",
+  "filesNoMatch": "No files match",
+  "justNow": "just now",
+  "yesterday": "yesterday",
+  "metaWithDate": "{meta} · {date}",
+  "@metaWithDate": {
+    "placeholders": {
+      "meta": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "metaAlarm": "Alarm · {duration}",
+  "@metaAlarm": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "metaTextTone": "Text tone · {duration}",
+  "@metaTextTone": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "rename": "Rename",
+  "renameTitle": "Rename file",
+  "renameHint": "File name",
+  "renameTaken": "A file with that name already exists",
+  "setRingtoneAction": "Set as ringtone",
+  "guideTitle": "Set your ringtone",
+  "guideStep": "Step {step} of 3 · about 20 seconds",
+  "@guideStep": {
+    "placeholders": {
+      "step": {
+        "type": "int"
+      }
+    }
+  },
+  "guide1Title": "Tap “Use as Ringtone”",
+  "guide1Body": "Tap Open share menu below. Then scroll down and choose Use as Ringtone. That’s it — no GarageBand needed on iOS 26.",
+  "guideShareSave": "Save to Files",
+  "guideShareUse": "Use as Ringtone",
+  "guideShareAirdrop": "AirDrop",
+  "guideReady": "{duration} · ready",
+  "@guideReady": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "guideOpenShare": "Open share menu",
+  "guide2Title": "Pick it in Settings",
+  "guide2Body": "Your sound is now in Settings › Sounds & Haptics › Ringtone. Tick it, or give it to one contact.",
+  "guide2Path": "Settings › Sounds & Haptics › Ringtone",
+  "guide2Default": "Reflection (default)",
+  "guide2Tip": "Tip: set it for one person in Contacts › Edit › Ringtone.",
+  "guideOpenSettings": "Open Settings",
+  "guide3Title": "Done — it works!",
+  "guide3Body": "Next time it takes two taps. Make alarms and text tones the same way.",
+  "guide3Card": "All set! Ask a friend to call you to hear it.",
+  "makeAnother": "Make another",
+  "guideGarageBandLink": "On iOS 18 or older? Use the GarageBand way",
+  "guideNoFileBody": "Make a ringtone first. After saving, Tunely walks you through these steps.",
+  "makeRingtone": "Make a ringtone",
+  "next": "Next",
+  "gbTitle": "Set a ringtone with GarageBand",
+  "gbIntro": "On iOS 18 and older, iPhone only accepts ringtones exported from GarageBand. It’s free from Apple and takes about a minute.",
+  "gbStep1": "Save your ringtone to Files with Save to Files or Share › Save to Files.",
+  "gbStep2": "Open GarageBand (free on the App Store) and start a new song with Audio Recorder.",
+  "gbStep3": "Tap the Tracks view, then the loop icon, then Files › Browse items from the Files app, and pick your ringtone.",
+  "gbStep4": "Drag it onto the track and tap the arrow at the top left › My Songs.",
+  "gbStep5": "Touch and hold the song, tap Share › Ringtone, then Export.",
+  "gbStep6": "Tap Use sound as… › Standard Ringtone. It now appears in Settings › Sounds & Haptics › Ringtone.",
+  "gbStepNumber": "{number}",
+  "@gbStepNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "helpTitle": "Help & FAQ",
+  "helpSearch": "Search help",
+  "helpNoResults": "No answers match your search. Try another word or contact us.",
+  "mailSubject": "Tunely support",
+  "mailBody": "App version: {version}\niOS: {os}\n\nTell us what happened:\n",
+  "@mailBody": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      },
+      "os": {
+        "type": "String"
+      }
+    }
+  },
+  "faqAdsQ": "Why do I see ads?",
+  "faqAdsA": "Ads keep Tunely free. You only see a short ad between tasks, after your file is already saved, never while converting. Tunely Pro removes all ads.",
+  "faqSetRingtoneQ": "How do I set a ringtone?",
+  "faqSetRingtoneA": "After you make a ringtone, tap Set as ringtone and follow the 3 steps.\n• On iOS 26: tap Share, then Use as Ringtone. Then pick it in iPhone Settings › Sounds & Haptics › Ringtone (it’s at the top).\n• On iOS 18 or older: we guide you through the free GarageBand app (Help › “Set a ringtone with GarageBand”).",
+  "faqDrmQ": "Why can’t I convert Apple Music songs?",
+  "faqDrmA": "Songs from Apple Music and other streaming services are copy-protected (DRM), so no app can convert them. Your own videos, voice memos and DRM-free music files work fine.",
+  "faqQualityQ": "Will quality drop?",
+  "faqQualityA": "Choose High (256 kbps) or Best (320 kbps) and most people can’t hear a difference. Before you convert, Tunely shows the estimated file size. If your file is already lower quality, a higher setting won’t make it better.",
+  "faqWhereSavedQ": "Where are my files saved?",
+  "faqWhereSavedA": "Every file you make appears in My files inside Tunely. When you tap Save to Files, Tunely also saves a copy to your Tunely folder in Files (iCloud Drive › Tunely by default; you choose it the first time). Copies in that folder stay even if you delete the app. Files only inside Tunely are removed if you delete the app.",
+  "faqFreeConversionsQ": "How do free conversions work?",
+  "faqFreeConversionsA": "You get 3 full-quality conversions every day, ringtones included. They reset at midnight. Failed or cancelled conversions never count. When you run out, you can watch a short ad for 1 more (up to 2 a day), wait until tomorrow, or go Pro for unlimited.",
+  "faqCancelQ": "How do I cancel my subscription?",
+  "faqCancelA": "Open Tunely Settings › Manage subscription, or iPhone Settings › [your name] › Subscriptions › Tunely Pro. If you allow notifications, we remind you a day before any free trial ends. Cancel at least 24 hours before the renewal date to avoid the next charge.",
+  "faqWhatCanIConvertQ": "What can I convert?",
+  "faqWhatCanIConvertA": "Videos from Photos or Files (MOV, MP4, M4V) and audio files (MP3, M4A, AAC, WAV, AIFF, CAF, FLAC). You can save as MP3, M4A or WAV for free, and as FLAC, AAC or OGG with Pro.",
+  "faqVideoToMp3Q": "How do I turn a video into an MP3?",
+  "faqVideoToMp3A": "On Home, tap Video to MP3 (or the big button), pick a video, check the format and quality, then tap Convert to MP3. When it’s done, tap Save to Files or Share.",
+  "faqPrivacyQ": "Does Tunely upload my files?",
+  "faqPrivacyA": "No. Everything is converted on your iPhone. Your videos and songs are never uploaded, and ads never see your files.",
+  "faqOfflineQ": "Do I need internet?",
+  "faqOfflineA": "Converting works without internet. You need internet to buy or restore Pro, to download videos stored only in iCloud, and to load ads.",
+  "faqNoAudioQ": "Why does it say the video has no sound?",
+  "faqNoAudioA": "That video has no audio track (some screen recordings and muted clips), so there’s nothing to convert. Try another video.",
+  "faqIcloudQ": "It says “still in iCloud”. What do I do?",
+  "faqIcloudA": "The video isn’t fully on your iPhone yet. Connect to Wi-Fi (or turn off Low Data Mode) and tap Try again, or open it once in Photos so it downloads.",
+  "faqConversionFailedQ": "Converting failed. What now?",
+  "faqConversionFailedA": "Tap Try compatibility mode. It works for almost every video. Your original file is never changed. If it still fails, tap Contact support; the error code is added for us automatically.",
+  "faqStorageQ": "It says I need more space.",
+  "faqStorageA": "Converting needs a little room for a temporary copy. Empty Recently Deleted in Photos, remove old files in My files, or choose Standard quality, then tap Check again.",
+  "faqBackgroundQ": "Can I keep converting when I leave the app?",
+  "faqBackgroundA": "On iOS 26, yes: it keeps going in the background. On older iOS, it may pause until you come back, and then it continues. A paused job never uses a free conversion.",
+  "faqRingtoneLengthQ": "How long can a ringtone be?",
+  "faqRingtoneLengthA": "Up to 30 seconds. Drag the handles to pick the part you like; fade in and out are added for you (you can change them).",
+  "faqAlarmTextTonesQ": "What are alarm and text tones?",
+  "faqAlarmTextTonesA": "They’re short sounds for alarms and messages. Making them is part of Tunely Pro. Ringtones are free.",
+  "faqRingtoneMissingQ": "I can’t find my ringtone in Settings.",
+  "faqRingtoneMissingA": "Make sure you finished the last step of the guide. On iOS 26 it appears at the top of Settings › Sounds & Haptics › Ringtone. On older iOS, check that you exported it from GarageBand as a ringtone.",
+  "faqTrimFadeQ": "How do I cut or fade a song?",
+  "faqTrimFadeA": "On the Convert screen, tap Trim & fade. Drag the handles or use −1 s / +1 s, set fade in and out, then tap Done.",
+  "faqMergeQ": "How do I join songs into one?",
+  "faqMergeA": "Tap Merge audio on Home (Pro), pick 2 to 10 files, drag to change the order, choose a crossfade, then tap Merge. Your original files are not changed.",
+  "faqBatchQ": "Can I convert many files at once?",
+  "faqBatchA": "Yes, with Pro: pick up to 50 files and tap Continue. Finished files are saved as they complete; if one fails, you can retry just that one.",
+  "faqVolumeBoostQ": "What is volume boost?",
+  "faqVolumeBoostA": "Pro can make quiet audio up to +6 dB louder without distortion.",
+  "faqProQ": "What do I get with Tunely Pro?",
+  "faqProA": "Unlimited conversions and ringtones, no ads, FLAC/AAC/OGG formats, batch (up to 50 files), merge audio, volume boost, and alarm and text tones.",
+  "faqTrialQ": "How does the free trial work?",
+  "faqTrialA": "If you’re eligible, Yearly starts with 3 days free. You won’t be charged until the trial ends, and you can cancel anytime before. If you’ve had a trial before, the app shows the regular price instead.",
+  "faqRestoreQ": "I bought Pro but it’s not showing.",
+  "faqRestoreA": "Tap Settings › Restore purchases. Make sure you’re signed in with the same Apple Account you used to buy. If it says “No purchases found”, check the account in iPhone Settings and try again.",
+  "faqRefundQ": "Can I get a refund?",
+  "faqRefundA": "Refunds are handled by Apple. Go to reportaproblem.apple.com and choose Tunely Pro.",
+  "faqDevicesQ": "Does Pro work on my other devices?",
+  "faqDevicesA": "Yes, on any iPhone signed in with the same Apple Account. Tap Restore purchases on the new device.",
+  "faqDeleteQ": "Does deleting a file in Tunely delete my original?",
+  "faqDeleteA": "No. Deleting removes the file from My files only. The original video in Photos and any copies you saved to your Tunely folder in Files are kept.",
+  "faqRenameQ": "Can I rename files?",
+  "faqRenameA": "Yes. In My files, tap ⋯ next to a file, then Rename.",
+  "faqFolderMissingQ": "My Tunely folder can’t be found.",
+  "faqFolderMissingA": "The folder was moved, renamed or deleted. Tap Choose folder again and pick a folder (iCloud Drive › Tunely is a good choice).",
+  "faqAccountQ": "Do I need an account?",
+  "faqAccountA": "No. Everything works without one. An account is only for invite rewards.",
+  "faqInvitesQ": "How do invite rewards work?",
+  "faqInvitesA": "Go to Settings › Invite friends, create a free account and share your link. Your friend gets a week of Pro right away (no account needed). You get a week when they make their first file.",
+  "faqInviteCodeQ": "I have an invite code. Where do I enter it?",
+  "faqInviteCodeA": "Settings › Have an invite code? If you opened your friend’s link, the code is filled in for you.",
+  "faqDeleteAccountQ": "How do I delete my account?",
+  "faqDeleteAccountA": "Settings › Account › Delete account. Your files and your Pro subscription are not affected.",
+  "faqTrackingQ": "Why does iPhone ask about tracking?",
+  "faqTrackingA": "Ad networks can show more relevant ads if you allow it. Either answer is fine, and Tunely works the same. You can change it anytime in iPhone Settings › Privacy & Security › Tracking.",
+  "faqRemoveAdsQ": "How do I remove ads?",
+  "faqRemoveAdsA": "Get Tunely Pro. All ads disappear right away.",
+  "faqMoreAppsQ": "What are the app suggestions from Marberx?",
+  "faqMoreAppsA": "Marberx makes Tunely and a few other small apps (like Shrink: Video Compressor). We sometimes show one that fits what you’re doing. You can hide a suggestion with ×, and nobody is paid when you install.",
+  "o1DemoFile": "Dance_night.mov",
+  "pwBadge": "Tunely Pro",
+  "pwHeaderRingtones": "Unlimited ringtones, alarms & text tones",
+  "pwHeaderMp3": "Unlimited MP3s from all your videos",
+  "pwHeaderConvert": "Convert every file, every format",
+  "pwBenefitRingtones": "Unlimited ringtones",
+  "pwBenefitConversions": "Unlimited conversions",
+  "pwBenefitFormats": "FLAC, AAC, OGG formats",
+  "pwBenefitBatch": "Batch 50 files at once",
+  "pwBenefitNoAds": "No ads, merge & boost",
+  "pwToday": "Today",
+  "pwTodayDetail": "Full access, free",
+  "pwDay": "Day {day}",
+  "@pwDay": {
+    "placeholders": {
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "pwReminder": "Reminder",
+  "pwStarts": "{price}/yr starts",
+  "@pwStarts": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "pwYearly": "Yearly",
+  "pwWeekly": "Weekly",
+  "pwLifetime": "Lifetime",
+  "pwYearlyTrial": "{days} days free, then {price} / year",
+  "@pwYearlyTrial": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "pwYearlyNoTrial": "Billed every year",
+  "pwWeeklyDetail": "Billed every week",
+  "pwLifetimeDetail": "Pay once, yours forever",
+  "pwPerWeek": "{price} / wk",
+  "@pwPerWeek": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "pwSave": "SAVE {percent}%",
+  "@pwSave": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "pwTermsTrial": "Free for {days} days, then {price} / year. Cancel anytime.",
+  "@pwTermsTrial": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "pwTermsYearly": "{price} / year. Cancel anytime.",
+  "@pwTermsYearly": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "pwTermsWeekly": "{price} / week. Cancel anytime.",
+  "@pwTermsWeekly": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "pwTermsLifetime": "{price} one-time purchase. No subscription.",
+  "@pwTermsLifetime": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "pwCtaTrial": "Start my free trial",
+  "pwCtaContinue": "Continue",
+  "pwCtaLifetime": "Buy lifetime",
+  "pwRestore": "Restore",
+  "pwLoading": "Loading prices from the App Store",
+  "pwUnavailable": "Prices couldn't load. Check your connection and try again.",
+  "p2FormatTitle": "{feature} is a Pro format",
+  "@p2FormatTitle": {
+    "placeholders": {
+      "feature": {
+        "type": "String"
+      }
+    }
+  },
+  "p2FeatureTitle": "{feature} is part of Tunely Pro",
+  "@p2FeatureTitle": {
+    "placeholders": {
+      "feature": {
+        "type": "String"
+      }
+    }
+  },
+  "p2DetailFlac": "Lossless, studio-quality audio",
+  "p2DetailAac": "Small files with great quality",
+  "p2DetailOgg": "Open format for Android, games and the web",
+  "p2DetailTones": "Custom sounds for alarms and messages",
+  "p2DetailBoost": "Make quiet audio up to +6 dB louder",
+  "p2DetailMerge": "Join 2 to 10 files into one",
+  "p2DetailBatch": "Convert up to 50 files at once",
+  "p2DetailPro": "Everything in Tunely, unlimited",
+  "p2Benefit1": "FLAC, AAC and OGG formats",
+  "p2Benefit2": "Unlimited conversions, no ads",
+  "p2Benefit3": "Batch up to 50 files at once",
+  "p2CtaTrial": "Try Pro free for {days} days",
+  "@p2CtaTrial": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "p2CtaNoTrial": "Get Tunely Pro",
+  "useMp3Free": "Use MP3 instead (free)",
+  "p3Used": "{used} of {total} free conversions used today",
+  "@p3Used": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "p3Title": "You're on a roll. Keep going with Pro.",
+  "p3Body": "Unlimited conversions and ringtones, or come back when your free uses reset.",
+  "p3ResetsIn": "Free uses reset in",
+  "p3Cta": "Get unlimited",
+  "p3WatchAd": "Watch a short ad for 1 more",
+  "p3Tomorrow": "Come back tomorrow",
+  "p4Title": "{count} files today — you're a natural",
+  "@p4Title": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "p4TrialDetail": "Go unlimited · {days} days free",
+  "@p4TrialDetail": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "p4NoTrialDetail": "Go unlimited",
+  "p4Cta": "Try",
+  "p5Title": "{count} files made with Tunely",
+  "@p5Title": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "p5StatMp3": "MP3s",
+  "p5StatTones": "Ringtones",
+  "p5StatOther": "Converted",
+  "p5Body": "You clearly love making sounds. Yearly Pro costs less than a coffee a month.",
+  "p5PlanTrial": "{price} / year · {days} days free",
+  "@p5PlanTrial": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "p5PlanNoTrial": "{price} / year",
+  "@p5PlanNoTrial": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "p5PerMonth": "{price} / mo",
+  "@p5PerMonth": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "p5CtaTrial": "Start free trial",
+  "p5CtaNoTrial": "Get Yearly",
+  "p6Eyebrow": "One-time offer, just for today",
+  "p6Off": "{percent}% OFF",
+  "@p6Off": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "p6Sub": "your first year of Tunely Pro",
+  "p6Price": "{price} / year",
+  "@p6Price": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "p6EndsIn": "Offer ends in",
+  "p6Cta": "Claim {percent}% off",
+  "@p6Cta": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "p6Terms": "{intro} for the first year, then {price} / year. Cancel anytime.",
+  "@p6Terms": {
+    "placeholders": {
+      "intro": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "p6NoThanks": "No thanks, continue with Free",
+  "p7Title": "Your free trial ends tomorrow",
+  "p7Body": "As promised, here's your reminder. Keep Pro, or cancel before {date} and you won't be charged.",
+  "@p7Body": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "p7Started": "{date} · Trial started",
+  "@p7Started": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "p7StartedDetail": "You made {count} files with Pro",
+  "@p7StartedDetail": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "p7Today": "Today · Reminder",
+  "p7TodayDetail": "That's this message",
+  "p7Charge": "{date} · {price} / year starts",
+  "@p7Charge": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "p7ChargeDetail": "Renews yearly until you cancel",
+  "p7Keep": "Keep Pro",
+  "p7Manage": "Manage or cancel subscription",
+  "p7NotificationTitle": "Your free trial ends tomorrow",
+  "p7NotificationBody": "Keep Pro or cancel in two taps.",
+  "p8Eyebrow": "Welcome back",
+  "p8Title": "{percent}% off Pro\nfor returning friends",
+  "@p8Title": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "p8Sub": "Your ringtones and files are still here.",
+  "p8LastTone": "Your last ringtone · {when}",
+  "@p8LastTone": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "p8LastFile": "Your last file · {when}",
+  "@p8LastFile": {
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
+  "p8Plan": "Yearly Pro",
+  "p8PlanDetail": "First year, then {price} / year",
+  "@p8PlanDetail": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "p8Cta": "Get {percent}% off",
+  "@p8Cta": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "p8Continue": "Continue with Free",
+  "p9FailedTitle": "Purchase didn't go through",
+  "p9FailedBody": "The App Store declined the payment. You haven't been charged.",
+  "p9FailedTip": "Check your payment method in Settings › Apple Account › Payment.",
+  "p9RestoredTitle": "Welcome back to Pro",
+  "p9RestoredBody": "Your purchase is restored on this iPhone.",
+  "p9RestoredRenews": "{plan} · renews {date}",
+  "@p9RestoredRenews": {
+    "placeholders": {
+      "plan": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "p9RestoredLifetime": "Lifetime · yours forever",
+  "p9PendingTitle": "Waiting for approval",
+  "p9PendingBody": "Your purchase needs approval (for example Ask to Buy). Pro unlocks as soon as it's approved.",
+  "p9NoneTitle": "No purchases found",
+  "p9NoneBody": "No Tunely Pro purchases were found for this Apple Account. Check you are signed in with the account you used to buy.",
+  "p9OfflineTitle": "You're offline",
+  "p9OfflineBody": "Connect to the internet to buy or restore Pro. Converting still works without internet.",
+  "welcomePro": "Welcome to Tunely Pro!",
+  "settingsRestore": "Restore purchases",
+  "relativeWeeks": "{count, plural, =1{1 week ago} other{{count} weeks ago}}",
+  "@relativeWeeks": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "relativeDays": "{count, plural, =1{1 day ago} other{{count} days ago}}",
+  "@relativeDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "batchTitle": "Batch convert",
+  "batchSummary": "{done} of {total} done · {format}",
+  "@batchSummary": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      },
+      "format": {
+        "type": "String"
+      }
+    }
+  },
+  "batchFormatBitrate": "{format} {kbps} kbps",
+  "@batchFormatBitrate": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      },
+      "kbps": {
+        "type": "int"
+      }
+    }
+  },
+  "batchSecondsLeft": "about {seconds} s left",
+  "@batchSecondsLeft": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "batchMinutesLeft": "about {minutes} min left",
+  "@batchMinutesLeft": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "batchWaiting": "Waiting",
+  "batchConverting": "Converting…",
+  "batchCaptionContinued": "On iOS 26 the batch keeps going in the background.",
+  "batchCaptionLegacy": "On older iOS it may pause until you come back.",
+  "batchPaused": "Paused while Tunely was in the background. It continues now.",
+  "batchStop": "Stop",
+  "batchStopTitle": "Stop the batch?",
+  "batchStopBody": "{count, plural, =0{Nothing is finished yet.} =1{1 finished file is already saved.} other{{count} finished files are already saved.}} The rest won't be converted.",
+  "@batchStopBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "batchKeepGoing": "Keep going",
+  "batchSystemTitle": "Converting {count} files",
+  "@batchSystemTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "batchSystemProgress": "{done} of {total} done",
+  "@batchSystemProgress": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "batchNotificationTitle": "Tunely",
+  "batchNotificationBody": "{count, plural, =1{1 file converted — tap to listen} other{{count} files converted — tap to listen}}",
+  "@batchNotificationBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "batchFinishedToast": "{count, plural, =1{1 file converted} other{{count} files converted}}",
+  "@batchFinishedToast": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "batchView": "View",
+  "batchFinishedTitle": "Batch finished",
+  "batchDoneChip": "{count} done",
+  "@batchDoneChip": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "batchFailedChip": "{count} failed",
+  "@batchFailedChip": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "batchPartialBody": "{count, plural, =1{Finished files are already saved. Only the failed one needs another try.} other{Finished files are already saved. Only the failed ones need another try.}}",
+  "@batchPartialBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "batchAllDoneBody": "Every file is saved in My files.",
+  "batchStoppedBody": "Stopped. Finished files are already saved in My files.",
+  "batchNeedsAttention": "Needs attention",
+  "batchCompleted": "Completed",
+  "batchMoreFiles": "{count} more files",
+  "@batchMoreFiles": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "batchRetryFailed": "Retry failed ({count})",
+  "@batchRetryFailed": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "batchOpenFiles": "Open My files",
+  "failNoAudio": "No audio track",
+  "failProtected": "Protected file, can't be converted",
+  "failICloud": "Still downloading from iCloud",
+  "failNoSpace": "Not enough space on iPhone",
+  "failInterrupted": "Interrupted before it finished",
+  "failUnreadable": "Tunely can't read this file",
+  "failGeneric": "Couldn't convert this file",
+  "pickerSelectedCount": "{count} files selected",
+  "@pickerSelectedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pickerBatchProHint": "Select up to {count} files for a batch",
+  "@pickerBatchProHint": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pickerMergeHint": "{count, plural, =1{You can add 1 more file} other{You can add up to {count} more files}}",
+  "@pickerMergeHint": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pickerLimitReached": "You can pick up to {count} files",
+  "@pickerLimitReached": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mergeTitle": "Merge audio",
+  "mergeAdd": "Add",
+  "mergeSummary": "{count} files · {duration} total",
+  "@mergeSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "mergeOrderHint": "Plays in this order · drag to reorder",
+  "mergeCrossfade": "Crossfade between files",
+  "crossfadeOff": "Off",
+  "crossfadeSeconds": "{seconds} s",
+  "@crossfadeSeconds": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "mergeSaveAs": "Save as",
+  "mergeButton": "Merge {count} files",
+  "@mergeButton": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "mergeCaption": "{min} to {max} files · originals are not changed",
+  "@mergeCaption": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "mergeRemove": "Remove {name}",
+  "@mergeRemove": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "mergeReorder": "Reorder {name}",
+  "@mergeReorder": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "mergePreview": "Preview the merge",
+  "mergePause": "Pause preview",
+  "mergeOutputName": "Tunely merge",
+  "mergeEmpty": "Add at least 2 files to merge.",
+  "mergeConvertingTitle": "{count} files merged into one",
+  "@mergeConvertingTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "notifyPreviewApp": "Tunely",
+  "notifyPreviewNow": "now",
+  "notifyPreviewBody": "8 files converted — tap to listen",
+  "notifyTitle": "Get a ping when it's done",
+  "notifyBody": "Big batches take a minute. Leave the app — we'll tell you when your files are ready. We also use this for the trial reminder we promised.",
+  "notifyTrialTitle": "Get a reminder before your trial ends",
+  "notifyTrialBody": "Allow notifications and we'll remind you a day before your trial ends. We also tell you when big batches are ready.",
+  "notifyTrialPreviewBody": "Your trial ends tomorrow — cancel anytime in Settings",
+  "notifyTurnOn": "Turn on notifications",
+  "ratingTitleRingtone": "Your ringtone is ready!",
+  "ratingTitleAudio": "Your file is ready!",
+  "ratingBody": "Enjoying Tunely? A quick rating helps other people find it.",
+  "ratingRate": "Rate on the App Store",
+  "ratingFeedback": "Tell us what to improve",
+  "ratingStars": "{count, plural, =1{1 star} other{{count} stars}}",
+  "@ratingStars": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "feedbackSubject": "Tunely feedback",
+  "ratingThanks": "Thanks for the rating",
+  "updateVersion": "Version {version}",
+  "@updateVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "updateTitle": "New in Tunely",
+  "updateDefaultNote": "Improvements and bug fixes",
+  "updateNow": "Update now",
+  "updateLater": "Later",
+  "milestoneEyebrow": "Milestone unlocked",
+  "milestoneFirstRingtone": "Your first ringtone!",
+  "milestoneFirstRingtoneBody": "Your phone sounds like you now. Send it to a friend — they'll want one too.",
+  "milestoneFiles": "{count} files made!",
+  "@milestoneFiles": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "milestoneFilesBody": "That's {count} files converted right on your iPhone. Share your latest one with a friend.",
+  "@milestoneFilesBody": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "milestoneShareRingtone": "Share my ringtone",
+  "milestoneShareFile": "Share my file",
+  "shareCardTitleRingtone": "Share your ringtone",
+  "shareCardTitleFile": "Share your file",
+  "shareCardMetaRingtone": "My new ringtone · {duration}",
+  "@shareCardMetaRingtone": {
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "shareCardMetaFile": "{format} · {duration}",
+  "@shareCardMetaFile": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      },
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "shareCardMadeWith": "Made with Tunely",
+  "shareAirDrop": "AirDrop",
+  "shareMessages": "Messages",
+  "shareCopyLink": "Copy link",
+  "shareMore": "More",
+  "linkCopied": "Link copied",
+  "shareCardText": "Made with Tunely",
+  "adBreakSavedAudio": "Your {format} is saved",
+  "@adBreakSavedAudio": {
+    "placeholders": {
+      "format": {
+        "type": "String"
+      }
+    }
+  },
+  "adBreakSavedRingtone": "Your ringtone is saved",
+  "adBreakBody": "A short ad helps keep Tunely free. You'll be right back here after it.",
+  "adBreakRemoveAds": "Remove ads with Pro",
+  "adsConsentTitle": "Tunely is free,\nthanks to a few ads",
+  "adsConsentBetweenTasks": "Ads appear only between tasks, never while converting.",
+  "adsConsentPrivate": "Your files never leave your iPhone. Ads never see them.",
+  "adsConsentTracking": "Next, iPhone asks if apps may track you to show more relevant ads. Either answer is fine; Tunely works the same.",
+  "adsConsentSeePro": "Prefer no ads? See Pro",
+  "rewardedWatch": "Watch a short ad for 1 more",
+  "rewardedEarned": "+1 free conversion today",
+  "moreAppsTitle": "More from Marberx",
+  "moreAppsIntro": "Small, honest apps from the team behind Tunely. Free to try.",
+  "moreAppsPicked": "Picked for you",
+  "moreAppsAlso": "Also from us",
+  "moreAppsFooter": "Opens the App Store. No tracking, no rewards for installs.",
+  "moreAppsSoon": "Soon",
+  "moreAppsGet": "Get {name}",
+  "@moreAppsGet": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsMoreApps": "More apps from Marberx",
+  "houseCardEyebrow": "From the makers of Tunely",
+  "houseCardShrinkVideo": "That video was {size}. Shrink makes videos smaller.",
+  "@houseCardShrinkVideo": {
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "houseCardView": "View",
+  "houseCardHide": "Hide this suggestion",
+  "galleryAnalytics": "Analytics events (latest first)",
+  "galleryAnalyticsEmpty": "No events yet. Use the app and come back.",
+  "galleryAnalyticsLive": "Sending to Mixpanel. Check Live View in the Tunely-Dev project.",
+  "showPassword": "Show password",
+  "hidePassword": "Hide password",
+  "inviteBadge": "Give 1 week · Get 1 week",
+  "inviteTitle": "Invite friends, get Pro free",
+  "inviteStep1": "Create a free account",
+  "inviteStep2": "Share your personal invite link",
+  "inviteStep3": "You both get 1 week of Pro when your friend makes their first file",
+  "inviteYourLink": "Your link",
+  "invitePrivacy": "Your account only keeps your invite link and free weeks safe if you change phones. Your files never leave your iPhone.",
+  "inviteCreateAccount": "Create free account",
+  "inviteHaveAccount": "I already have an account",
+  "inviteSignedInBody": "Your friend gets a week of Pro right away. You get a week when they make their first file.",
+  "inviteCodeLine": "Code: {code}",
+  "@inviteCodeLine": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "copy": "Copy",
+  "linkCopiedInvite": "Invite link copied",
+  "statFriendsJoined": "Friends joined",
+  "statProEarned": "Pro earned",
+  "statPending": "Pending",
+  "statDays": "{count, plural, =1{1 day} other{{count} days}}",
+  "@statDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "inviteShare": "Share invite link",
+  "inviteShareText": "Get 1 week of Tunely Pro free with my invite: {link}",
+  "@inviteShareText": {
+    "placeholders": {
+      "link": {
+        "type": "String"
+      }
+    }
+  },
+  "inviteCapReached": "You've reached this year's invite limit. Your friends still get their week.",
+  "inviteLoadFailed": "Couldn't load your invite stats.",
+  "signUpTitle": "Create your account",
+  "signUpSubtitle": "Free. Used only for your invite link and rewards.",
+  "fieldFirstName": "First name",
+  "fieldLastName": "Last name",
+  "fieldEmail": "Email",
+  "fieldPassword": "Password",
+  "passwordRule": "At least 8 characters, with a number",
+  "signUpCodePreview": "Your invite code will be",
+  "signUpCodeLater": "Can change to a random code later",
+  "signUpCta": "Create account",
+  "signUpTermsPrefix": "By creating an account you agree to our ",
+  "signUpTermsAnd": " and ",
+  "termsLink": "Terms",
+  "privacyLink": "Privacy Policy",
+  "signUpHaveAccount": "Already have an account? ",
+  "signInLink": "Sign in",
+  "emailExists": "An account with this email already exists.",
+  "emailExistsSignIn": "Sign in instead?",
+  "signInTitle": "Welcome back",
+  "signInSubtitle": "Sign in to see your invite link and free weeks.",
+  "signInError": "Email or password is incorrect. Try again or reset your password.",
+  "signInLocked": "Too many attempts. Try again in 15 minutes.",
+  "forgotPassword": "Forgot password?",
+  "signInCta": "Sign in",
+  "signInNew": "New here? ",
+  "signInCreate": "Create a free account",
+  "resetTitle": "Reset your password",
+  "resetBody": "Enter the email you signed up with. We'll send you a link to set a new password.",
+  "resetCta": "Send reset link",
+  "resetSentTitle": "Check your email",
+  "resetSentPrefix": "If an account exists for ",
+  "resetSentSuffix": ", you'll get a reset link in a few minutes. Check your spam folder too.",
+  "resetBack": "Back to sign in",
+  "resetResendIn": "Resend in {time}",
+  "@resetResendIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "resetResend": "Resend link",
+  "fieldRequired": "Required",
+  "fieldTooLong": "Use 50 characters or fewer",
+  "fieldEmailInvalid": "Enter a valid email address",
+  "fieldPasswordWeak": "At least 8 characters, with a number",
+  "accountOffline": "You're offline. Connect to the internet and try again.",
+  "accountServerError": "Something went wrong on our side. Your details are still here, try again.",
+  "tryAgain2": "Try again",
+  "accountTitle": "Account",
+  "verifyBannerBold": "Verify your email",
+  "verifyBannerRest": " to receive your free weeks. We sent a link to {email}.",
+  "@verifyBannerRest": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "verifyResend": "Resend",
+  "verifySent": "Verification email sent",
+  "accountInviteRewards": "Invite & rewards",
+  "accountYourCode": "Your invite code",
+  "accountRandomCode": "Use random code",
+  "accountRandomTitle": "Switch to a random code?",
+  "accountRandomBody": "Your current code and link stop working for new friends. You can only do this once.",
+  "accountRandomConfirm": "Switch",
+  "accountFreeEarned": "Free Pro earned",
+  "accountInvite": "Invite friends",
+  "accountSecurity": "Security",
+  "accountChangePassword": "Change password",
+  "accountSignOut": "Sign out",
+  "accountSignOutTitle": "Sign out?",
+  "accountSignOutBody": "Tunely keeps working and your Pro is not affected. Sign in again any time to see your invites.",
+  "accountProNote": "Your Pro subscription is linked to your Apple ID, not this account. Manage it in Settings › Apple ID › Subscriptions.",
+  "accountDelete": "Delete account",
+  "changePasswordTitle": "Change password",
+  "fieldCurrentPassword": "Current password",
+  "fieldNewPassword": "New password",
+  "changePasswordWrong": "That password is not right",
+  "passwordChanged": "Password changed",
+  "deleteTitle2": "Delete your account?",
+  "deleteGone": "Permanently deleted",
+  "deleteGoneAccount": "Your account ({name}, {email})",
+  "@deleteGoneAccount": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteGoneCode": "Your invite code {code} and link",
+  "@deleteGoneCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteGoneDays": "Free Pro weeks not yet used",
+  "deleteKept": "Not affected",
+  "deleteKeptFiles": "Your files in Tunely and in your Tunely folder",
+  "deleteKeptPro": "Your Pro subscription — cancel it separately in Settings › Apple ID › Subscriptions",
+  "deletePasswordLabel": "Enter your password to confirm",
+  "deleteKeep": "Keep my account",
+  "deleteDone": "Your account was deleted",
+  "redeemTitle": "Have an invite code?",
+  "redeemBody": "Enter a friend's code to get 1 week of Pro free. No account needed.",
+  "redeemLabel": "Invite code",
+  "redeemFromLink": "Added from your friend's link",
+  "redeemInvalid": "This code isn't valid, or an invite was already used on this iPhone.",
+  "redeemCta": "Apply code",
+  "redeemSkip": "Skip",
+  "redeemSuccessTitle": "1 week of Pro unlocked",
+  "redeemSuccessBody": "A gift from {name}. Enjoy unlimited conversions, all formats and merge until {date}.",
+  "@redeemSuccessBody": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "redeemSuccessHint": "Make your first file and {name} gets a free week too.",
+  "@redeemSuccessHint": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "redeemAlreadyPro": "You're already Pro — your friend still gets their reward when you make your first file.",
+  "redeemMakeFile": "Make a file",
+  "redeemFriend": "your friend",
+  "settingsAccountSignedOut": "Sign in or create account",
+  "settingsAccountOptional": "Optional · only for invite rewards",
+  "settingsInvite": "Invite friends",
+  "settingsInviteDetail": "Get Pro free",
+  "settingsHaveCode": "Have an invite code?",
+  "onboardingInviteCode": "Got an invite code?"
+}

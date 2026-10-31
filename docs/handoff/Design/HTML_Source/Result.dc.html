@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Done</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: {{t.bg}}; font-family: 'Plus Jakarta Sans', Inter, system-ui, sans-serif; color: {{t.text}}; display: flex; flex-direction: column; overflow: hidden">
+  <div style="display: flex; align-items: center; justify-content: space-between; padding: 54px 8px 0">
+    <a href="Home.dc.html" aria-label="Close" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: {{t.text}}"><svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M208.49,191.51a12,12,0,0,1-17,17L128,145,64.49,208.49a12,12,0,0,1-17-17L111,128,47.51,64.49a12,12,0,0,1,17-17L128,111l63.51-63.52a12,12,0,0,1,17,17L145,128Z"/></svg></a>
+    <span style="font-size: 17px; font-weight: 800">Done</span>
+    <span style="width: 44px"></span>
+  </div>
+
+  <div style="flex: 1; display: flex; flex-direction: column; gap: 18px; padding: 10px 20px 0">
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center">
+      <span style="width: 56px; height: 56px; border-radius: 28px; background: {{t.successSoft}}; display: flex; align-items: center; justify-content: center"><svg width="32" height="32" viewBox="0 0 256 256" fill="{{t.success}}" aria-hidden="true"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm45.66,85.66-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35a8,8,0,0,1,11.32,11.32Z"/></svg></span>
+      <span style="margin-top: 4px; font-size: 26px; font-weight: 800; letter-spacing: -0.02em">{{headline}}</span>
+      <span style="font-size: 14px; font-weight: 600; color: {{t.text2}}">{{sub}}</span>
+    </div>
+
+    <div style="position: relative; overflow: hidden; border-radius: 24px; background: {{t.hero}}; color: #FFFFFF; padding: 16px; display: flex; flex-direction: column; gap: 14px">
+      <div style="position: absolute; right: -60px; top: -80px; width: 200px; height: 200px; border-radius: 100px; border: 24px solid rgba(255,255,255,0.08)"></div>
+      <div style="position: relative; display: flex; align-items: center; gap: 12px">
+        <img src="/_blob/d7ac9491ef6d4e199c5fbf1e2d8bbb4b" alt="" style="width: 56px; height: 56px; border-radius: 14px; object-fit: cover; flex: none">
+        <span style="flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0"><span style="font-size: 16px; font-weight: 800">{{fileName}}</span><span style="font-size: 12px; font-weight: 600; opacity: 0.85">{{fileMeta}}</span></span>
+        <button type="button" aria-label="Play" style="width: 48px; height: 48px; border-radius: 24px; border: 0; background: #FFFFFF; color: #3F25C9; display: flex; align-items: center; justify-content: center; flex: none"><svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg></button>
+      </div>
+      <div style="position: relative; display: flex; align-items: center; gap: 2px; height: 40px">
+        <sc-for list="{{wave}}" as="w" hint-placeholder-count="48"><span style="flex: 1; border-radius: 2px; height: {{w.h}}; background: {{w.c}}"></span></sc-for>
+      </div>
+      <div style="position: relative; display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; opacity: 0.85"><span>0:12</span><span>{{dur}}</span></div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 14px 0; border-radius: 18px; background: {{t.surface}}; border: 1px solid {{t.border}}; text-align: center">
+      <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 800">86 MB</span><span style="font-size: 11px; font-weight: 600; color: {{t.text3}}">Video</span></span>
+      <span style="display: flex; flex-direction: column; gap: 2px; border-left: 1px solid {{t.divider}}; border-right: 1px solid {{t.divider}}"><span style="font-size: 15px; font-weight: 800; color: {{t.success}}">{{outSize}}</span><span style="font-size: 11px; font-weight: 600; color: {{t.text3}}">{{outLabel}}</span></span>
+      <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 800">3 s</span><span style="font-size: 11px; font-weight: 600; color: {{t.text3}}">Took</span></span>
+    </div>
+
+    <sc-if value="{{noUpsell}}" hint-placeholder-val="{{ true }}">
+    <a href="#" style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 16px; background: {{t.surface}}; border: 1px solid {{t.border}}; text-decoration: none; color: {{t.text}}">
+      <span style="width: 36px; height: 36px; border-radius: 11px; background: {{t.accentSoft}}; color: {{t.accentOnSoft}}; display: flex; align-items: center; justify-content: center; flex: none"><sc-if value="{{isTone}}" hint-placeholder-val="{{ false }}"><svg width="19" height="19" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M99.06,128.61a8,8,0,0,0-8.72,1.73L68.69,152H48a8,8,0,0,0-8,8v40a8,8,0,0,0,8,8H68.69l21.65,21.66A8,8,0,0,0,104,224V136A8,8,0,0,0,99.06,128.61ZM88,204.69,77.66,194.34A8,8,0,0,0,72,192H56V168H72a8,8,0,0,0,5.66-2.34L88,155.31ZM152,180a40.55,40.55,0,0,1-20,34.91A8,8,0,0,1,124,201.09a24.49,24.49,0,0,0,0-42.18A8,8,0,0,1,132,145.09,40.55,40.55,0,0,1,152,180Zm61.66-97.66-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40v80a8,8,0,0,0,16,0V40h88V88a8,8,0,0,0,8,8h48V216H168a8,8,0,0,0,0,16h32a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160Z"/></svg></sc-if><sc-if value="{{isAudio}}" hint-placeholder-val="{{ true }}"><svg width="19" height="19" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M224,71.1a8,8,0,0,1-10.78-3.42,94.13,94.13,0,0,0-33.46-36.91,8,8,0,1,1,8.54-13.54,111.46,111.46,0,0,1,39.12,43.09A8,8,0,0,1,224,71.1ZM35.71,72a8,8,0,0,0,7.1-4.32A94.13,94.13,0,0,1,76.27,30.77a8,8,0,1,0-8.54-13.54A111.46,111.46,0,0,0,28.61,60.32,8,8,0,0,0,35.71,72Zm186.1,103.94A16,16,0,0,1,208,200H167.2a40,40,0,0,1-78.4,0H48a16,16,0,0,1-13.79-24.06C43.22,160.39,48,138.28,48,112a80,80,0,0,1,160,0C208,138.27,212.78,160.38,221.81,175.94ZM150.62,200H105.38a24,24,0,0,0,45.24,0ZM208,184c-10.64-18.27-16-42.49-16-72a64,64,0,0,0-128,0c0,29.52-5.38,53.74-16,72Z"/></svg></sc-if></span>
+      <span style="flex: 1; display: flex; flex-direction: column; gap: 1px"><span style="font-size: 14px; font-weight: 700">{{altTitle}}</span><span style="font-size: 12px; font-weight: 600; color: {{t.text2}}">{{altSub}}</span></span>
+      <span style="display: flex; color: {{t.text3}}"><svg width="16" height="16" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M184.49,136.49l-80,80a12,12,0,0,1-17-17L159,128,87.51,56.49a12,12,0,1,1,17-17l80,80A12,12,0,0,1,184.49,136.49Z"/></svg></span>
+    </a>
+    </sc-if>
+    <sc-if value="{{promo}}" hint-placeholder-val="{{ false }}">
+      <div style="display: flex; align-items: center; gap: 12px; padding: 12px 10px 12px 12px; border-radius: 16px; background: {{t.surface}}; border: 1px solid {{t.border}}">
+        <span style="width: 40px; height: 40px; border-radius: 11px; background: linear-gradient(135deg, #2A2EC4 0%, #3048E8 50%, #2F72FF 100%); display: flex; align-items: center; justify-content: center; flex: none"><svg width="20" height="20" viewBox="0 0 256 256" fill="#FFFFFF" aria-hidden="true"><path d="M140,104V64a12,12,0,0,1,24,0V75l35.51-35.52a12,12,0,0,1,17,17L181,92h11a12,12,0,0,1,0,24H152A12,12,0,0,1,140,104Zm-36,36H64a12,12,0,0,0,0,24H75L39.51,199.51a12,12,0,0,0,17,17L92,181v11a12,12,0,0,0,24,0V152A12,12,0,0,0,104,140Zm77,24h11a12,12,0,0,0,0-24H152a12,12,0,0,0-12,12v40a12,12,0,0,0,24,0V181l35.51,35.52a12,12,0,0,0,17-17ZM104,52A12,12,0,0,0,92,64V75L56.49,39.51a12,12,0,0,0-17,17L75,92H64a12,12,0,0,0,0,24h40a12,12,0,0,0,12-12V64A12,12,0,0,0,104,52Z"/></svg></span>
+        <span style="flex: 1; display: flex; flex-direction: column; gap: 1px; min-width: 0"><span style="font-size: 11px; font-weight: 700; color: {{t.text3}}">From the makers of Tunely</span><span style="font-size: 14px; font-weight: 800">Shrink: Video Compressor</span><span style="font-size: 12px; font-weight: 600; color: {{t.text2}}">That video was 86 MB. Shrink makes videos smaller.</span></span>
+        <a href="#" style="height: 32px; padding: 0 12px; border-radius: 16px; background: {{t.accentSoft}}; color: {{t.accentOnSoft}}; font-size: 13px; font-weight: 800; text-decoration: none; display: flex; align-items: center">View</a>
+        <button type="button" aria-label="Hide suggestion" style="width: 28px; height: 32px; border: 0; background: transparent; color: {{t.text3}}; display: flex; align-items: center; justify-content: center"><svg width="14" height="14" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M208.49,191.51a12,12,0,0,1-17,17L128,145,64.49,208.49a12,12,0,0,1-17-17L111,128,47.51,64.49a12,12,0,0,1,17-17L128,111l63.51-63.52a12,12,0,0,1,17,17L145,128Z"/></svg></button>
+      </div>
+    </sc-if>
+    <sc-if value="{{upsell}}" hint-placeholder-val="{{ false }}">
+      <a href="Paywall.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: 18px; background: {{t.accentSoft}}; border: 1px solid {{t.accent}}; text-decoration: none; color: {{t.text}}">
+        <span style="width: 40px; height: 40px; border-radius: 12px; background: {{t.hero}}; display: flex; align-items: center; justify-content: center; flex: none"><svg width="20" height="20" viewBox="0 0 256 256" fill="#FFD36B" aria-hidden="true"><path d="M239.75,90.81c0,.11,0,.21-.07.32L217,195a16,16,0,0,1-15.72,13H54.71A16,16,0,0,1,39,195L16.32,91.13c0-.11-.05-.21-.07-.32A16,16,0,0,1,44,77.39l33.67,36.29,35.8-80.29a1,1,0,0,0,0-.1,16,16,0,0,1,29.06,0,1,1,0,0,0,0,.1l35.8,80.29L212,77.39a16,16,0,0,1,27.71,13.42Z"/></svg></span>
+        <span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 14px; font-weight: 800">3 files today — you're a natural</span><span style="font-size: 12px; font-weight: 600; color: {{t.text2}}">Go unlimited · 3 days free</span></span>
+        <span style="font-size: 14px; font-weight: 800; color: {{t.link}}">Try</span>
+      </a>
+    </sc-if>
+  </div>
+
+  <div style="padding: 12px 20px 30px; display: flex; flex-direction: column; gap: 10px">
+    <div style="display: flex; gap: 10px">
+      <a href="#" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; height: 54px; border-radius: 16px; background: {{t.accent}}; color: {{t.accentText}}; font-size: 16px; font-weight: 800; text-decoration: none"><sc-if value="{{isTone}}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M224,71.1a8,8,0,0,1-10.78-3.42,94.13,94.13,0,0,0-33.46-36.91,8,8,0,1,1,8.54-13.54,111.46,111.46,0,0,1,39.12,43.09A8,8,0,0,1,224,71.1ZM35.71,72a8,8,0,0,0,7.1-4.32A94.13,94.13,0,0,1,76.27,30.77a8,8,0,1,0-8.54-13.54A111.46,111.46,0,0,0,28.61,60.32,8,8,0,0,0,35.71,72Zm186.1,103.94A16,16,0,0,1,208,200H167.2a40,40,0,0,1-78.4,0H48a16,16,0,0,1-13.79-24.06C43.22,160.39,48,138.28,48,112a80,80,0,0,1,160,0C208,138.27,212.78,160.38,221.81,175.94ZM150.62,200H105.38a24,24,0,0,0,45.24,0ZM208,184c-10.64-18.27-16-42.49-16-72a64,64,0,0,0-128,0c0,29.52-5.38,53.74-16,72Z"/></svg></sc-if><sc-if value="{{isAudio}}" hint-placeholder-val="{{ true }}"><svg width="18" height="18" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M228,144v64a12,12,0,0,1-12,12H40a12,12,0,0,1-12-12V144a12,12,0,0,1,24,0v52H204V144a12,12,0,0,1,24,0Zm-108.49,8.49a12,12,0,0,0,17,0l40-40a12,12,0,0,0-17-17L140,115V32a12,12,0,0,0-24,0v83L96.49,95.51a12,12,0,0,0-17,17Z"/></svg></sc-if>{{cta}}</a>
+      <button type="button" aria-label="Share" style="width: 54px; height: 54px; border-radius: 16px; border: 1px solid {{t.border}}; background: {{t.surface}}; color: {{t.text}}; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M216,112v96a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V112A16,16,0,0,1,56,96H80a8,8,0,0,1,0,16H56v96H200V112H176a8,8,0,0,1,0-16h24A16,16,0,0,1,216,112ZM93.66,69.66,120,43.31V136a8,8,0,0,0,16,0V43.31l26.34,26.35a8,8,0,0,0,11.32-11.32l-40-40a8,8,0,0,0-11.32,0l-40,40A8,8,0,0,0,93.66,69.66Z"/></svg></button>
+    </div>
+    <sc-if value="{{showPro}}" hint-placeholder-val="{{ true }}">
+    <span style="text-align: center; font-size: 12px; font-weight: 600; color: {{t.text2}}">{{freeLine}} · <a href="Paywall.dc.html" style="color: {{t.link}}; font-weight: 700; text-decoration: none">Go unlimited</a></span>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"mode":{"editor":"enum","options":["audio","ringtone"],"default":"audio"},"upsell":{"editor":"boolean","default":false},"promo":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const T = {
+      light: { name:'light', bg: '#F5F4FA', surface: '#FFFFFF', surface2: '#EEECF6', border: '#E5E2F0', divider: '#EFEDF5', text: '#15132B', text2: '#5C5875', text3: '#6B6784', accent: '#5B3FE6', accentText: '#FFFFFF', accentSoft: '#EEEAFF', accentOnSoft: '#3F25C9', link: '#5B3FE6', success: '#0F7350', successSoft: '#E4F4EC', warn: '#9A5A12', warnSoft: '#FDF0DF', danger: '#C2331F', dangerSoft: '#FDECEA', hero: 'linear-gradient(135deg, #3F25C9 0%, #5B3FE6 55%, #7B4DFF 100%)', heroText: '#FFFFFF', tab: 'rgba(255,255,255,0.94)', toast: '#1C1A2E', shadow: '0 1px 2px rgba(21,19,43,0.05), 0 8px 24px rgba(21,19,43,0.06)', scrim: 'rgba(16,12,40,0.52)', gold: '#E0A21B', proBadgeBg: '#15132B', proBadgeText: '#FFD36B' },
+      dark: { name:'dark', bg: '#0E0D16', surface: '#181626', surface2: '#221F33', border: '#2C2942', divider: '#25223A', text: '#F3F1FF', text2: '#ABA7C6', text3: '#8C88A8', accent: '#6F4EF2', accentText: '#FFFFFF', accentSoft: 'rgba(132,102,255,0.18)', accentOnSoft: '#C4B5FF', link: '#B3A1FF', success: '#3CCB8C', successSoft: 'rgba(60,203,140,0.14)', warn: '#F2B25C', warnSoft: 'rgba(242,178,92,0.14)', danger: '#FF7A68', dangerSoft: 'rgba(255,122,104,0.14)', hero: 'linear-gradient(135deg, #3A22BD 0%, #5537E0 55%, #7A4FFF 100%)', heroText: '#FFFFFF', tab: 'rgba(24,22,38,0.94)', toast: '#2E2A48', shadow: '0 1px 2px rgba(0,0,0,0.3)', scrim: 'rgba(0,0,0,0.64)', gold: '#E0A21B', proBadgeBg: '#F3F1FF', proBadgeText: '#3F25C9' }
+    };
+    const t = T[this.props.theme === 'dark' ? 'dark' : 'light'];
+    const clean = !!this.props.clean && this.props.clean !== 'false';
+
+    const tone = (this.props.mode ?? 'audio') === 'ringtone';
+    const WH = [10, 18, 26, 14, 30, 22, 36, 28, 16, 38, 30, 20, 34, 40, 26, 18, 36, 40, 32, 22, 38, 34, 24, 16, 36, 30, 20, 40, 32, 26, 18, 38, 30, 22, 14, 34, 28, 18, 12, 26, 16, 10, 20, 12, 18, 14, 10, 8];
+    const wave = WH.map((h, i) => ({ h: h + 'px', c: i < 14 ? '#FFFFFF' : 'rgba(255,255,255,0.35)' }));
+    return {
+      t, showPro: !clean, wave, isTone: tone, isAudio: !tone, upsell: !!this.props.upsell, promo: !!this.props.promo && this.props.promo !== 'false', noUpsell: !this.props.upsell,
+      freeLine: this.props.upsell ? '0 of 3 free conversions left today' : '1 of 3 free conversions left today',
+      headline: tone ? 'Your ringtone is ready' : 'Your MP3 is ready',
+      sub: tone ? '30 seconds · fade in and out' : 'Converted on your iPhone · nothing uploaded',
+      fileName: tone ? 'Dance_night.m4r' : 'Dance_night.mp3',
+      fileMeta: tone ? 'Ringtone · M4R · 0:30' : 'MP3 · 256 kbps · 1.3 MB',
+      dur: tone ? '0:30' : '0:42',
+      outSize: tone ? '0.5 MB' : '1.3 MB',
+      outLabel: tone ? 'Ringtone' : 'MP3',
+      altTitle: tone ? 'Also save as MP3' : 'Make it a ringtone',
+      altSub: tone ? 'Keep a copy to share or play anywhere' : 'Pick the best 30 seconds',
+      cta: tone ? 'Set as ringtone' : 'Save to Files'
+    };
+  }
+}
+</script>
+</body>
+</html>

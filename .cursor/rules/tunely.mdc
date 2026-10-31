@@ -1,0 +1,74 @@
+---
+description: Project rules for Tunely – MP3 & Ringtone Maker (Flutter UI + native iOS audio engine)
+globs: ["**/*.dart", "**/*.swift", "**/*.kt"]
+alwaysApply: true
+---
+
+# Tunely: project rules
+
+You are building **Tunely**, a video-to-MP3 / audio converter / ringtone maker. **Flutter** for UI and logic, **iOS first** (every iPhone **including iPhone Duo**), Android later from the same codebase. Audio decoding/encoding is **native** (Swift now, Kotlin later) in the in-repo plugin `packages/tunely_engine`. Specs live in `/docs/handoff/`. Read the relevant spec before writing code for a feature.
+
+## Sources of truth
+- Behaviour & rules: `docs/handoff/01_Product_Requirements.md`, `05_Business_Rules.md`
+- Screens: `docs/handoff/02_Screens_and_States.md` + PNGs in `Design/Screens_PNG/Light/`, `/Dark/`, `/States/`. Match them closely in BOTH themes
+- Exact styles: inline styles in `Design/HTML_Source/*.dc.html` (reference only, do NOT port HTML/JS)
+- Tokens: `design-tokens.json` → `lib/core/design_system/` (`AppColors` ThemeExtension, `AppText`, spacing/radius). Never hard-code colours or font sizes in widgets
+- Architecture: `06_Technical_Architecture.md` · Purchases: `07` · **Analytics: `08`**
+
+## Tech
+- **Flutter 3.47.8 pinned with FVM** (`.fvmrc`): always run `fvm flutter …` / `fvm dart …`, never the global `flutter` (other projects on this Mac stay on 3.35). Dart 3.13, null safety
+- **Build with Xcode 27.1 and the iOS 27.1 SDK.** Deployment target iOS 16. UIScene lifecycle is mandatory with the iOS 27 SDK (`FlutterSceneDelegate`; plugins registered in `didInitializeImplicitFlutterEngine`), or the app fails to launch
+- iPhone only, **iPhone Duo ready**: test on the iPhone Duo simulator in Xcode 27.1 (`tool/duo_sim.sh`), folded, unfolded and rotated
+- Pigeon is pinned at **26.3.4** in `packages/tunely_engine` (27+ generates Swift `async throws` APIs; migrate deliberately, not via `pub upgrade --major-versions`). ATT and the in-app App Store page (`SKStoreProductViewController`) live in `tunely_engine`, not extra packages
+- `phosphor_flutter` is a patched vendored copy (`packages/phosphor_flutter`, see its README) because upstream 2.1.0 doesn't compile on Flutter 3.47
+- Riverpod, go_router, drift, Pigeon, just_audio, share_plus, file_picker, RevenueCat `purchases_flutter`, mixpanel_flutter (behind our Analytics service), firebase_crashlytics, flutter_local_notifications, in_app_review, phosphor_flutter
+- Ask before adding any other package. **Do NOT use FFmpeg-based packages or `photo_manager`.** Ads only through `AdsService` (AdMob `google_mobile_ads` or the LevelPlay plugin).
+
+## Architecture rules
+- All business rules (pre-flight, free limit, size estimates, paywall triggers & caps, personalisation, rating, ringtone rules) are **pure Dart in `lib/core/rules/`** with unit tests. Native code never contains business rules.
+- Native API defined once in `packages/tunely_engine/pigeons/engine.dart`. Swift implements it; Kotlin later implements the same API.
+- MP3 = LAME (dynamic xcframework), OGG = libvorbis, AAC/M4A/M4R/WAV/FLAC = Apple frameworks. No AIFF output or custom bitrate in V1.0. **LAME needs written legal sign-off before submission.**
+- Videos are picked with **PHPicker** through the plugin. Never request Photos library permission.
+- **Analytics only through `Analytics` (`lib/core/analytics/`)**. Event names and properties exactly as in `08`; constants in `events.dart`. Never call the Mixpanel SDK from features. Use the typed helpers in `events.dart` (one per event; `test/analytics_test.dart` checks them against `08`). Tokens via `--dart-define=MIXPANEL_TOKEN_DEV` (debug, Tunely-Dev) / `MIXPANEL_TOKEN` (release); without a token events stay local (console + Component gallery).
+
+## iPhone Duo / resizable layout rules
+- Layout comes from the **window size only** (`lib/app/adaptive.dart`, `LayoutBuilder`, `MediaQuery.sizeOf`), re-read on every build: a fold or unfold resizes the app mid-session. Never use device models, fixed screen sizes, idiom, `UIScreen.main`, `UIDevice.orientation` or the orientation for layout. The portrait lock is not honoured on the Duo's inner display.
+- Below 600 pt: bottom tab bar. From 600 pt: vertical tab rail on the edge with the larger side inset; phone-designed screens centred at 640 pt by `AdaptivePage` (automatic through `AppTransitions`). Sheets ≤ 560 pt, dialogs ≤ 440 pt.
+- Safe areas are per edge (the system bar strip can be on the right): use `SafeArea` or read each side of `MediaQuery.paddingOf`; never assume left == right or only top/bottom insets.
+- Every screen must scroll or scale at short heights (rotated inner display ~669 pt tall); no fixed-height layouts that can overflow.
+- New screens get a case in `test/duo_layout_test.dart` or the golden harness (`TUNELY_DUO=1`).
+
+## Design rules (Direction A · Refined Premium, violet)
+- Light AND dark, `ThemeMode.system`; widgets read `context.colors`.
+- Plus Jakarta Sans (bundled), Phosphor icons only, no emoji, no 3D art.
+- One accent colour; `hero` gradient only where `04` allows it. One primary button per screen.
+- Dialogs/sheets: `scrim` + `BackdropFilter` blur σ 10.
+- PRO badges, Pro chip, free counter and P4 card are visible to free users only.
+
+## Hard rules
+- **Smooth screen transitions everywhere:** every route uses `AppTransitions` (`lib/app/transitions.dart`) per `04_Design_System.md` › Screen transitions. iOS swipe-back on every pushed screen, cross-fade between tabs, spring sheets, no jank (no frame over 16 ms / 8 ms on ProMotion), heavy work only after the transition ends, Reduce Motion respected.
+- NEVER modify or delete the user's original files. NEVER upload any file or audio anywhere.
+- No file names, paths or personal data in analytics or logs.
+- Free limit: 3 successful conversions per local day; failed/cancelled/interrupted never count; the counter on screen always matches the rule.
+- Trial eligibility is checked before EVERY paywall/sheet/card; ineligible users never see "free"/"trial" wording (states 10d, 11b, 13b).
+- Background copy per iOS version (05 §9): never promise a background job finishes on iOS 16–25.
+- Delete removes the library copy only; never delete files in the user's Tunely folder or Photos.
+- Paywall: close X visible immediately, Yearly pre-selected, terms line + CTA change per plan, prices ONLY from the store (compute per-week and SAVE %). Intended US prices: weekly $4.99, yearly $29.99 (3-day trial), lifetime $39.99, exit $14.99 first year, win-back $17.99 first year.
+- Exit offer once ever with a real persisted timer. Max 1 unrequested paywall per session. Never a paywall during conversion or after an error.
+- Trial reminder notification 24 h before the trial ends (promise in onboarding). In-app fallback if notifications are denied.
+- Save to Files copies into the bookmarked Tunely folder (picked on first save). Don't claim files survive deletion for the app's own folder.
+- Ringtones ≤ 30 s, M4R AAC 128 kbps; guide uses the iOS 26 share sheet "Use as Ringtone", GarageBand guide for iOS ≤ 18.
+- Toasts are information only; decisions get screens/sheets.
+- Ads (free users only) follow `05` §12 exactly: our notice 42 first, ad only after Continue, never mid-task/at launch/after errors/over our UI, none for Pro. Cross-promo follows §13 (capped, dismissible, never a pop-up). No login, no referral in V1.0.
+- All numbers from `app_config.json`; all strings in ARB (`lib/l10n/app_en.arb`).
+- Accessibility: 200% text without clipping, Semantics labels on icon buttons, 44 pt targets, adjustable waveform handles.
+
+## Working style
+- Build one phase at a time (`docs/handoff/Cursor/CURSOR_BUILD_PROMPTS.md`). Don't start the next phase until the current one runs on a real iPhone **and the iPhone Duo simulator** (Xcode 27.1) and its items in `09_QA_Acceptance_Checklist.md` pass.
+- Ambiguity → `11_Open_Questions.md`; if unanswered, use the default and add `// TODO(question #n)`.
+- Unit tests for everything in `lib/core/rules/`, entitlement logic and the Analytics event mapping.
+- Keep Swift small, documented, and limited to the Pigeon API surface.
+
+## Account and referral
+- Login is optional and only for invite rewards (`12`). Never gate converting, buying or restoring behind an account. Account deletion must work in-app.
+- Account code lives in `lib/core/account/` (API, Keychain token store) and `lib/app/account.dart` (session, auto-refresh, silent sign-out, referral redeem/qualify). Every call sends `app_id`. Debug builds without `referral.apiBaseUrl` use `DemoAccountApi`. Never send email or name to analytics. Sign-out never calls RevenueCat `logOut` (Pro stays with the Apple ID).

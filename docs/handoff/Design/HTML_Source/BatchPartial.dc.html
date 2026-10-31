@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Batch finished</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: {{t.bg}}; font-family: 'Plus Jakarta Sans', Inter, system-ui, sans-serif; color: {{t.text}}; display: flex; flex-direction: column; overflow: hidden; position: relative">
+  <div style="display: flex; align-items: center; justify-content: space-between; padding: 54px 8px 4px"><span style="width: 44px"></span><span style="font-size: 17px; font-weight: 800">Batch finished</span><a href="MyFiles.dc.html" style="height: 44px; padding: 0 10px; display: flex; align-items: center; font-size: 16px; font-weight: 800; color: {{t.link}}; text-decoration: none">Done</a></div>
+  <div style="flex: 1; display: flex; flex-direction: column; gap: 14px; padding: 6px 20px 0">
+    <div style="display: flex; flex-direction: column; gap: 10px; padding: 16px; border-radius: 20px; background: {{t.surface}}; border: 1px solid {{t.border}}">
+      <div style="display: flex; gap: 8px"><span style="padding: 4px 10px; border-radius: 10px; background: {{t.successSoft}}; color: {{t.success}}; font-size: 13px; font-weight: 800">7 done</span><span style="padding: 4px 10px; border-radius: 10px; background: {{t.dangerSoft}}; color: {{t.danger}}; font-size: 13px; font-weight: 800">1 failed</span></div>
+      <span style="font-size: 14px; line-height: 1.45; color: {{t.text2}}">Finished files are already saved. Only the failed one needs another try.</span>
+    </div>
+    <span style="font-size: 13px; font-weight: 700; color: {{t.danger}}">Needs attention</span>
+    <div style="display: flex; flex-direction: column; gap: 10px; padding: 12px; border-radius: 16px; background: {{t.surface}}; border: 2px solid {{t.danger}}">
+      <div style="display: flex; align-items: center; gap: 12px"><img src="/_blob/d198a3fd0fda1b9001534f72a7d393f6" alt="" style="width: 48px; height: 48px; border-radius: 12px; object-fit: cover"><span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 14px; font-weight: 800">Festival.mov</span><span style="font-size: 12px; font-weight: 700; color: {{t.danger}}">Still downloading from iCloud</span></span></div>
+    </div>
+    <span style="font-size: 13px; font-weight: 700; color: {{t.text2}}">Completed</span>
+    <div style="display: flex; flex-direction: column; border-radius: 16px; background: {{t.surface}}; border: 1px solid {{t.border}}">
+      <div style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-bottom: 1px solid {{t.divider}}"><img src="/_blob/5230e115aa53f2fe4f1bae4b963f1b53" alt="" style="width: 36px; height: 36px; border-radius: 9px; object-fit: cover"><span style="flex: 1; font-size: 14px; font-weight: 700">Concert_clip.mp3</span><span style="font-size: 12px; font-weight: 700; color: {{t.text2}}">4.2 MB</span></div>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-bottom: 1px solid {{t.divider}}"><img src="/_blob/dd64327afe25562e1591f48342e293d5" alt="" style="width: 36px; height: 36px; border-radius: 9px; object-fit: cover"><span style="flex: 1; font-size: 14px; font-weight: 700">Birthday_party.mp3</span><span style="font-size: 12px; font-weight: 700; color: {{t.text2}}">1.9 MB</span></div>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 10px 12px"><span style="width: 36px; height: 36px; border-radius: 9px; background: {{t.surface2}}; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; color: {{t.text2}}">+5</span><span style="flex: 1; font-size: 14px; font-weight: 700">5 more files</span></div>
+    </div>
+  </div>
+  <div style="padding: 12px 20px 34px"><a href="Batch.dc.html" style="display: flex; align-items: center; justify-content: center; height: 56px; border-radius: 16px; background: {{t.accent}}; color: {{t.accentText}}; font-size: 17px; font-weight: 800; text-decoration: none">Retry failed (1)</a></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme": {"editor": "enum", "options": ["light", "dark"], "default": "light"}, "$preview": {"width": 390, "height": 844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const T = {
+      light: { name:'light', bg: '#F5F4FA', surface: '#FFFFFF', surface2: '#EEECF6', border: '#E5E2F0', divider: '#EFEDF5', text: '#15132B', text2: '#5C5875', text3: '#6B6784', accent: '#5B3FE6', accentText: '#FFFFFF', accentSoft: '#EEEAFF', accentOnSoft: '#3F25C9', link: '#5B3FE6', success: '#0F7350', successSoft: '#E4F4EC', warn: '#9A5A12', warnSoft: '#FDF0DF', danger: '#C2331F', dangerSoft: '#FDECEA', hero: 'linear-gradient(135deg, #3F25C9 0%, #5B3FE6 55%, #7B4DFF 100%)', heroText: '#FFFFFF', tab: 'rgba(255,255,255,0.94)', toast: '#1C1A2E', shadow: '0 1px 2px rgba(21,19,43,0.05), 0 8px 24px rgba(21,19,43,0.06)', scrim: 'rgba(16,12,40,0.52)', gold: '#E0A21B', proBadgeBg: '#15132B', proBadgeText: '#FFD36B' },
+      dark: { name:'dark', bg: '#0E0D16', surface: '#181626', surface2: '#221F33', border: '#2C2942', divider: '#25223A', text: '#F3F1FF', text2: '#ABA7C6', text3: '#8C88A8', accent: '#6F4EF2', accentText: '#FFFFFF', accentSoft: 'rgba(132,102,255,0.18)', accentOnSoft: '#C4B5FF', link: '#B3A1FF', success: '#3CCB8C', successSoft: 'rgba(60,203,140,0.14)', warn: '#F2B25C', warnSoft: 'rgba(242,178,92,0.14)', danger: '#FF7A68', dangerSoft: 'rgba(255,122,104,0.14)', hero: 'linear-gradient(135deg, #3A22BD 0%, #5537E0 55%, #7A4FFF 100%)', heroText: '#FFFFFF', tab: 'rgba(24,22,38,0.94)', toast: '#2E2A48', shadow: '0 1px 2px rgba(0,0,0,0.3)', scrim: 'rgba(0,0,0,0.64)', gold: '#E0A21B', proBadgeBg: '#F3F1FF', proBadgeText: '#3F25C9' }
+    };
+    const t = T[this.props.theme === 'dark' ? 'dark' : 'light'];
+    const clean = !!this.props.clean && this.props.clean !== 'false';
+
+    return { t, };
+  }
+}
+</script>
+</body>
+</html>

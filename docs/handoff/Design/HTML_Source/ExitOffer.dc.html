@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Exit offer</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: {{t.bg}}; font-family: 'Plus Jakarta Sans', Inter, system-ui, sans-serif; color: {{t.text}}; display: flex; flex-direction: column; overflow: hidden; position: relative">
+  <dc-import name="Paywall" theme="{{t.name}}" hint-size="390px,844px"></dc-import>
+  <div style="position: absolute; left: 0; top: 0; width: 390px; height: 844px; background: {{t.scrim}}; backdrop-filter: blur(10px) saturate(0.9); -webkit-backdrop-filter: blur(10px) saturate(0.9); display: flex; align-items: center; justify-content: center; padding: 0 22px; box-sizing: border-box">
+    <div role="dialog" aria-label="One-time offer" style="position: relative; width: 100%; background: {{t.surface}}; border-radius: 26px; overflow: hidden; display: flex; flex-direction: column">
+      <button type="button" aria-label="Close offer" style="position: absolute; right: 8px; top: 8px; width: 44px; height: 44px; border: 0; background: transparent; color: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M208.49,191.51a12,12,0,0,1-17,17L128,145,64.49,208.49a12,12,0,0,1-17-17L111,128,47.51,64.49a12,12,0,0,1,17-17L128,111l63.51-63.52a12,12,0,0,1,17,17L145,128Z"/></svg></button>
+      <div style="background: {{t.hero}}; color: #FFFFFF; padding: 24px 22px 20px; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center">
+        <span style="width: 56px; height: 56px; border-radius: 18px; background: rgba(255,255,255,0.16); display: flex; align-items: center; justify-content: center"><svg width="30" height="30" viewBox="0 0 256 256" fill="#FFFFFF" aria-hidden="true"><path d="M216,72H180.92c.39-.33.79-.65,1.17-1A29.53,29.53,0,0,0,192,49.57,32.62,32.62,0,0,0,158.44,16,29.53,29.53,0,0,0,137,25.91a54.94,54.94,0,0,0-9,14.48,54.94,54.94,0,0,0-9-14.48A29.53,29.53,0,0,0,97.56,16,32.62,32.62,0,0,0,64,49.57,29.53,29.53,0,0,0,73.91,71c.38.33.78.65,1.17,1H40A16,16,0,0,0,24,88v32a16,16,0,0,0,16,16v64a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V136a16,16,0,0,0,16-16V88A16,16,0,0,0,216,72ZM149,36.51a13.69,13.69,0,0,1,10-4.5h.49A16.62,16.62,0,0,1,176,49.08a13.69,13.69,0,0,1-4.5,10c-9.49,8.4-25.24,11.36-35,12.4C137.7,60.89,141,45.5,149,36.51Zm-64.09.36A16.63,16.63,0,0,1,96.59,32h.49a13.69,13.69,0,0,1,10,4.5c8.39,9.48,11.35,25.2,12.39,34.92-9.72-1-25.44-4-34.92-12.39a13.69,13.69,0,0,1-4.5-10A16.6,16.6,0,0,1,84.87,36.87ZM40,88h80v32H40Zm16,48h64v64H56Zm144,64H136V136h64Zm16-80H136V88h80v32Z"/></svg></span>
+        <span style="margin-top: 4px; font-size: 13px; font-weight: 700; opacity: 0.85">One-time offer, just for today</span>
+        <span style="font-size: 50px; font-weight: 800; letter-spacing: -0.03em; line-height: 1">50% OFF</span>
+        <span style="font-size: 15px; font-weight: 600">your first year of Tunely Pro</span>
+      </div>
+      <div style="padding: 18px 22px 14px; display: flex; flex-direction: column; gap: 14px">
+        <div style="display: flex; align-items: baseline; justify-content: center; gap: 10px"><span style="font-size: 16px; font-weight: 600; color: {{t.text2}}; text-decoration: line-through">$29.99</span><span style="font-size: 24px; font-weight: 800">$14.99 / year</span></div>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 6px">
+          <span style="font-size: 12px; font-weight: 600; color: {{t.text2}}">Offer ends in</span>
+          <div style="display: flex; gap: 6px; align-items: center" aria-label="9 minutes 59 seconds left"><span style="width: 48px; height: 52px; border-radius: 12px; background: {{t.surface2}}; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 800">09</span><span style="font-size: 22px; font-weight: 800">:</span><span style="width: 48px; height: 52px; border-radius: 12px; background: {{t.surface2}}; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 800">59</span></div>
+        </div>
+        <a href="PurchaseResult.dc.html" style="display: flex; align-items: center; justify-content: center; height: 54px; border-radius: 16px; background: {{t.accent}}; color: {{t.accentText}}; font-size: 17px; font-weight: 800; text-decoration: none">Claim 50% off</a>
+        <span style="text-align: center; font-size: 11px; font-weight: 600; color: {{t.text3}}">$14.99 for the first year, then $29.99 / year. Cancel anytime.</span>
+        <a href="Home.dc.html" style="display: flex; align-items: center; justify-content: center; height: 36px; font-size: 14px; font-weight: 700; color: {{t.text2}}; text-decoration: none">No thanks, continue with Free</a>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme": {"editor": "enum", "options": ["light", "dark"], "default": "light"}, "$preview": {"width": 390, "height": 844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const T = {
+      light: { name:'light', bg: '#F5F4FA', surface: '#FFFFFF', surface2: '#EEECF6', border: '#E5E2F0', divider: '#EFEDF5', text: '#15132B', text2: '#5C5875', text3: '#6B6784', accent: '#5B3FE6', accentText: '#FFFFFF', accentSoft: '#EEEAFF', accentOnSoft: '#3F25C9', link: '#5B3FE6', success: '#0F7350', successSoft: '#E4F4EC', warn: '#9A5A12', warnSoft: '#FDF0DF', danger: '#C2331F', dangerSoft: '#FDECEA', hero: 'linear-gradient(135deg, #3F25C9 0%, #5B3FE6 55%, #7B4DFF 100%)', heroText: '#FFFFFF', tab: 'rgba(255,255,255,0.94)', toast: '#1C1A2E', shadow: '0 1px 2px rgba(21,19,43,0.05), 0 8px 24px rgba(21,19,43,0.06)', scrim: 'rgba(16,12,40,0.52)', gold: '#E0A21B', proBadgeBg: '#15132B', proBadgeText: '#FFD36B' },
+      dark: { name:'dark', bg: '#0E0D16', surface: '#181626', surface2: '#221F33', border: '#2C2942', divider: '#25223A', text: '#F3F1FF', text2: '#ABA7C6', text3: '#8C88A8', accent: '#6F4EF2', accentText: '#FFFFFF', accentSoft: 'rgba(132,102,255,0.18)', accentOnSoft: '#C4B5FF', link: '#B3A1FF', success: '#3CCB8C', successSoft: 'rgba(60,203,140,0.14)', warn: '#F2B25C', warnSoft: 'rgba(242,178,92,0.14)', danger: '#FF7A68', dangerSoft: 'rgba(255,122,104,0.14)', hero: 'linear-gradient(135deg, #3A22BD 0%, #5537E0 55%, #7A4FFF 100%)', heroText: '#FFFFFF', tab: 'rgba(24,22,38,0.94)', toast: '#2E2A48', shadow: '0 1px 2px rgba(0,0,0,0.3)', scrim: 'rgba(0,0,0,0.64)', gold: '#E0A21B', proBadgeBg: '#F3F1FF', proBadgeText: '#3F25C9' }
+    };
+    const t = T[this.props.theme === 'dark' ? 'dark' : 'light'];
+    const clean = !!this.props.clean && this.props.clean !== 'false';
+
+    return { t, };
+  }
+}
+</script>
+</body>
+</html>

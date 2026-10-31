@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>My files</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: {{t.bg}}; font-family: 'Plus Jakarta Sans', Inter, system-ui, sans-serif; color: {{t.text}}; display: flex; flex-direction: column; overflow: hidden; position: relative">
+  <div style="padding: 58px 20px 0; display: flex; flex-direction: column; gap: 14px; flex: 1">
+    <div style="display: flex; justify-content: space-between; align-items: center"><h1 style="margin: 0; font-size: 30px; font-weight: 800; letter-spacing: -0.03em">My files</h1><button type="button" aria-label="Search" style="width: 40px; height: 40px; border-radius: 20px; border: 1px solid {{t.border}}; background: {{t.surface}}; color: {{t.text}}; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"/></svg></button></div>
+    <div role="tablist" aria-label="Filter" style="display: flex; gap: 8px">
+      <sc-for list="{{tabs}}" as="tb" hint-placeholder-count="4"><button type="button" role="tab" aria-selected="{{tb.sel}}" onClick="{{tb.pick}}" style="height: 36px; padding: 0 14px; border-radius: 18px; border: {{tb.border}}; background: {{tb.bg}}; font-family: inherit; font-size: 13px; font-weight: 800; color: {{tb.fg}}">{{tb.label}}</button></sc-for>
+    </div>
+    <div style="display: flex; flex-direction: column; border-radius: 18px; background: {{t.surface}}; border: 1px solid {{t.border}}">
+      <sc-for list="{{files}}" as="f" hint-placeholder-count="7">
+        <div style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-bottom: {{f.line}}">
+          <span style="width: 42px; height: 42px; border-radius: 12px; background: {{f.bg}}; color: {{f.fg}}; display: flex; align-items: center; justify-content: center; flex: none"><sc-if value="{{f.tone}}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M224,71.1a8,8,0,0,1-10.78-3.42,94.13,94.13,0,0,0-33.46-36.91,8,8,0,1,1,8.54-13.54,111.46,111.46,0,0,1,39.12,43.09A8,8,0,0,1,224,71.1ZM35.71,72a8,8,0,0,0,7.1-4.32A94.13,94.13,0,0,1,76.27,30.77a8,8,0,1,0-8.54-13.54A111.46,111.46,0,0,0,28.61,60.32,8,8,0,0,0,35.71,72Zm186.1,103.94A16,16,0,0,1,208,200H167.2a40,40,0,0,1-78.4,0H48a16,16,0,0,1-13.79-24.06C43.22,160.39,48,138.28,48,112a80,80,0,0,1,160,0C208,138.27,212.78,160.38,221.81,175.94ZM150.62,200H105.38a24,24,0,0,0,45.24,0ZM208,184c-10.64-18.27-16-42.49-16-72a64,64,0,0,0-128,0c0,29.52-5.38,53.74-16,72Z"/></svg></sc-if><sc-if value="{{f.audio}}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M212.92,17.71a7.89,7.89,0,0,0-6.86-1.46l-128,32A8,8,0,0,0,72,56V166.1A36,36,0,1,0,88,196V102.25l112-28V134.1A36,36,0,1,0,216,164V24A8,8,0,0,0,212.92,17.71Z"/></svg></sc-if></span>
+          <span style="flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0"><span style="font-size: 14px; font-weight: 700">{{f.name}}</span><span style="font-size: 12px; font-weight: 600; color: {{t.text2}}">{{f.meta}}</span></span>
+          <button type="button" aria-label="Play" style="width: 34px; height: 34px; border-radius: 17px; border: 0; background: {{t.accentSoft}}; color: {{t.accentOnSoft}}; display: flex; align-items: center; justify-content: center"><svg width="13" height="13" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg></button>
+          <button type="button" aria-label="More" style="width: 30px; height: 34px; border: 0; background: transparent; color: {{t.text3}}; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M144,128a16,16,0,1,1-16-16A16,16,0,0,1,144,128ZM60,112a16,16,0,1,0,16,16A16,16,0,0,0,60,112Zm136,0a16,16,0,1,0,16,16A16,16,0,0,0,196,112Z"/></svg></button>
+        </div>
+      </sc-for>
+    </div>
+    <span style="font-size: 12px; font-weight: 600; color: {{t.text3}}; text-align: center">Copies saved to your Tunely folder in Files, kept even if you delete the app</span>
+  </div>
+  <nav aria-label="Main" style="height: 84px; box-sizing: border-box; padding: 8px 32px 26px; background: {{t.tab}}; border-top: 1px solid {{t.divider}}; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr))">
+    <a href="Home.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: {{t.text3}}; text-decoration: none; font-size: 11px; font-weight: 700"><svg width="24" height="24" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M219.31,108.68l-80-80a16,16,0,0,0-22.62,0l-80,80A15.87,15.87,0,0,0,32,120v96a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V160h32v56a8,8,0,0,0,8,8h64a8,8,0,0,0,8-8V120A15.87,15.87,0,0,0,219.31,108.68ZM208,208H160V152a8,8,0,0,0-8-8H104a8,8,0,0,0-8,8v56H48V120l80-80,80,80Z"/></svg>Home</a>
+    <a href="MyFiles.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: {{t.link}}; text-decoration: none; font-size: 11px; font-weight: 700"><svg width="24" height="24" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M224,64H154.67L126.93,43.2a16.12,16.12,0,0,0-9.6-3.2H72A16,16,0,0,0,56,56V72H40A16,16,0,0,0,24,88V200a16,16,0,0,0,16,16H192.89A15.13,15.13,0,0,0,208,200.89V184h16.89A15.13,15.13,0,0,0,240,168.89V80A16,16,0,0,0,224,64Zm0,104H208V112a16,16,0,0,0-16-16H122.67L94.93,75.2a16.12,16.12,0,0,0-9.6-3.2H72V56h45.33L147.2,78.4A8,8,0,0,0,152,80h72Z"/></svg>My files</a>
+    <a href="Settings.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: {{t.text3}}; text-decoration: none; font-size: 11px; font-weight: 700"><svg width="24" height="24" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Zm109.94-52.79a8,8,0,0,0-3.89-5.4l-29.83-17-.12-33.62a8,8,0,0,0-2.83-6.08,111.91,111.91,0,0,0-36.72-20.67,8,8,0,0,0-6.46.59L128,41.85,97.88,25a8,8,0,0,0-6.47-.6A112.1,112.1,0,0,0,54.73,45.15a8,8,0,0,0-2.83,6.07l-.15,33.65-29.83,17a8,8,0,0,0-3.89,5.4,106.47,106.47,0,0,0,0,41.56,8,8,0,0,0,3.89,5.4l29.83,17,.12,33.62a8,8,0,0,0,2.83,6.08,111.91,111.91,0,0,0,36.72,20.67,8,8,0,0,0,6.46-.59L128,214.15,158.12,231a7.91,7.91,0,0,0,3.9,1,8.09,8.09,0,0,0,2.57-.42,112.1,112.1,0,0,0,36.68-20.73,8,8,0,0,0,2.83-6.07l.15-33.65,29.83-17a8,8,0,0,0,3.89-5.4A106.47,106.47,0,0,0,237.94,107.21Zm-15,34.91-28.57,16.25a8,8,0,0,0-3,3c-.58,1-1.19,2.06-1.81,3.06a7.94,7.94,0,0,0-1.22,4.21l-.15,32.25a95.89,95.89,0,0,1-25.37,14.3L134,199.13a8,8,0,0,0-3.91-1h-.19c-1.21,0-2.43,0-3.64,0a8.08,8.08,0,0,0-4.1,1l-28.84,16.1A96,96,0,0,1,67.88,201l-.11-32.2a8,8,0,0,0-1.22-4.22c-.62-1-1.23-2-1.8-3.06a8.09,8.09,0,0,0-3-3.06l-28.6-16.29a90.49,90.49,0,0,1,0-28.26L61.67,97.63a8,8,0,0,0,3-3c.58-1,1.19-2.06,1.81-3.06a7.94,7.94,0,0,0,1.22-4.21l.15-32.25a95.89,95.89,0,0,1,25.37-14.3L122,56.87a8,8,0,0,0,4.1,1c1.21,0,2.43,0,3.64,0a8.08,8.08,0,0,0,4.1-1l28.84-16.1A96,96,0,0,1,188.12,55l.11,32.2a8,8,0,0,0,1.22,4.22c.62,1,1.23,2,1.8,3.06a8.09,8.09,0,0,0,3,3.06l28.6,16.29A90.49,90.49,0,0,1,222.9,142.12Z"/></svg>Settings</a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme": {"editor": "enum", "options": ["light", "dark"], "default": "light"}, "$preview": {"width": 390, "height": 844}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { tab: 0 }; }
+  renderVals() {
+    const T = {
+      light: { name:'light', bg: '#F5F4FA', surface: '#FFFFFF', surface2: '#EEECF6', border: '#E5E2F0', divider: '#EFEDF5', text: '#15132B', text2: '#5C5875', text3: '#6B6784', accent: '#5B3FE6', accentText: '#FFFFFF', accentSoft: '#EEEAFF', accentOnSoft: '#3F25C9', link: '#5B3FE6', success: '#0F7350', successSoft: '#E4F4EC', warn: '#9A5A12', warnSoft: '#FDF0DF', danger: '#C2331F', dangerSoft: '#FDECEA', hero: 'linear-gradient(135deg, #3F25C9 0%, #5B3FE6 55%, #7B4DFF 100%)', heroText: '#FFFFFF', tab: 'rgba(255,255,255,0.94)', toast: '#1C1A2E', shadow: '0 1px 2px rgba(21,19,43,0.05), 0 8px 24px rgba(21,19,43,0.06)', scrim: 'rgba(16,12,40,0.52)', gold: '#E0A21B', proBadgeBg: '#15132B', proBadgeText: '#FFD36B' },
+      dark: { name:'dark', bg: '#0E0D16', surface: '#181626', surface2: '#221F33', border: '#2C2942', divider: '#25223A', text: '#F3F1FF', text2: '#ABA7C6', text3: '#8C88A8', accent: '#6F4EF2', accentText: '#FFFFFF', accentSoft: 'rgba(132,102,255,0.18)', accentOnSoft: '#C4B5FF', link: '#B3A1FF', success: '#3CCB8C', successSoft: 'rgba(60,203,140,0.14)', warn: '#F2B25C', warnSoft: 'rgba(242,178,92,0.14)', danger: '#FF7A68', dangerSoft: 'rgba(255,122,104,0.14)', hero: 'linear-gradient(135deg, #3A22BD 0%, #5537E0 55%, #7A4FFF 100%)', heroText: '#FFFFFF', tab: 'rgba(24,22,38,0.94)', toast: '#2E2A48', shadow: '0 1px 2px rgba(0,0,0,0.3)', scrim: 'rgba(0,0,0,0.64)', gold: '#E0A21B', proBadgeBg: '#F3F1FF', proBadgeText: '#3F25C9' }
+    };
+    const t = T[this.props.theme === 'dark' ? 'dark' : 'light'];
+    const clean = !!this.props.clean && this.props.clean !== 'false';
+
+    const F = [['Dance_night.mp3', 'MP3 · 1.3 MB · just now', 'audio'], ['Dance_night.m4r', 'Ringtone · 0:30 · just now', 'tone'], ['Concert_clip.mp3', 'MP3 · 4.2 MB · yesterday', 'audio'], ['Birthday_song.m4r', 'Ringtone · 0:30 · Oct 20', 'tone'], ['Summer_mix.m4a', 'M4A · 6.8 MB · Oct 18', 'audio'], ['Voice_memo_12.mp3', 'MP3 · 0.9 MB · Oct 15', 'audio'], ['Morning_alarm.m4r', 'Alarm · 0:20 · Oct 12', 'tone']];
+    const sel = this.state.tab;
+    const tabs = ['All', 'Audio', 'Ringtones', 'Alarms'].map((l, i) => ({ label: l, sel: i === sel ? 'true' : 'false', border: i === sel ? '0' : '1px solid ' + t.border, bg: i === sel ? t.accent : t.surface, fg: i === sel ? '#FFFFFF' : t.text, pick: () => this.setState({ tab: i }) }));
+    const files = F.map((f, i) => ({ name: f[0], meta: f[1], tone: f[2] === 'tone', audio: f[2] !== 'tone', bg: f[2] === 'tone' ? t.hero : t.accentSoft, fg: f[2] === 'tone' ? '#FFFFFF' : t.accentOnSoft, line: i < F.length - 1 ? '1px solid ' + t.divider : '0' }));
+    return { t,  tabs, files };
+  }
+}
+</script>
+</body>
+</html>

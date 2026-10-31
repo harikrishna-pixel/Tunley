@@ -1,0 +1,536 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:in_app_review/in_app_review.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
+
+import '../../app/account.dart';
+import '../../app/config.dart';
+import '../../app/state.dart';
+import '../../core/design_system/design_system.dart';
+import '../../core/engine/audio_engine.dart';
+import '../../core/rules/personalization.dart';
+import '../../core/analytics/analytics.dart';
+import '../../core/analytics/events.dart';
+import '../../l10n/app_localizations.dart';
+import '../../app/monetization.dart';
+import '../account/account_widgets.dart';
+import '../paywall/checkout.dart';
+import '../paywall/paywall_screen.dart';
+import '../paywall/pro_gate.dart';
+
+// TODO(question #11): confirm the published URLs.
+const termsUrl = 'https://marberx.com/tunely/terms';
+const privacyUrl = 'https://marberx.com/tunely/privacy';
+const manageSubscriptionsUrl = 'https://apps.apple.com/account/subscriptions';
+
+final _folderNameProvider = FutureProvider.autoDispose<String?>((ref) async {
+  final id = await ref.watch(usageStoreProvider).folderBookmark();
+  if (id == null) return null;
+  return ref.watch(audioEngineProvider).bookmarkedFolderName(id);
+});
+
+class SettingsScreen extends ConsumerWidget {
+  const SettingsScreen({super.key});
+
+  Future<void> _open(BuildContext context, WidgetRef ref, String url) async {
+    final opened = await ref.read(audioEngineProvider).openUrl(url);
+    if (!opened && context.mounted) {
+      TunelyToast.show(
+        context,
+        message: AppLocalizations.of(context).couldNotOpen,
+        tone: ToastTone.warning,
+      );
+    }
+  }
+
+  Future<void> _chooseFolder(WidgetRef ref) async {
+    final id = await ref.read(audioEngineProvider).pickFolder();
+    if (id == null) return;
+    await ref.read(usageStoreProvider).setFolderBookmark(id);
+    ref.invalidate(_folderNameProvider);
+    final icloud = await ref
+        .read(audioEngineProvider)
+        .bookmarkedFolderIsICloud(id);
+    ref.read(analyticsProvider)
+      ..saveFolderChosen(isIcloud: icloud)
+      ..preferencesChanged(field: 'save_folder', value: 'changed');
+  }
+
+  /// Settings › Rate Tunely: the App Store review page when the listing
+  /// exists, otherwise Apple's in-app review sheet.
+  Future<void> _rate(WidgetRef ref) async {
+    final review = InAppReview.instance;
+    final id = ref.read(appConfigProvider).appStoreId;
+    if (id != null) {
+      await review.openStoreListing(appStoreId: id);
+    } else if (await review.isAvailable()) {
+      await review.requestReview();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final colors = context.colors;
+    final text = context.appText;
+    final isPro = ref.watch(isProProvider);
+    final prefs = ref.watch(preferencesProvider);
+    final folder = ref.watch(_folderNameProvider).value;
+    final version = ref.watch(appInfoProvider).value?.version ?? '';
+
+    final goal = switch (prefs.goal) {
+      UserGoal.ringtones => l10n.goalRingtones,
+      UserGoal.mp3FromVideos => l10n.goalMp3,
+      UserGoal.convertFiles => l10n.goalConvert,
+    };
+    final format =
+        prefs.defaultFormat == OutFormat.wav ||
+            prefs.defaultFormat == OutFormat.flac
+        ? prefs.defaultFormat.name.toUpperCase()
+        : l10n.formatKbps(
+            prefs.defaultFormat.name.toUpperCase(),
+            prefs.defaultKbps,
+          );
+
+    Widget section(String title) => Padding(
+      padding: const EdgeInsets.fromLTRB(0, AppSpace.s16, 0, AppSpace.s8),
+      child: Text(
+        title,
+        style: text.caption.copyWith(
+          color: colors.text2,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+    );
+
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(
+        AppSpace.screen,
+        AppSpace.s12,
+        AppSpace.screen,
+        AppSpace.s24,
+      ),
+      children: [
+        Semantics(
+          header: true,
+          child: Text(l10n.tabSettings, style: text.largeTitle),
+        ),
+        const SizedBox(height: AppSpace.s16),
+        const _AccountCard(),
+        const SizedBox(height: AppSpace.s12),
+        if (!isPro)
+          _ProCard(onTap: () => openPaywall(context, PaywallSource.settings)),
+        section(l10n.settingsPreferences),
+        ListGroup(
+          children: [
+            SettingsRow(
+              icon: PhosphorIcons.slidersHorizontal(),
+              label: l10n.settingsWhatIMake,
+              value: goal,
+              onTap: () => context.push('/preferences'),
+            ),
+            SettingsRow(
+              icon: PhosphorIcons.fileAudio(),
+              label: l10n.settingsDefaultFormat,
+              value: format,
+              onTap: () => showDefaultFormatSheet(context, ref),
+            ),
+            SettingsRow(
+              icon: PhosphorIcons.folder(),
+              label: l10n.settingsSaveTo,
+              value: folder == null
+                  ? l10n.settingsSaveToNone
+                  : l10n.settingsSaveToFolder(folder),
+              onTap: () => _chooseFolder(ref),
+            ),
+          ],
+        ),
+        section(l10n.settingsHelpMore),
+        ListGroup(
+          children: [
+            SettingsRow(
+              icon: PhosphorIcons.gift(),
+              label: l10n.settingsInvite,
+              value: l10n.settingsInviteDetail,
+              valueHighlight: true,
+              onTap: () => context.push('/invite', extra: 'settings'),
+            ),
+            SettingsRow(
+              icon: PhosphorIcons.key(),
+              label: l10n.settingsHaveCode,
+              onTap: () => context.push('/redeem'),
+            ),
+            SettingsRow(
+              icon: PhosphorIcons.bellRinging(),
+              label: l10n.settingsHowRingtone,
+              onTap: () async {
+                final os = await ref.read(audioEngineProvider).appInfo();
+                ref
+                    .read(analyticsProvider)
+                    .guideOpened(entry: 'settings', iosVersion: os.osVersion);
+                if (context.mounted) context.push('/guide');
+              },
+            ),
+            SettingsRow(
+              icon: PhosphorIcons.chatCircleDots(),
+              label: l10n.settingsHelp,
+              onTap: () => context.push('/help'),
+            ),
+            SettingsRow(
+              icon: PhosphorIcons.star(PhosphorIconsStyle.fill),
+              label: l10n.settingsRate,
+              onTap: () => _rate(ref),
+            ),
+            SettingsRow(
+              icon: PhosphorIcons.squaresFour(),
+              label: l10n.settingsMoreApps,
+              onTap: () => context.push('/more-apps', extra: 'settings'),
+            ),
+          ],
+        ),
+        section(l10n.settingsSubscription),
+        ListGroup(
+          children: [
+            SettingsRow(
+              icon: PhosphorIcons.arrowCounterClockwise(),
+              label: l10n.settingsRestore,
+              onTap: () {
+                ref.read(analyticsProvider).restoreTapped();
+                restorePurchases(context, ref);
+              },
+            ),
+            SettingsRow(
+              icon: PhosphorIcons.creditCard(),
+              label: l10n.settingsManage,
+              onTap: () {
+                ref
+                    .read(analyticsProvider)
+                    .manageSubscriptionTapped(screen: 'settings');
+                _open(
+                  context,
+                  ref,
+                  ref.read(entitlementProvider).managementUrl ??
+                      manageSubscriptionsUrl,
+                );
+              },
+            ),
+          ],
+        ),
+        const SizedBox(height: AppSpace.s12),
+        Wrap(
+          alignment: WrapAlignment.center,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            TextLinkButton(
+              label: l10n.settingsTerms,
+              muted: true,
+              onPressed: () => _open(context, ref, termsUrl),
+            ),
+            TextLinkButton(
+              label: l10n.settingsPrivacy,
+              muted: true,
+              onPressed: () => _open(context, ref, privacyUrl),
+            ),
+            TextLinkButton(
+              label: l10n.settingsLicences,
+              muted: true,
+              onPressed: () => showLicensePage(
+                context: context,
+                applicationName: l10n.homeTitle,
+                applicationVersion: version,
+              ),
+            ),
+            if (version.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: AppSpace.s8),
+                child: Text(
+                  l10n.settingsVersion(version),
+                  style: text.caption.copyWith(color: colors.text3),
+                ),
+              ),
+          ],
+        ),
+        if (kDebugMode) ...[
+          section(l10n.settingsDebug),
+          ListGroup(
+            children: [
+              SettingsRow(
+                icon: PhosphorIcons.squaresFour(),
+                label: l10n.galleryTitle,
+                onTap: () => context.push('/debug/gallery'),
+              ),
+              SettingsRow(
+                icon: PhosphorIcons.waveform(),
+                label: l10n.engineDebugTitle,
+                onTap: () => context.push('/debug/engine'),
+              ),
+            ],
+          ),
+        ],
+      ],
+    );
+  }
+}
+
+/// Account row (23): optional, only for invite rewards (`12`). Signed out it
+/// opens 46, which explains before any form.
+class _AccountCard extends ConsumerWidget {
+  const _AccountCard();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final colors = context.colors;
+    final text = context.appText;
+    final user = ref.watch(accountProvider).user;
+    return Semantics(
+      button: true,
+      child: Material(
+        color: colors.surface,
+        borderRadius: BorderRadius.circular(AppRadius.card),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(AppRadius.card),
+          onTap: () => user == null
+              ? context.push('/invite', extra: 'settings')
+              : context.push('/account'),
+          child: Container(
+            padding: const EdgeInsets.all(AppSpace.s16),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(AppRadius.card),
+              border: Border.all(color: colors.border),
+            ),
+            child: Row(
+              children: [
+                if (user == null)
+                  Container(
+                    width: 44,
+                    height: 44,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: colors.accentSoft,
+                      shape: BoxShape.circle,
+                    ),
+                    child: PhosphorIcon(
+                      PhosphorIcons.user(),
+                      color: colors.accentOnSoft,
+                      size: 22,
+                    ),
+                  )
+                else
+                  InitialsAvatar(user: user, size: 44),
+                const SizedBox(width: AppSpace.s14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        user == null
+                            ? l10n.settingsAccountSignedOut
+                            : '${user.firstName} ${user.lastName}',
+                        style: text.subhead.copyWith(
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      Text(
+                        user?.email ?? l10n.settingsAccountOptional,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: text.caption.copyWith(color: colors.text2),
+                      ),
+                    ],
+                  ),
+                ),
+                PhosphorIcon(
+                  PhosphorIcons.caretRight(),
+                  color: colors.text3,
+                  size: 18,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ProCard extends StatelessWidget {
+  const _ProCard({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final colors = context.colors;
+    final text = context.appText;
+    return Semantics(
+      button: true,
+      child: Material(
+        borderRadius: BorderRadius.circular(AppRadius.card),
+        clipBehavior: Clip.antiAlias,
+        child: Ink(
+          decoration: BoxDecoration(gradient: colors.heroGradient),
+          child: InkWell(
+            onTap: onTap,
+            child: Padding(
+              padding: const EdgeInsets.all(AppSpace.s16),
+              child: Row(
+                children: [
+                  Container(
+                    width: 48,
+                    height: 48,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: const Color(0x29FFFFFF),
+                      borderRadius: BorderRadius.circular(AppRadius.chip),
+                    ),
+                    child: PhosphorIcon(
+                      PhosphorIcons.crown(PhosphorIconsStyle.fill),
+                      color: colors.gold,
+                      size: 24,
+                    ),
+                  ),
+                  const SizedBox(width: AppSpace.s14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.proCardTitle,
+                          style: text.navTitle.copyWith(color: colors.heroText),
+                        ),
+                        Text(
+                          l10n.proCardBody,
+                          style: text.caption.copyWith(
+                            color: const Color(0xD9FFFFFF),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  PhosphorIcon(
+                    PhosphorIcons.caretRight(PhosphorIconsStyle.bold),
+                    color: colors.heroText,
+                    size: 20,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Settings › Default format: free formats for free users, all for Pro.
+Future<void> showDefaultFormatSheet(BuildContext context, WidgetRef ref) {
+  return AppBottomSheet.show<void>(
+    context: context,
+    builder: (sheetContext) => const _DefaultFormatSheet(),
+  );
+}
+
+class _DefaultFormatSheet extends ConsumerStatefulWidget {
+  const _DefaultFormatSheet();
+
+  @override
+  ConsumerState<_DefaultFormatSheet> createState() =>
+      _DefaultFormatSheetState();
+}
+
+class _DefaultFormatSheetState extends ConsumerState<_DefaultFormatSheet> {
+  late OutFormat _format = ref.read(preferencesProvider).defaultFormat;
+  late int _kbps = ref.read(preferencesProvider).defaultKbps;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final text = context.appText;
+    final isPro = ref.watch(isProProvider);
+    final formats = [
+      OutFormat.mp3,
+      OutFormat.m4a,
+      OutFormat.wav,
+      OutFormat.flac,
+      OutFormat.aac,
+      OutFormat.ogg,
+    ];
+    final lossless = _format == OutFormat.wav || _format == OutFormat.flac;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(l10n.defaultFormatTitle, style: text.dialogTitle),
+        const SizedBox(height: AppSpace.s6),
+        Text(
+          l10n.defaultFormatBody,
+          style: text.body.copyWith(color: context.colors.text2),
+        ),
+        const SizedBox(height: AppSpace.s16),
+        for (var row = 0; row < 2; row++) ...[
+          Row(
+            children: [
+              for (var i = row * 3; i < row * 3 + 3; i++) ...[
+                if (i % 3 > 0) const SizedBox(width: AppSpace.s8),
+                Expanded(
+                  child: FormatChip(
+                    label: formats[i].name.toUpperCase(),
+                    selected: _format == formats[i],
+                    showProBadge: !isPro && formats[i].isPro,
+                    onTap: () async {
+                      if (formats[i].isPro && !isPro) {
+                        await ProGateSheet.show(
+                          context,
+                          feature: l10n.featureFormat(
+                            formats[i].name.toUpperCase(),
+                          ),
+                          analyticsFeature: formats[i].name,
+                          detail: formatDetail(l10n, formats[i]),
+                          isFormat: true,
+                        );
+                        return;
+                      }
+                      setState(() => _format = formats[i]);
+                    },
+                  ),
+                ),
+              ],
+            ],
+          ),
+          const SizedBox(height: AppSpace.s10),
+        ],
+        if (!lossless)
+          SegmentedControl<int>(
+            items: [
+              SegmentedItem(value: 128, label: l10n.qualityStandard),
+              SegmentedItem(value: 256, label: l10n.qualityHigh),
+              SegmentedItem(value: 320, label: l10n.qualityBest),
+            ],
+            value: _kbps,
+            onChanged: (kbps) => setState(() => _kbps = kbps),
+          ),
+        const SizedBox(height: AppSpace.s20),
+        PrimaryButton(
+          label: l10n.save,
+          onPressed: () async {
+            await ref
+                .read(preferencesProvider.notifier)
+                .setDefaultFormat(_format, _kbps);
+            ref
+                .read(analyticsProvider)
+                .preferencesChanged(
+                  field: 'default_format',
+                  value: _format.isLossless
+                      ? _format.name
+                      : '${_format.name}_$_kbps',
+                );
+            if (context.mounted) Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
+  }
+}

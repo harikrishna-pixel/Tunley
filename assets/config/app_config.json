@@ -1,0 +1,82 @@
+{
+  "freeConversionsPerDay": 3,
+  "ringtoneMaxSeconds": 30,
+  "textToneDefaultSeconds": 5,
+  "fadeDefaultSeconds": 2,
+  "fadeMaxSeconds": 5,
+  "batchMaxFiles": 50,
+  "mergeMaxFiles": 10,
+  "volumeBoostMaxDb": 6,
+  "spaceMarginMb": 50,
+  "pendingKeepDays": 7,
+  "tempMaxAgeHours": 24,
+  "upsellCardEveryNthSuccess": 3,
+  "heavyUserFiles": 10,
+  "exitOfferMinutes": 10,
+  "winBackAfterDays": 14,
+  "winBackCooldownDays": 90,
+  "maxUnrequestedPaywallsPerSession": 1,
+  "rating": {
+    "afterRingtones": 2,
+    "afterConversions": 5,
+    "maxTimes": 2,
+    "minDaysBetween": 30,
+    "delayMs": 1500
+  },
+  "milestones": [1, 10, 50],
+  "update": {
+    "latest": "1.0.0",
+    "minRecommended": "1.0.0",
+    "notes": []
+  },
+  "appStoreId": "6829206161",
+  "analytics": {
+    "provider": "mixpanel",
+    "residency": "us"
+  },
+  "ads": {
+    "enabled": true,
+    "provider": "admob",
+    "firstSessionAds": false,
+    "minConversionsBeforeFirstAd": 3,
+    "everyNthConversion": 2,
+    "minSecondsBetween": 180,
+    "maxPerDay": 6,
+    "rewardedMaxPerDay": 2
+  },
+  "moreApps": [
+    {
+      "id": "shrink",
+      "name": "Shrink: Video Compressor",
+      "appStoreId": "TBD",
+      "pitch": "Make videos smaller, free up GBs",
+      "reason": "Great for the big videos you turn into MP3s."
+    },
+    {
+      "id": "biblehi",
+      "name": "BibleHi: AI Bible Chat",
+      "appStoreId": "TBD",
+      "pitch": "Ask questions, pray, read daily"
+    },
+    {
+      "id": "imageresizer",
+      "name": "Image Resizer",
+      "appStoreId": "TBD",
+      "pitch": "Resize and compress photos"
+    }
+  ],
+  "houseCard": {
+    "everyNthSuccess": 5,
+    "minDaysSinceInstall": 3,
+    "hideDays": 30
+  },
+  "referral": {
+    "enabled": true,
+    "friendDays": 7,
+    "inviterDays": 7,
+    "yearlyCap": 10,
+    "appId": "tunely",
+    "apiBaseUrl": "TBD",
+    "inviteDomain": "tunely.app"
+  }
+}

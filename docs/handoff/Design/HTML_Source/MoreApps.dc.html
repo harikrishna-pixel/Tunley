@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>More from Marberx</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: {{t.bg}}; font-family: 'Plus Jakarta Sans', Inter, system-ui, sans-serif; color: {{t.text}}; display: flex; flex-direction: column; overflow: hidden; position: relative">
+  <div style="display: flex; align-items: center; justify-content: space-between; padding: 54px 8px 4px">
+    <a href="Settings.dc.html" aria-label="Back" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: {{t.text}}"><svg width="22" height="22" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M168.49,199.51a12,12,0,0,1-17,17l-80-80a12,12,0,0,1,0-17l80-80a12,12,0,0,1,17,17L97,128Z"/></svg></a>
+    <span style="font-size: 17px; font-weight: 800">More from Marberx</span>
+    <span style="width: 44px"></span>
+  </div>
+  <div style="flex: 1; display: flex; flex-direction: column; gap: 14px; padding: 6px 20px 0">
+    <p style="margin: 0; font-size: 14px; line-height: 1.5; color: {{t.text2}}">Small, honest apps from the team behind Tunely. Free to try.</p>
+    <span style="font-size: 13px; font-weight: 700; color: {{t.text2}}">Picked for you</span>
+    <div style="display: flex; flex-direction: column; gap: 10px; padding: 16px; border-radius: 20px; background: {{t.surface}}; border: 1px solid {{t.border}}">
+      <div style="display: flex; align-items: center; gap: 14px">
+        <span style="width: 56px; height: 56px; border-radius: 15px; background: linear-gradient(135deg, #2A2EC4 0%, #3048E8 50%, #2F72FF 100%); display: flex; align-items: center; justify-content: center; flex: none"><svg width="28" height="28" viewBox="0 0 256 256" fill="#FFFFFF" aria-hidden="true"><path d="M140,104V64a12,12,0,0,1,24,0V75l35.51-35.52a12,12,0,0,1,17,17L181,92h11a12,12,0,0,1,0,24H152A12,12,0,0,1,140,104Zm-36,36H64a12,12,0,0,0,0,24H75L39.51,199.51a12,12,0,0,0,17,17L92,181v11a12,12,0,0,0,24,0V152A12,12,0,0,0,104,140Zm77,24h11a12,12,0,0,0,0-24H152a12,12,0,0,0-12,12v40a12,12,0,0,0,24,0V181l35.51,35.52a12,12,0,0,0,17-17ZM104,52A12,12,0,0,0,92,64V75L56.49,39.51a12,12,0,0,0-17,17L75,92H64a12,12,0,0,0,0,24h40a12,12,0,0,0,12-12V64A12,12,0,0,0,104,52Z"/></svg></span>
+        <span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 16px; font-weight: 800">Shrink: Video Compressor</span><span style="font-size: 13px; font-weight: 600; color: {{t.text2}}">Make videos smaller, free up GBs</span></span>
+        <a href="#" style="height: 34px; padding: 0 16px; border-radius: 17px; background: {{t.accent}}; color: #FFFFFF; font-size: 14px; font-weight: 800; text-decoration: none; display: flex; align-items: center">Get</a>
+      </div>
+      <span style="font-size: 12px; font-weight: 600; color: {{t.text3}}">Great for the big videos you turn into MP3s.</span>
+    </div>
+    <span style="font-size: 13px; font-weight: 700; color: {{t.text2}}; padding-top: 4px">Also from us</span>
+    <div style="display: flex; flex-direction: column; border-radius: 18px; background: {{t.surface}}; border: 1px solid {{t.border}}">
+      <sc-for list="{{apps}}" as="a" hint-placeholder-count="2">
+        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; border-bottom: {{a.line}}">
+          <span style="width: 44px; height: 44px; border-radius: 12px; background: {{a.bg}}; display: flex; align-items: center; justify-content: center; flex: none"><sc-if value="{{a.book}}" hint-placeholder-val="{{ true }}"><svg width="22" height="22" viewBox="0 0 256 256" fill="#FFFFFF" aria-hidden="true"><path d="M232,48H160a40,40,0,0,0-32,16A40,40,0,0,0,96,48H24a8,8,0,0,0-8,8V200a8,8,0,0,0,8,8H96a24,24,0,0,1,24,24,8,8,0,0,0,16,0,24,24,0,0,1,24-24h72a8,8,0,0,0,8-8V56A8,8,0,0,0,232,48ZM96,192H32V64H96a24,24,0,0,1,24,24V200A39.81,39.81,0,0,0,96,192Zm128,0H160a39.81,39.81,0,0,0-24,8V88a24,24,0,0,1,24-24h64Z"/></svg></sc-if><sc-if value="{{a.img}}" hint-placeholder-val="{{ false }}"><svg width="22" height="22" viewBox="0 0 256 256" fill="#FFFFFF" aria-hidden="true"><path d="M240,192a8,8,0,0,1-8,8H200v32a8,8,0,0,1-16,0V200H64a8,8,0,0,1-8-8V72H24a8,8,0,0,1,0-16H56V24a8,8,0,0,1,16,0V184H232A8,8,0,0,1,240,192ZM96,72h88v88a8,8,0,0,0,16,0V64a8,8,0,0,0-8-8H96a8,8,0,0,0,0,16Z"/></svg></sc-if></span>
+          <span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 700">{{a.name}}</span><span style="font-size: 12px; font-weight: 600; color: {{t.text2}}">{{a.sub}}</span></span>
+          <a href="#" style="height: 32px; padding: 0 14px; border-radius: 16px; background: {{t.accentSoft}}; color: {{t.accentOnSoft}}; font-size: 13px; font-weight: 800; text-decoration: none; display: flex; align-items: center">Get</a>
+        </div>
+      </sc-for>
+    </div>
+    <span style="font-size: 12px; font-weight: 600; color: {{t.text3}}; text-align: center">Opens the App Store. No tracking, no rewards for installs.</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme": {"editor": "enum", "options": ["light", "dark"], "default": "light"}, "$preview": {"width": 390, "height": 844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const T = {
+      light: { name:'light', bg: '#F5F4FA', surface: '#FFFFFF', surface2: '#EEECF6', border: '#E5E2F0', divider: '#EFEDF5', text: '#15132B', text2: '#5C5875', text3: '#6B6784', accent: '#5B3FE6', accentText: '#FFFFFF', accentSoft: '#EEEAFF', accentOnSoft: '#3F25C9', link: '#5B3FE6', success: '#0F7350', successSoft: '#E4F4EC', warn: '#9A5A12', warnSoft: '#FDF0DF', danger: '#C2331F', dangerSoft: '#FDECEA', hero: 'linear-gradient(135deg, #3F25C9 0%, #5B3FE6 55%, #7B4DFF 100%)', heroText: '#FFFFFF', tab: 'rgba(255,255,255,0.94)', toast: '#1C1A2E', shadow: '0 1px 2px rgba(21,19,43,0.05), 0 8px 24px rgba(21,19,43,0.06)', scrim: 'rgba(16,12,40,0.52)', gold: '#E0A21B', proBadgeBg: '#15132B', proBadgeText: '#FFD36B' },
+      dark: { name:'dark', bg: '#0E0D16', surface: '#181626', surface2: '#221F33', border: '#2C2942', divider: '#25223A', text: '#F3F1FF', text2: '#ABA7C6', text3: '#8C88A8', accent: '#6F4EF2', accentText: '#FFFFFF', accentSoft: 'rgba(132,102,255,0.18)', accentOnSoft: '#C4B5FF', link: '#B3A1FF', success: '#3CCB8C', successSoft: 'rgba(60,203,140,0.14)', warn: '#F2B25C', warnSoft: 'rgba(242,178,92,0.14)', danger: '#FF7A68', dangerSoft: 'rgba(255,122,104,0.14)', hero: 'linear-gradient(135deg, #3A22BD 0%, #5537E0 55%, #7A4FFF 100%)', heroText: '#FFFFFF', tab: 'rgba(24,22,38,0.94)', toast: '#2E2A48', shadow: '0 1px 2px rgba(0,0,0,0.3)', scrim: 'rgba(0,0,0,0.64)', gold: '#E0A21B', proBadgeBg: '#F3F1FF', proBadgeText: '#3F25C9' }
+    };
+    const t = T[this.props.theme === 'dark' ? 'dark' : 'light'];
+    const clean = !!this.props.clean && this.props.clean !== 'false';
+
+    const apps = [
+      { name: 'BibleHi: AI Bible Chat', sub: 'Ask questions, pray, read daily', bg: 'linear-gradient(135deg, #7A4B1E 0%, #B07A3C 100%)', book: true, img: false, line: '1px solid ' + t.divider },
+      { name: 'Image Resizer', sub: 'Resize and compress photos', bg: 'linear-gradient(135deg, #0E7C66 0%, #1FB58F 100%)', book: false, img: true, line: '0' }
+    ];
+    return { t,  apps };
+  }
+}
+</script>
+</body>
+</html>

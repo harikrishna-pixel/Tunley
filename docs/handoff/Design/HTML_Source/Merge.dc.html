@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Merge audio</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: {{t.bg}}; font-family: 'Plus Jakarta Sans', Inter, system-ui, sans-serif; color: {{t.text}}; display: flex; flex-direction: column; overflow: hidden; position: relative">
+  <div style="display: flex; align-items: center; justify-content: space-between; padding: 54px 8px 4px">
+    <a href="Home.dc.html" aria-label="Back" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: {{t.text}}"><svg width="22" height="22" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M168.49,199.51a12,12,0,0,1-17,17l-80-80a12,12,0,0,1,0-17l80-80a12,12,0,0,1,17,17L97,128Z"/></svg></a>
+    <span style="font-size: 17px; font-weight: 800">Merge audio</span>
+    <a href="Picker.dc.html" style="width: 60px; height: 44px; display: flex; align-items: center; justify-content: flex-end; padding-right: 12px; font-size: 15px; font-weight: 700; color: {{t.link}}; text-decoration: none">Add</a>
+  </div>
+  <div style="flex: 1; display: flex; flex-direction: column; gap: 14px; padding: 6px 20px 0">
+    <div style="position: relative; overflow: hidden; display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 20px; background: {{t.hero}}; color: #FFFFFF">
+      <div style="position: absolute; right: -50px; top: -60px; width: 160px; height: 160px; border-radius: 80px; border: 20px solid rgba(255,255,255,0.08)"></div>
+      <span style="position: relative; width: 44px; height: 44px; border-radius: 14px; background: rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; flex: none"><svg width="24" height="24" viewBox="0 0 256 256" fill="#FFFFFF" aria-hidden="true"><path d="M174.63,81.37a80,80,0,1,0-93.26,93.26,80,80,0,1,0,93.26-93.26ZM100.69,136,120,155.31A63.48,63.48,0,0,1,96,160,63.48,63.48,0,0,1,100.69,136Zm33.75,11.13-25.57-25.57a64.65,64.65,0,0,1,12.69-12.69l25.57,25.57A64.65,64.65,0,0,1,134.44,147.13ZM155.31,120,136,100.69A63.48,63.48,0,0,1,160,96,63.48,63.48,0,0,1,155.31,120ZM32,96a64,64,0,0,1,126-16A80.08,80.08,0,0,0,80.05,158,64.11,64.11,0,0,1,32,96ZM160,224A64.11,64.11,0,0,1,98,176,80.08,80.08,0,0,0,176,98,64,64,0,0,1,160,224Z"/></svg></span>
+      <span style="position: relative; flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 17px; font-weight: 800">4 files · 3:42 total</span><span style="font-size: 12px; font-weight: 600; opacity: 0.85">Plays in this order · drag to reorder</span></span>
+      <button type="button" aria-label="Preview merged audio" style="position: relative; width: 44px; height: 44px; border-radius: 22px; border: 0; background: #FFFFFF; color: #3F25C9; display: flex; align-items: center; justify-content: center; flex: none"><svg width="18" height="18" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg></button>
+    </div>
+    <div role="list" aria-label="Files to merge" style="display: flex; flex-direction: column; gap: 8px">
+      <sc-for list="{{items}}" as="i" hint-placeholder-count="4">
+        <div role="listitem" style="display: flex; align-items: center; gap: 10px; padding: 8px 8px 8px 4px; border-radius: 16px; background: {{t.surface}}; border: 1px solid {{t.border}}">
+          <span aria-label="Drag to reorder" style="width: 28px; height: 44px; display: flex; align-items: center; justify-content: center; color: {{t.text3}}; flex: none"><svg width="18" height="18" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M108,60A16,16,0,1,1,92,44,16,16,0,0,1,108,60Zm56,16a16,16,0,1,0-16-16A16,16,0,0,0,164,76ZM92,112a16,16,0,1,0,16,16A16,16,0,0,0,92,112Zm72,0a16,16,0,1,0,16,16A16,16,0,0,0,164,112ZM92,180a16,16,0,1,0,16,16A16,16,0,0,0,92,180Zm72,0a16,16,0,1,0,16,16A16,16,0,0,0,164,180Z"/></svg></span>
+          <span style="width: 22px; height: 22px; border-radius: 11px; background: {{t.accentSoft}}; color: {{t.accentOnSoft}}; font-size: 11px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex: none">{{i.n}}</span>
+          <img src="{{i.img}}" alt="" style="width: 40px; height: 40px; border-radius: 10px; object-fit: cover; flex: none">
+          <span style="flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0"><span style="font-size: 14px; font-weight: 700">{{i.name}}</span><span style="font-size: 12px; font-weight: 600; color: {{t.text2}}">{{i.meta}}</span></span>
+          <button type="button" aria-label="Remove {{i.name}}" style="width: 36px; height: 36px; border: 0; background: transparent; color: {{t.text3}}; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M208.49,191.51a12,12,0,0,1-17,17L128,145,64.49,208.49a12,12,0,0,1-17-17L111,128,47.51,64.49a12,12,0,0,1,17-17L128,111l63.51-63.52a12,12,0,0,1,17,17L145,128Z"/></svg></button>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 8px">
+      <span style="font-size: 13px; font-weight: 700; color: {{t.text2}}">Crossfade between files</span>
+      <div role="radiogroup" aria-label="Crossfade" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 12px; background: {{t.surface2}}">
+        <sc-for list="{{fades}}" as="f" hint-placeholder-count="4"><button type="button" role="radio" aria-checked="{{f.sel}}" onClick="{{f.pick}}" style="height: 34px; border: 0; border-radius: 9px; background: {{f.bg}}; box-shadow: {{f.sh}}; font-family: inherit; font-size: 13px; font-weight: 800; color: {{f.fg}}">{{f.label}}</button></sc-for>
+      </div>
+    </div>
+    <a href="Convert.dc.html" style="display: flex; align-items: center; gap: 12px; height: 52px; padding: 0 14px; border-radius: 16px; background: {{t.surface}}; border: 1px solid {{t.border}}; color: {{t.text}}; text-decoration: none">
+      <span style="display: flex; color: {{t.text2}}"><svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M99.06,128.61a8,8,0,0,0-8.72,1.73L68.69,152H48a8,8,0,0,0-8,8v40a8,8,0,0,0,8,8H68.69l21.65,21.66A8,8,0,0,0,104,224V136A8,8,0,0,0,99.06,128.61ZM88,204.69,77.66,194.34A8,8,0,0,0,72,192H56V168H72a8,8,0,0,0,5.66-2.34L88,155.31ZM152,180a40.55,40.55,0,0,1-20,34.91A8,8,0,0,1,124,201.09a24.49,24.49,0,0,0,0-42.18A8,8,0,0,1,132,145.09,40.55,40.55,0,0,1,152,180Zm61.66-97.66-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40v80a8,8,0,0,0,16,0V40h88V88a8,8,0,0,0,8,8h48V216H168a8,8,0,0,0,0,16h32a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160Z"/></svg></span>
+      <span style="flex: 1; font-size: 15px; font-weight: 600">Save as</span>
+      <span style="font-size: 13px; font-weight: 700; color: {{t.text2}}">MP3 · 256 kbps · ~7.1 MB</span>
+      <span style="display: flex; color: {{t.text3}}"><svg width="14" height="14" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M184.49,136.49l-80,80a12,12,0,0,1-17-17L159,128,87.51,56.49a12,12,0,1,1,17-17l80,80A12,12,0,0,1,184.49,136.49Z"/></svg></span>
+    </a>
+  </div>
+  <div style="padding: 12px 20px 30px; display: flex; flex-direction: column; gap: 8px">
+    <a href="Progress.dc.html" style="display: flex; align-items: center; justify-content: center; gap: 8px; height: 54px; border-radius: 16px; background: {{t.accent}}; color: {{t.accentText}}; font-size: 16px; font-weight: 800; text-decoration: none"><svg width="18" height="18" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M174.63,81.37a80,80,0,1,0-93.26,93.26,80,80,0,1,0,93.26-93.26ZM100.69,136,120,155.31A63.48,63.48,0,0,1,96,160,63.48,63.48,0,0,1,100.69,136Zm33.75,11.13-25.57-25.57a64.65,64.65,0,0,1,12.69-12.69l25.57,25.57A64.65,64.65,0,0,1,134.44,147.13ZM155.31,120,136,100.69A63.48,63.48,0,0,1,160,96,63.48,63.48,0,0,1,155.31,120ZM32,96a64,64,0,0,1,126-16A80.08,80.08,0,0,0,80.05,158,64.11,64.11,0,0,1,32,96ZM160,224A64.11,64.11,0,0,1,98,176,80.08,80.08,0,0,0,176,98,64,64,0,0,1,160,224Z"/></svg>Merge 4 files</a>
+    <span style="text-align: center; font-size: 12px; font-weight: 600; color: {{t.text3}}">2 to 10 files · originals are not changed</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme": {"editor": "enum", "options": ["light", "dark"], "default": "light"}, "$preview": {"width": 390, "height": 844}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { fade: 1 }; }
+  renderVals() {
+    const T = {
+      light: { name:'light', bg: '#F5F4FA', surface: '#FFFFFF', surface2: '#EEECF6', border: '#E5E2F0', divider: '#EFEDF5', text: '#15132B', text2: '#5C5875', text3: '#6B6784', accent: '#5B3FE6', accentText: '#FFFFFF', accentSoft: '#EEEAFF', accentOnSoft: '#3F25C9', link: '#5B3FE6', success: '#0F7350', successSoft: '#E4F4EC', warn: '#9A5A12', warnSoft: '#FDF0DF', danger: '#C2331F', dangerSoft: '#FDECEA', hero: 'linear-gradient(135deg, #3F25C9 0%, #5B3FE6 55%, #7B4DFF 100%)', heroText: '#FFFFFF', tab: 'rgba(255,255,255,0.94)', toast: '#1C1A2E', shadow: '0 1px 2px rgba(21,19,43,0.05), 0 8px 24px rgba(21,19,43,0.06)', scrim: 'rgba(16,12,40,0.52)', gold: '#E0A21B', proBadgeBg: '#15132B', proBadgeText: '#FFD36B' },
+      dark: { name:'dark', bg: '#0E0D16', surface: '#181626', surface2: '#221F33', border: '#2C2942', divider: '#25223A', text: '#F3F1FF', text2: '#ABA7C6', text3: '#8C88A8', accent: '#6F4EF2', accentText: '#FFFFFF', accentSoft: 'rgba(132,102,255,0.18)', accentOnSoft: '#C4B5FF', link: '#B3A1FF', success: '#3CCB8C', successSoft: 'rgba(60,203,140,0.14)', warn: '#F2B25C', warnSoft: 'rgba(242,178,92,0.14)', danger: '#FF7A68', dangerSoft: 'rgba(255,122,104,0.14)', hero: 'linear-gradient(135deg, #3A22BD 0%, #5537E0 55%, #7A4FFF 100%)', heroText: '#FFFFFF', tab: 'rgba(24,22,38,0.94)', toast: '#2E2A48', shadow: '0 1px 2px rgba(0,0,0,0.3)', scrim: 'rgba(0,0,0,0.64)', gold: '#E0A21B', proBadgeBg: '#F3F1FF', proBadgeText: '#3F25C9' }
+    };
+    const t = T[this.props.theme === 'dark' ? 'dark' : 'light'];
+    const clean = !!this.props.clean && this.props.clean !== 'false';
+
+    const D = [['5230e115aa53f2fe4f1bae4b963f1b53', 'Concert_clip.mp3', 'MP3 · 1:12'], ['80cb07a9b616e8406958931c9c0960b2', 'Guitar_intro.m4a', 'M4A · 0:38'], ['d7ac9491ef6d4e199c5fbf1e2d8bbb4b', 'Dance_night.mov', 'Video · 0:42'], ['dd64327afe25562e1591f48342e293d5', 'Birthday_song.mp3', 'MP3 · 1:10']];
+    const items = D.map((d, i) => ({ n: String(i + 1), img: '/_blob/' + d[0], name: d[1], meta: d[2] }));
+    const sel = this.state.fade;
+    const fades = ['Off', '1 s', '2 s', '3 s'].map((l, i) => ({ label: l, sel: i === sel ? 'true' : 'false', bg: i === sel ? t.surface : 'transparent', sh: i === sel ? t.shadow : 'none', fg: i === sel ? t.text : t.text2, pick: () => this.setState({ fade: i }) }));
+    return { t,  items, fades };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Share card</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: {{t.bg}}; font-family: 'Plus Jakarta Sans', Inter, system-ui, sans-serif; color: {{t.text}}; display: flex; flex-direction: column; overflow: hidden; position: relative">
+  <dc-import name="Result" theme="{{t.name}}" mode="ringtone" hint-size="390px,844px"></dc-import>
+  <div style="position: absolute; left: 0; top: 0; width: 390px; height: 844px; background: {{t.scrim}}; backdrop-filter: blur(10px) saturate(0.9); -webkit-backdrop-filter: blur(10px) saturate(0.9); display: flex; flex-direction: column; justify-content: flex-end">
+    <div role="dialog" style="background: {{t.surface}}; border-radius: 28px 28px 0 0; padding: 12px 24px 34px; display: flex; flex-direction: column; gap: 14px">
+      <div style="width: 40px; height: 5px; border-radius: 3px; background: {{t.border}}; align-self: center"></div>
+      <h2 style="margin: 0; font-size: 20px; font-weight: 800; text-align: center">Share your ringtone</h2>
+      <div style="position: relative; overflow: hidden; align-self: center; width: 250px; padding: 18px; box-sizing: border-box; border-radius: 26px; background: {{t.hero}}; color: #FFFFFF; display: flex; flex-direction: column; gap: 12px">
+        <img src="/_blob/d7ac9491ef6d4e199c5fbf1e2d8bbb4b" alt="" style="width: 100%; height: 140px; border-radius: 16px; object-fit: cover">
+        <span style="display: flex; flex-direction: column"><span style="font-size: 17px; font-weight: 800">Dance night</span><span style="font-size: 12px; font-weight: 600; opacity: 0.85">My new ringtone · 0:30</span></span>
+        <div style="display: flex; align-items: center; gap: 2px; height: 26px"><sc-for list="{{bars}}" as="b" hint-placeholder-count="30"><span style="flex: 1; border-radius: 2px; height: {{b.h}}; background: rgba(255,255,255,0.75)"></span></sc-for></div>
+        <span style="display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; opacity: 0.9"><svg width="14" height="14" viewBox="0 0 256 256" fill="#FFFFFF" aria-hidden="true"><path d="M60,96v64a12,12,0,0,1-24,0V96a12,12,0,0,1,24,0ZM88,20A12,12,0,0,0,76,32V224a12,12,0,0,0,24,0V32A12,12,0,0,0,88,20Zm40,32a12,12,0,0,0-12,12V192a12,12,0,0,0,24,0V64A12,12,0,0,0,128,52Zm40,32a12,12,0,0,0-12,12v64a12,12,0,0,0,24,0V96A12,12,0,0,0,168,84Zm40-16a12,12,0,0,0-12,12v96a12,12,0,0,0,24,0V80A12,12,0,0,0,208,68Z"/></svg>Made with Tunely</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; text-align: center">
+        <span style="display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 12px; font-weight: 700"><span style="width: 52px; height: 52px; border-radius: 16px; background: {{t.surface2}}; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 256 256" fill="{{t.text}}" aria-hidden="true"><path d="M216,112v96a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V112A16,16,0,0,1,56,96H80a8,8,0,0,1,0,16H56v96H200V112H176a8,8,0,0,1,0-16h24A16,16,0,0,1,216,112ZM93.66,69.66,120,43.31V136a8,8,0,0,0,16,0V43.31l26.34,26.35a8,8,0,0,0,11.32-11.32l-40-40a8,8,0,0,0-11.32,0l-40,40A8,8,0,0,0,93.66,69.66Z"/></svg></span>AirDrop</span>
+        <span style="display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 12px; font-weight: 700"><span style="width: 52px; height: 52px; border-radius: 16px; background: {{t.surface2}}; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 256 256" fill="{{t.text}}" aria-hidden="true"><path d="M172,112a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h68A8,8,0,0,1,172,112Zm-8,24H96a8,8,0,0,0,0,16h68a8,8,0,0,0,0-16Zm68-12A100.11,100.11,0,0,1,132,224H48a16,16,0,0,1-16-16V124a100,100,0,0,1,200,0Zm-16,0a84,84,0,0,0-168,0v84h84A84.09,84.09,0,0,0,216,124Z"/></svg></span>Messages</span>
+        <span style="display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 12px; font-weight: 700"><span style="width: 52px; height: 52px; border-radius: 16px; background: {{t.surface2}}; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 256 256" fill="{{t.text}}" aria-hidden="true"><path d="M87.5,151.52l64-64a12,12,0,0,1,17,17l-64,64a12,12,0,0,1-17-17Zm131-114a60.08,60.08,0,0,0-84.87,0L103.51,67.61a12,12,0,0,0,17,17l30.07-30.06a36,36,0,0,1,50.93,50.92L171.4,135.52a12,12,0,1,0,17,17l30.08-30.06A60.09,60.09,0,0,0,218.45,37.55ZM135.52,171.4l-30.07,30.08a36,36,0,0,1-50.92-50.93l30.06-30.07a12,12,0,0,0-17-17L37.55,133.58a60,60,0,0,0,84.88,84.87l30.06-30.07a12,12,0,0,0-17-17Z"/></svg></span>Copy link</span>
+        <span style="display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 12px; font-weight: 700"><span style="width: 52px; height: 52px; border-radius: 16px; background: {{t.surface2}}; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 256 256" fill="{{t.text}}" aria-hidden="true"><path d="M144,128a16,16,0,1,1-16-16A16,16,0,0,1,144,128ZM60,112a16,16,0,1,0,16,16A16,16,0,0,0,60,112Zm136,0a16,16,0,1,0,16,16A16,16,0,0,0,196,112Z"/></svg></span>More</span>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme": {"editor": "enum", "options": ["light", "dark"], "default": "light"}, "$preview": {"width": 390, "height": 844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const T = {
+      light: { name:'light', bg: '#F5F4FA', surface: '#FFFFFF', surface2: '#EEECF6', border: '#E5E2F0', divider: '#EFEDF5', text: '#15132B', text2: '#5C5875', text3: '#6B6784', accent: '#5B3FE6', accentText: '#FFFFFF', accentSoft: '#EEEAFF', accentOnSoft: '#3F25C9', link: '#5B3FE6', success: '#0F7350', successSoft: '#E4F4EC', warn: '#9A5A12', warnSoft: '#FDF0DF', danger: '#C2331F', dangerSoft: '#FDECEA', hero: 'linear-gradient(135deg, #3F25C9 0%, #5B3FE6 55%, #7B4DFF 100%)', heroText: '#FFFFFF', tab: 'rgba(255,255,255,0.94)', toast: '#1C1A2E', shadow: '0 1px 2px rgba(21,19,43,0.05), 0 8px 24px rgba(21,19,43,0.06)', scrim: 'rgba(16,12,40,0.52)', gold: '#E0A21B', proBadgeBg: '#15132B', proBadgeText: '#FFD36B' },
+      dark: { name:'dark', bg: '#0E0D16', surface: '#181626', surface2: '#221F33', border: '#2C2942', divider: '#25223A', text: '#F3F1FF', text2: '#ABA7C6', text3: '#8C88A8', accent: '#6F4EF2', accentText: '#FFFFFF', accentSoft: 'rgba(132,102,255,0.18)', accentOnSoft: '#C4B5FF', link: '#B3A1FF', success: '#3CCB8C', successSoft: 'rgba(60,203,140,0.14)', warn: '#F2B25C', warnSoft: 'rgba(242,178,92,0.14)', danger: '#FF7A68', dangerSoft: 'rgba(255,122,104,0.14)', hero: 'linear-gradient(135deg, #3A22BD 0%, #5537E0 55%, #7A4FFF 100%)', heroText: '#FFFFFF', tab: 'rgba(24,22,38,0.94)', toast: '#2E2A48', shadow: '0 1px 2px rgba(0,0,0,0.3)', scrim: 'rgba(0,0,0,0.64)', gold: '#E0A21B', proBadgeBg: '#F3F1FF', proBadgeText: '#3F25C9' }
+    };
+    const t = T[this.props.theme === 'dark' ? 'dark' : 'light'];
+    const clean = !!this.props.clean && this.props.clean !== 'false';
+
+    const H = [10, 18, 26, 14, 22, 26, 16, 10, 20, 24, 14, 8, 18, 22, 12, 16, 26, 20, 10, 14, 22, 18, 12, 8, 16, 20, 12, 8, 14, 10];
+    return { t,  bars: H.map((h) => ({ h: h + 'px' })) };
+  }
+}
+</script>
+</body>
+</html>

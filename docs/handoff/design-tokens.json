@@ -1,0 +1,161 @@
+{
+  "$schema": "Tunely design tokens v1 · Direction A Refined Premium (violet)",
+  "version": "1.1",
+  "themes": {
+    "light": {
+      "bg": "#F5F4FA",
+      "surface": "#FFFFFF",
+      "surface2": "#EEECF6",
+      "border": "#E5E2F0",
+      "divider": "#EFEDF5",
+      "text": "#15132B",
+      "text2": "#5C5875",
+      "text3": "#6B6784",
+      "accent": "#5B3FE6",
+      "accentText": "#FFFFFF",
+      "accentSoft": "#EEEAFF",
+      "accentOnSoft": "#3F25C9",
+      "link": "#5B3FE6",
+      "success": "#0F7350",
+      "successSoft": "#E4F4EC",
+      "warn": "#9A5A12",
+      "warnSoft": "#FDF0DF",
+      "danger": "#C2331F",
+      "dangerSoft": "#FDECEA",
+      "hero": "linear-gradient(135deg, #3F25C9 0%, #5B3FE6 55%, #7B4DFF 100%)",
+      "heroText": "#FFFFFF",
+      "tab": "rgba(255,255,255,0.94)",
+      "toast": "#1C1A2E",
+      "shadow": "0 1px 2px rgba(21,19,43,0.05), 0 8px 24px rgba(21,19,43,0.06)",
+      "scrim": "rgba(16,12,40,0.52)",
+      "gold": "#E0A21B",
+      "proBadgeBg": "#15132B",
+      "proBadgeText": "#FFD36B"
+    },
+    "dark": {
+      "bg": "#0E0D16",
+      "surface": "#181626",
+      "surface2": "#221F33",
+      "border": "#2C2942",
+      "divider": "#25223A",
+      "text": "#F3F1FF",
+      "text2": "#ABA7C6",
+      "text3": "#8C88A8",
+      "accent": "#6F4EF2",
+      "accentText": "#FFFFFF",
+      "accentSoft": "rgba(132,102,255,0.18)",
+      "accentOnSoft": "#C4B5FF",
+      "link": "#B3A1FF",
+      "success": "#3CCB8C",
+      "successSoft": "rgba(60,203,140,0.14)",
+      "warn": "#F2B25C",
+      "warnSoft": "rgba(242,178,92,0.14)",
+      "danger": "#FF7A68",
+      "dangerSoft": "rgba(255,122,104,0.14)",
+      "hero": "linear-gradient(135deg, #3A22BD 0%, #5537E0 55%, #7A4FFF 100%)",
+      "heroText": "#FFFFFF",
+      "tab": "rgba(24,22,38,0.94)",
+      "toast": "#2E2A48",
+      "shadow": "0 1px 2px rgba(0,0,0,0.3)",
+      "scrim": "rgba(0,0,0,0.64)",
+      "gold": "#E0A21B",
+      "proBadgeBg": "#F3F1FF",
+      "proBadgeText": "#3F25C9"
+    }
+  },
+  "typography": {
+    "family": "Plus Jakarta Sans",
+    "weights": [
+      400,
+      500,
+      600,
+      700,
+      800
+    ],
+    "styles": {
+      "largeTitle": {
+        "size": 26,
+        "weight": 800,
+        "tracking": -0.03
+      },
+      "title": {
+        "size": 26,
+        "weight": 800,
+        "tracking": -0.02
+      },
+      "dialogTitle": {
+        "size": 20,
+        "weight": 800
+      },
+      "navTitle": {
+        "size": 17,
+        "weight": 800
+      },
+      "sectionTitle": {
+        "size": 17,
+        "weight": 800
+      },
+      "button": {
+        "size": 16,
+        "weight": 800
+      },
+      "body": {
+        "size": 15,
+        "weight": 600
+      },
+      "subhead": {
+        "size": 14,
+        "weight": 700
+      },
+      "caption": {
+        "size": 13,
+        "weight": 600
+      },
+      "footnote": {
+        "size": 12,
+        "weight": 600
+      },
+      "micro": {
+        "size": 11,
+        "weight": 700
+      },
+      "heroTitle": {
+        "size": 22,
+        "weight": 800,
+        "tracking": -0.02
+      },
+      "timecode": {
+        "size": 32,
+        "weight": 800,
+        "tabular": true
+      }
+    }
+  },
+  "spacing": [
+    4,
+    6,
+    8,
+    10,
+    12,
+    14,
+    16,
+    18,
+    20,
+    24
+  ],
+  "screenPadding": 20,
+  "radius": {
+    "badge": 6,
+    "chip": 12,
+    "button": 16,
+    "row": 16,
+    "card": 18,
+    "hero": 24,
+    "dialog": 24,
+    "sheet": 28
+  },
+  "blur": {
+    "overlay": 10
+  },
+  "icons": "phosphor_flutter (regular; fill for active tab/status; bold for check, x, caret)"
+}

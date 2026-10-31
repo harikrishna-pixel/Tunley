@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - tunely_engine (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - tunely_engine (from `.symlinks/plugins/tunely_engine/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  tunely_engine:
+    :path: ".symlinks/plugins/tunely_engine/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 71a624a5bc0c04062bf19101d501e466baf2fb47
+  tunely_engine: e92571c49dfa8aba4a119acd4127d61dc9dc2ea1
+
+PODFILE CHECKSUM: a5cb3f6fd4e76733c494536efb5d55d2119cd8f8
+
+COCOAPODS: 1.16.2

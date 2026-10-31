@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Create account</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:var(--accent)}
+</style>
+</helmet>
+<div style="--accent: {{t.accent}}; width: 390px; height: 844px; box-sizing: border-box; background: {{t.bg}}; font-family: 'Plus Jakarta Sans', Inter, system-ui, sans-serif; color: {{t.text}}; display: flex; flex-direction: column; overflow: hidden">
+  <div style="display: flex; align-items: center; justify-content: space-between; padding: 56px 12px 4px">
+    <a href="ReferralSignedOut.dc.html" aria-label="Back" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: {{t.text}}">
+      <svg width="24" height="24" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M168.49,199.51a12,12,0,0,1-17,17l-80-80a12,12,0,0,1,0-17l80-80a12,12,0,0,1,17,17L97,128Z"></path></svg>
+    </a>
+    <div style="width: 44px"></div>
+  </div>
+
+  <div style="flex: 1; display: flex; flex-direction: column; gap: 14px; padding: 0 24px">
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <h1 style="margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.02em">Create your account</h1>
+      <p style="margin: 0; font-size: 15px; line-height: 1.45; color: {{t.text2}}">Free. Used only for your invite link and rewards.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+      <label style="display: flex; flex-direction: column; gap: 6px">
+        <span style="font-size: 13px; font-weight: 600; color: {{t.text2}}">First name</span>
+        <input type="text" autocomplete="given-name" value="{{first}}" onChange="{{setFirst}}" style="height: 50px; padding: 0 14px; border-radius: 14px; border: 1px solid {{t.border}}; background: {{t.surface}}; font-family: inherit; font-size: 16px; color: {{t.text}}; outline: none; min-width: 0">
+      </label>
+      <label style="display: flex; flex-direction: column; gap: 6px">
+        <span style="font-size: 13px; font-weight: 600; color: {{t.text2}}">Last name</span>
+        <input type="text" autocomplete="family-name" value="Thomas" style="height: 50px; padding: 0 14px; border-radius: 14px; border: 1px solid {{t.border}}; background: {{t.surface}}; font-family: inherit; font-size: 16px; color: {{t.text}}; outline: none; min-width: 0">
+      </label>
+    </div>
+    <label style="display: flex; flex-direction: column; gap: 6px">
+      <span style="font-size: 13px; font-weight: 600; color: {{t.text2}}">Email</span>
+      <input type="email" autocomplete="email" value="anna@example.com" style="height: 50px; padding: 0 14px; border-radius: 14px; border: 1px solid {{t.border}}; background: {{t.surface}}; font-family: inherit; font-size: 16px; color: {{t.text}}; outline: none">
+    </label>
+    <label style="display: flex; flex-direction: column; gap: 6px">
+      <span style="font-size: 13px; font-weight: 600; color: {{t.text2}}">Password</span>
+      <span style="display: flex; align-items: center; height: 50px; padding: 0 6px 0 14px; border-radius: 14px; border: 2px solid {{t.accent}}; background: {{t.surface}}; box-sizing: border-box">
+        <input type="{{pwType}}" autocomplete="new-password" value="Tunely2026!" style="flex: 1; min-width: 0; border: 0; background: transparent; font-family: inherit; font-size: 16px; color: {{t.text}}; outline: none">
+        <button type="button" onClick="{{togglePw}}" aria-label="{{pwLabel}}" style="width: 44px; height: 44px; border: 0; background: transparent; display: flex; align-items: center; justify-content: center; color: {{t.text2}}">
+          <svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M247.31,124.76c-.35-.79-8.82-19.58-27.65-38.41C194.57,61.26,162.88,48,128,48S61.43,61.26,36.34,86.35C17.51,105.18,9,124,8.69,124.76a8,8,0,0,0,0,6.5c.35.79,8.82,19.57,27.65,38.4C61.43,194.74,93.12,208,128,208s66.57-13.26,91.66-38.34c18.83-18.83,27.3-37.61,27.65-38.4A8,8,0,0,0,247.31,124.76ZM128,192c-30.78,0-57.67-11.19-79.93-33.25A133.47,133.47,0,0,1,25,128,133.33,133.33,0,0,1,48.07,97.25C70.33,75.19,97.22,64,128,64s57.67,11.19,79.93,33.25A133.46,133.46,0,0,1,231.05,128C223.84,141.46,192.43,192,128,192Zm0-112a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Z"></path></svg>
+        </button>
+      </span>
+      <span style="display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: {{t.success}}">
+        <svg width="14" height="14" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M232.49,80.49l-128,128a12,12,0,0,1-17,0l-56-56a12,12,0,1,1,17-17L96,183,215.51,63.51a12,12,0,0,1,17,17Z"></path></svg>
+        At least 8 characters, with a number
+      </span>
+    </label>
+
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 14px; border-radius: 14px; background: {{t.accentSoft}}">
+      <span style="display: flex; flex-direction: column; gap: 2px">
+        <span style="font-size: 12px; font-weight: 600; color: {{t.accentOnSoft}}">Your invite code will be</span>
+        <span style="font-size: 18px; font-weight: 800; letter-spacing: 0.06em; color: {{t.text}}">{{code}}</span>
+      </span>
+      <span style="font-size: 12px; color: {{t.accentOnSoft}}; text-align: right">Can change to a<br>random code later</span>
+    </div>
+  </div>
+
+  <div style="padding: 12px 24px 28px; display: flex; flex-direction: column; gap: 10px">
+    <a href="Referral.dc.html" style="display: flex; align-items: center; justify-content: center; height: 56px; border-radius: 16px; background: {{t.accent}}; color: #FFFFFF; font-size: 17px; font-weight: 700; text-decoration: none">Create account</a>
+    <p style="margin: 0; font-size: 12px; line-height: 1.45; color: {{t.text2}}; text-align: center">By creating an account you agree to our <a href="#" style="font-weight: 600">Terms</a> and <a href="#" style="font-weight: 600">Privacy Policy</a>.</p>
+    <p style="margin: 0; font-size: 14px; color: {{t.text2}}; text-align: center">Already have an account? <a href="SignIn.dc.html" style="font-weight: 700; text-decoration: none">Sign in</a></p>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { first: 'Anna', showPw: false };
+  }
+  renderVals() {
+    const T = {
+      light: { name:'light', bg: '#F5F4FA', surface: '#FFFFFF', surface2: '#EEECF6', border: '#E5E2F0', divider: '#EFEDF5', text: '#15132B', text2: '#5C5875', text3: '#6B6784', accent: '#5B3FE6', accentText: '#FFFFFF', accentSoft: '#EEEAFF', accentOnSoft: '#3F25C9', link: '#5B3FE6', success: '#0F7350', successSoft: '#E4F4EC', warn: '#9A5A12', warnSoft: '#FDF0DF', danger: '#C2331F', dangerSoft: '#FDECEA', hero: 'linear-gradient(135deg, #3F25C9 0%, #5B3FE6 55%, #7B4DFF 100%)', heroText: '#FFFFFF', tab: 'rgba(255,255,255,0.94)', toast: '#1C1A2E', shadow: '0 1px 2px rgba(21,19,43,0.05), 0 8px 24px rgba(21,19,43,0.06)', scrim: 'rgba(16,12,40,0.52)', gold: '#E0A21B', proBadgeBg: '#15132B', proBadgeText: '#FFD36B' },
+      dark: { name:'dark', bg: '#0E0D16', surface: '#181626', surface2: '#221F33', border: '#2C2942', divider: '#25223A', text: '#F3F1FF', text2: '#ABA7C6', text3: '#8C88A8', accent: '#6F4EF2', accentText: '#FFFFFF', accentSoft: 'rgba(132,102,255,0.18)', accentOnSoft: '#C4B5FF', link: '#B3A1FF', success: '#3CCB8C', successSoft: 'rgba(60,203,140,0.14)', warn: '#F2B25C', warnSoft: 'rgba(242,178,92,0.14)', danger: '#FF7A68', dangerSoft: 'rgba(255,122,104,0.14)', hero: 'linear-gradient(135deg, #3A22BD 0%, #5537E0 55%, #7A4FFF 100%)', heroText: '#FFFFFF', tab: 'rgba(24,22,38,0.94)', toast: '#2E2A48', shadow: '0 1px 2px rgba(0,0,0,0.3)', scrim: 'rgba(0,0,0,0.64)', gold: '#E0A21B', proBadgeBg: '#F3F1FF', proBadgeText: '#3F25C9' }
+    };
+    const t = T[this.props.theme === 'dark' ? 'dark' : 'light'];
+
+    const clean = (this.state.first || '').normalize('NFD').replace(/[^A-Za-z]/g, '').toUpperCase().slice(0, 6);
+    const code = (clean.length >= 2 ? clean : 'SHRK') + '7K';
+    return {
+      t,
+      first: this.state.first,
+      code,
+      setFirst: (e) => this.setState({ first: e.target.value }),
+      pwType: this.state.showPw ? 'text' : 'password',
+      pwLabel: this.state.showPw ? 'Hide password' : 'Show password',
+      togglePw: () => this.setState({ showPw: !this.state.showPw })
+    };
+  }
+}
+</script>
+</body>
+</html>

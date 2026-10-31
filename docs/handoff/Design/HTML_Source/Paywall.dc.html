@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tunely Pro</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: {{t.bg}}; font-family: 'Plus Jakarta Sans', Inter, system-ui, sans-serif; color: {{t.text}}; display: flex; flex-direction: column; overflow: hidden; position: relative">
+  <div style="position: relative; overflow: hidden; background: {{t.hero}}; color: #FFFFFF; padding: 52px 22px 20px; border-radius: 0 0 28px 28px">
+    <div style="position: absolute; right: -80px; top: -70px; width: 240px; height: 240px; border-radius: 120px; border: 30px solid rgba(255,255,255,0.08)"></div>
+    <div style="position: relative; display: flex; justify-content: space-between; align-items: center">
+      <span style="display: flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; border-radius: 15px; background: rgba(255,255,255,0.16); font-size: 13px; font-weight: 800"><svg width="16" height="16" viewBox="0 0 256 256" fill="#FFD36B" aria-hidden="true"><path d="M239.75,90.81c0,.11,0,.21-.07.32L217,195a16,16,0,0,1-15.72,13H54.71A16,16,0,0,1,39,195L16.32,91.13c0-.11-.05-.21-.07-.32A16,16,0,0,1,44,77.39l33.67,36.29,35.8-80.29a1,1,0,0,0,0-.1,16,16,0,0,1,29.06,0,1,1,0,0,0,0,.1l35.8,80.29L212,77.39a16,16,0,0,1,27.71,13.42Z"/></svg>Tunely Pro</span>
+      <a href="Home.dc.html" aria-label="Close" style="width: 44px; height: 44px; margin-right: -10px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.85)"><svg width="20" height="20" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M208.49,191.51a12,12,0,0,1-17,17L128,145,64.49,208.49a12,12,0,0,1-17-17L111,128,47.51,64.49a12,12,0,0,1,17-17L128,111l63.51-63.52a12,12,0,0,1,17,17L145,128Z"/></svg></a>
+    </div>
+    <h1 style="position: relative; margin: 10px 0 14px; font-size: 27px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.12">{{headline}}</h1>
+    <ul style="position: relative; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 8px">
+      <li style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700"><span style="width: 22px; height: 22px; border-radius: 11px; background: rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; flex: none"><svg width="13" height="13" viewBox="0 0 256 256" fill="#FFFFFF" aria-hidden="true"><path d="M232.49,80.49l-128,128a12,12,0,0,1-17,0l-56-56a12,12,0,1,1,17-17L96,183,215.51,63.51a12,12,0,0,1,17,17Z"/></svg></span>{{b1}}</li>
+      <li style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700"><span style="width: 22px; height: 22px; border-radius: 11px; background: rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; flex: none"><svg width="13" height="13" viewBox="0 0 256 256" fill="#FFFFFF" aria-hidden="true"><path d="M232.49,80.49l-128,128a12,12,0,0,1-17,0l-56-56a12,12,0,1,1,17-17L96,183,215.51,63.51a12,12,0,0,1,17,17Z"/></svg></span>FLAC, AAC, OGG formats</li>
+      <li style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700"><span style="width: 22px; height: 22px; border-radius: 11px; background: rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; flex: none"><svg width="13" height="13" viewBox="0 0 256 256" fill="#FFFFFF" aria-hidden="true"><path d="M232.49,80.49l-128,128a12,12,0,0,1-17,0l-56-56a12,12,0,1,1,17-17L96,183,215.51,63.51a12,12,0,0,1,17,17Z"/></svg></span>Batch 50 files at once</li>
+      <li style="display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700"><span style="width: 22px; height: 22px; border-radius: 11px; background: rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; flex: none"><svg width="13" height="13" viewBox="0 0 256 256" fill="#FFFFFF" aria-hidden="true"><path d="M232.49,80.49l-128,128a12,12,0,0,1-17,0l-56-56a12,12,0,1,1,17-17L96,183,215.51,63.51a12,12,0,0,1,17,17Z"/></svg></span>No ads, merge &amp; boost</li>
+    </ul>
+  </div>
+
+  <div style="flex: 1; display: flex; flex-direction: column; gap: 10px; padding: 16px 20px 0">
+    <sc-if value="{{showTimeline}}" hint-placeholder-val="{{ true }}">
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; padding: 12px; border-radius: 16px; background: {{t.surface}}; border: 1px solid {{t.border}}">
+        <span style="display: flex; flex-direction: column; gap: 3px"><span style="display: flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 800; color: {{t.link}}"><svg width="13" height="13" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M208,80H176V56a48,48,0,0,0-96,0V80H48A16,16,0,0,0,32,96V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V96A16,16,0,0,0,208,80ZM96,56a32,32,0,0,1,64,0V80H96ZM208,208H48V96H208V208Z"/></svg>Today</span><span style="font-size: 11px; font-weight: 600; color: {{t.text2}}">Full access, free</span></span>
+        <span style="display: flex; flex-direction: column; gap: 3px"><span style="display: flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 800; color: {{t.link}}"><svg width="13" height="13" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06ZM128,216a24,24,0,0,1-22.62-16h45.24A24,24,0,0,1,128,216ZM48,184c7.7-13.24,16-43.92,16-80a64,64,0,1,1,128,0c0,36.05,8.28,66.73,16,80Z"/></svg>Day 2</span><span style="font-size: 11px; font-weight: 600; color: {{t.text2}}">Reminder</span></span>
+        <span style="display: flex; flex-direction: column; gap: 3px"><span style="display: flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 800; color: {{t.link}}"><svg width="13" height="13" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M239.75,90.81c0,.11,0,.21-.07.32L217,195a16,16,0,0,1-15.72,13H54.71A16,16,0,0,1,39,195L16.32,91.13c0-.11-.05-.21-.07-.32A16,16,0,0,1,44,77.39l33.67,36.29,35.8-80.29a1,1,0,0,0,0-.1,16,16,0,0,1,29.06,0,1,1,0,0,0,0,.1l35.8,80.29L212,77.39a16,16,0,0,1,27.71,13.42Z"/></svg>Day 3</span><span style="font-size: 11px; font-weight: 600; color: {{t.text2}}">$29.99/yr starts</span></span>
+      </div>
+    </sc-if>
+    <div role="radiogroup" aria-label="Plan" style="display: flex; flex-direction: column; gap: 8px">
+      <sc-for list="{{plans}}" as="p" hint-placeholder-count="3">
+        <button type="button" role="radio" aria-checked="{{p.aria}}" onClick="{{p.pick}}" style="position: relative; display: flex; align-items: center; gap: 12px; height: 60px; padding: 0 14px; border-radius: 16px; border: {{p.border}}; background: {{t.surface}}; font-family: inherit; color: {{t.text}}; text-align: left">
+          <span style="width: 22px; height: 22px; border-radius: 11px; box-sizing: border-box; border: {{p.ring}}; flex: none"></span>
+          <span style="flex: 1; display: flex; flex-direction: column; gap: 1px"><span style="font-size: 15px; font-weight: 800">{{p.name}}</span><span style="font-size: 12px; font-weight: 600; color: {{t.text3}}">{{p.sub}}</span></span>
+          <span style="font-size: 15px; font-weight: 800">{{p.price}}</span>
+          <sc-if value="{{p.badge}}" hint-placeholder-val="{{ false }}"><span style="position: absolute; top: -9px; right: 14px; padding: 2px 8px; border-radius: 8px; background: {{t.success}}; color: #FFFFFF; font-size: 10px; font-weight: 800">{{p.badge}}</span></sc-if>
+        </button>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="padding: 10px 20px 28px; display: flex; flex-direction: column; gap: 8px">
+    <span style="text-align: center; font-size: 12px; font-weight: 600; color: {{t.text2}}">{{terms}}</span>
+    <a href="PurchaseResult.dc.html" style="display: flex; align-items: center; justify-content: center; height: 56px; border-radius: 16px; background: {{t.accent}}; color: {{t.accentText}}; font-size: 17px; font-weight: 800; text-decoration: none">{{cta}}</a>
+    <div style="display: flex; justify-content: center; gap: 22px; font-size: 12px; font-weight: 600">
+      <a href="#" style="text-decoration: none; color: {{t.text3}}">Restore</a><a href="#" style="text-decoration: none; color: {{t.text3}}">Terms</a><a href="#" style="text-decoration: none; color: {{t.text3}}">Privacy</a>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme": {"editor": "enum", "options": ["light", "dark"], "default": "light"}, "goal": {"editor": "enum", "options": ["ringtone", "mp3", "convert"], "default": "ringtone"}, "eligible": {"editor": "boolean", "default": true}, "$preview": {"width": 390, "height": 844}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { plan: 0 }; }
+  renderVals() {
+    const T = {
+      light: { name:'light', bg: '#F5F4FA', surface: '#FFFFFF', surface2: '#EEECF6', border: '#E5E2F0', divider: '#EFEDF5', text: '#15132B', text2: '#5C5875', text3: '#6B6784', accent: '#5B3FE6', accentText: '#FFFFFF', accentSoft: '#EEEAFF', accentOnSoft: '#3F25C9', link: '#5B3FE6', success: '#0F7350', successSoft: '#E4F4EC', warn: '#9A5A12', warnSoft: '#FDF0DF', danger: '#C2331F', dangerSoft: '#FDECEA', hero: 'linear-gradient(135deg, #3F25C9 0%, #5B3FE6 55%, #7B4DFF 100%)', heroText: '#FFFFFF', tab: 'rgba(255,255,255,0.94)', toast: '#1C1A2E', shadow: '0 1px 2px rgba(21,19,43,0.05), 0 8px 24px rgba(21,19,43,0.06)', scrim: 'rgba(16,12,40,0.52)', gold: '#E0A21B', proBadgeBg: '#15132B', proBadgeText: '#FFD36B' },
+      dark: { name:'dark', bg: '#0E0D16', surface: '#181626', surface2: '#221F33', border: '#2C2942', divider: '#25223A', text: '#F3F1FF', text2: '#ABA7C6', text3: '#8C88A8', accent: '#6F4EF2', accentText: '#FFFFFF', accentSoft: 'rgba(132,102,255,0.18)', accentOnSoft: '#C4B5FF', link: '#B3A1FF', success: '#3CCB8C', successSoft: 'rgba(60,203,140,0.14)', warn: '#F2B25C', warnSoft: 'rgba(242,178,92,0.14)', danger: '#FF7A68', dangerSoft: 'rgba(255,122,104,0.14)', hero: 'linear-gradient(135deg, #3A22BD 0%, #5537E0 55%, #7A4FFF 100%)', heroText: '#FFFFFF', tab: 'rgba(24,22,38,0.94)', toast: '#2E2A48', shadow: '0 1px 2px rgba(0,0,0,0.3)', scrim: 'rgba(0,0,0,0.64)', gold: '#E0A21B', proBadgeBg: '#F3F1FF', proBadgeText: '#3F25C9' }
+    };
+    const t = T[this.props.theme === 'dark' ? 'dark' : 'light'];
+    const clean = !!this.props.clean && this.props.clean !== 'false';
+
+    const g = this.props.goal ?? 'ringtone';
+    const head = { ringtone: ['Unlimited ringtones, alarms &amp; text tones', 'Unlimited ringtones'], mp3: ['Unlimited MP3s from all your videos', 'Unlimited conversions'], convert: ['Convert every file, every format', 'Unlimited conversions'] }[g];
+    const el = this.props.eligible !== false && this.props.eligible !== 'false';
+    const sel = this.state.plan;
+    const rows = [
+      el ? ['Yearly', '3 days free, then $29.99 / year', '$0.58 / wk', 'SAVE 88%', 'Free for 3 days, then $29.99 / year. Cancel anytime.', 'Start my free trial'] : ['Yearly', 'Billed every year', '$0.58 / wk', 'SAVE 88%', '$29.99 / year. Cancel anytime.', 'Continue'],
+      ['Weekly', 'Billed every week', '$4.99 / wk', '', '$4.99 / week. Cancel anytime.', 'Continue'],
+      ['Lifetime', 'Pay once, yours forever', '$39.99', '', '$39.99 one-time purchase. No subscription.', 'Buy lifetime']
+    ];
+    const plans = rows.map((r, i) => ({ name: r[0], sub: r[1], price: r[2], badge: r[3], aria: i === sel ? 'true' : 'false', border: i === sel ? '2px solid ' + t.accent : '1px solid ' + t.border, ring: i === sel ? '7px solid ' + t.accent : '2px solid ' + t.border, pick: () => this.setState({ plan: i }) }));
+    return { t,  headline: head[0].replace('&amp;', '&'), b1: head[1], plans, terms: rows[sel][4], cta: rows[sel][5], showTimeline: sel === 0 && el };
+  }
+}
+</script>
+</body>
+</html>

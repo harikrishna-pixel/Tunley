@@ -1,0 +1,3 @@
+# Publish at https://marberx.com/app-ads.txt (the developer website on the App Store listing).
+# TODO(question #18): replace pub-XXXXXXXXXXXXXXXX with the AdMob publisher ID; add one line per mediated network.
+google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0

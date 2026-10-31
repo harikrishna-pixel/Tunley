@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Daily limit reached</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: {{t.bg}}; font-family: 'Plus Jakarta Sans', Inter, system-ui, sans-serif; color: {{t.text}}; display: flex; flex-direction: column; overflow: hidden; position: relative">
+  <dc-import name="Home" theme="{{t.name}}" hint-size="390px,844px"></dc-import>
+  <div style="position: absolute; left: 0; top: 0; width: 390px; height: 844px; background: {{t.scrim}}; backdrop-filter: blur(10px) saturate(0.9); -webkit-backdrop-filter: blur(10px) saturate(0.9); display: flex; align-items: center; justify-content: center; padding: 0 24px; box-sizing: border-box">
+    <div role="dialog" aria-label="Daily limit reached" style="width: 100%; background: {{t.surface}}; border-radius: 26px; padding: 24px 22px 14px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px">
+      <div style="display: flex; gap: 6px">
+        <span style="flex: 1; height: 8px; border-radius: 4px; background: {{t.accent}}"></span><span style="flex: 1; height: 8px; border-radius: 4px; background: {{t.accent}}"></span><span style="flex: 1; height: 8px; border-radius: 4px; background: {{t.accent}}"></span>
+      </div>
+      <span style="font-size: 12px; font-weight: 700; color: {{t.text2}}">3 of 3 free conversions used today</span>
+      <h2 style="margin: 0; font-size: 23px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.2">You're on a roll. Keep going with Pro.</h2>
+      <p style="margin: 0; font-size: 14px; line-height: 1.5; color: {{t.text2}}">Unlimited conversions and ringtones, or come back when your free uses reset.</p>
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-radius: 14px; background: {{t.surface2}}">
+        <span style="font-size: 13px; font-weight: 700; color: {{t.text2}}">Free uses reset in</span>
+        <span style="font-size: 18px; font-weight: 800; font-variant-numeric: tabular-nums">08:42:10</span>
+      </div>
+      <a href="Paywall.dc.html" style="display: flex; align-items: center; justify-content: center; height: 54px; border-radius: 16px; background: {{t.accent}}; color: {{t.accentText}}; font-size: 16px; font-weight: 800; text-decoration: none">Get unlimited</a>
+      <a href="AdState.dc.html" style="display: flex; align-items: center; justify-content: center; gap: 8px; height: 50px; border-radius: 16px; border: 1px solid {{t.border}}; background: {{t.surface}}; color: {{t.text}}; font-size: 15px; font-weight: 700; text-decoration: none"><svg width="16" height="16" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg>Watch a short ad for 1 more</a>
+      <a href="Home.dc.html" style="display: flex; align-items: center; justify-content: center; height: 36px; font-size: 15px; font-weight: 700; color: {{t.text2}}; text-decoration: none">Come back tomorrow</a>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme": {"editor": "enum", "options": ["light", "dark"], "default": "light"}, "$preview": {"width": 390, "height": 844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const T = {
+      light: { name:'light', bg: '#F5F4FA', surface: '#FFFFFF', surface2: '#EEECF6', border: '#E5E2F0', divider: '#EFEDF5', text: '#15132B', text2: '#5C5875', text3: '#6B6784', accent: '#5B3FE6', accentText: '#FFFFFF', accentSoft: '#EEEAFF', accentOnSoft: '#3F25C9', link: '#5B3FE6', success: '#0F7350', successSoft: '#E4F4EC', warn: '#9A5A12', warnSoft: '#FDF0DF', danger: '#C2331F', dangerSoft: '#FDECEA', hero: 'linear-gradient(135deg, #3F25C9 0%, #5B3FE6 55%, #7B4DFF 100%)', heroText: '#FFFFFF', tab: 'rgba(255,255,255,0.94)', toast: '#1C1A2E', shadow: '0 1px 2px rgba(21,19,43,0.05), 0 8px 24px rgba(21,19,43,0.06)', scrim: 'rgba(16,12,40,0.52)', gold: '#E0A21B', proBadgeBg: '#15132B', proBadgeText: '#FFD36B' },
+      dark: { name:'dark', bg: '#0E0D16', surface: '#181626', surface2: '#221F33', border: '#2C2942', divider: '#25223A', text: '#F3F1FF', text2: '#ABA7C6', text3: '#8C88A8', accent: '#6F4EF2', accentText: '#FFFFFF', accentSoft: 'rgba(132,102,255,0.18)', accentOnSoft: '#C4B5FF', link: '#B3A1FF', success: '#3CCB8C', successSoft: 'rgba(60,203,140,0.14)', warn: '#F2B25C', warnSoft: 'rgba(242,178,92,0.14)', danger: '#FF7A68', dangerSoft: 'rgba(255,122,104,0.14)', hero: 'linear-gradient(135deg, #3A22BD 0%, #5537E0 55%, #7A4FFF 100%)', heroText: '#FFFFFF', tab: 'rgba(24,22,38,0.94)', toast: '#2E2A48', shadow: '0 1px 2px rgba(0,0,0,0.3)', scrim: 'rgba(0,0,0,0.64)', gold: '#E0A21B', proBadgeBg: '#F3F1FF', proBadgeText: '#3F25C9' }
+    };
+    const t = T[this.props.theme === 'dark' ? 'dark' : 'light'];
+    const clean = !!this.props.clean && this.props.clean !== 'false';
+
+    return { t, };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+framework module vorbis {
+  umbrella header "vorbis.h"
+  export *
+}

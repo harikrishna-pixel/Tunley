@@ -1,0 +1,62 @@
+---
+description: Project rules for Tunely – MP3 & Ringtone Maker (Flutter UI + native iOS audio engine)
+globs: ["**/*.dart", "**/*.swift", "**/*.kt"]
+alwaysApply: true
+---
+
+# Tunely: project rules
+
+You are building **Tunely**, a video-to-MP3 / audio converter / ringtone maker. **Flutter** for UI and logic, **iOS first**, Android later from the same codebase. Audio decoding/encoding is **native** (Swift now, Kotlin later) in the in-repo plugin `packages/tunely_engine`. Specs live in `/docs/handoff/`. Read the relevant spec before writing code for a feature.
+
+## Sources of truth
+- Behaviour & rules: `docs/handoff/01_Product_Requirements.md`, `05_Business_Rules.md`
+- Screens: `docs/handoff/02_Screens_and_States.md` + PNGs in `Design/Screens_PNG/Light/`, `/Dark/`, `/States/`. Match them closely in BOTH themes
+- Exact styles: inline styles in `Design/HTML_Source/*.dc.html` (reference only, do NOT port HTML/JS)
+- Tokens: `design-tokens.json` → `lib/core/design_system/` (`AppColors` ThemeExtension, `AppText`, spacing/radius). Never hard-code colours or font sizes in widgets
+- Architecture: `06_Technical_Architecture.md` · Purchases: `07` · **Analytics: `08`**
+
+## Tech
+- Flutter 3.24+, Dart 3, null safety, iOS 16+ (iPhone, portrait)
+- Riverpod, go_router, drift, Pigeon, just_audio, share_plus, file_picker, RevenueCat `purchases_flutter`, mixpanel_flutter (behind our Analytics service), firebase_crashlytics, flutter_local_notifications, in_app_review, phosphor_flutter
+- Ask before adding any other package. **Do NOT use FFmpeg-based packages or `photo_manager`.** Ads only through `AdsService` (AdMob `google_mobile_ads` or the LevelPlay plugin).
+
+## Architecture rules
+- All business rules (pre-flight, free limit, size estimates, paywall triggers & caps, personalisation, rating, ringtone rules) are **pure Dart in `lib/core/rules/`** with unit tests. Native code never contains business rules.
+- Native API defined once in `packages/tunely_engine/pigeons/engine.dart`. Swift implements it; Kotlin later implements the same API.
+- MP3 = LAME (dynamic xcframework), OGG = libvorbis, AAC/M4A/M4R/WAV/FLAC = Apple frameworks. No AIFF output or custom bitrate in V1.0. **LAME needs written legal sign-off before submission.**
+- Videos are picked with **PHPicker** through the plugin. Never request Photos library permission.
+- **Analytics only through `Analytics` (`lib/core/analytics/`)**. Event names and properties exactly as in `08`; constants in `events.dart`. Never call the Mixpanel SDK from features.
+
+## Design rules (Direction A · Refined Premium, violet)
+- Light AND dark, `ThemeMode.system`; widgets read `context.colors`.
+- Plus Jakarta Sans (bundled), Phosphor icons only, no emoji, no 3D art.
+- One accent colour; `hero` gradient only where `04` allows it. One primary button per screen.
+- Dialogs/sheets: `scrim` + `BackdropFilter` blur σ 10.
+- PRO badges, Pro chip, free counter and P4 card are visible to free users only.
+
+## Hard rules
+- **Smooth screen transitions everywhere:** every route uses `AppTransitions` (`lib/app/transitions.dart`) per `04_Design_System.md` › Screen transitions. iOS swipe-back on every pushed screen, cross-fade between tabs, spring sheets, no jank (no frame over 16 ms / 8 ms on ProMotion), heavy work only after the transition ends, Reduce Motion respected.
+- NEVER modify or delete the user's original files. NEVER upload any file or audio anywhere.
+- No file names, paths or personal data in analytics or logs.
+- Free limit: 3 successful conversions per local day; failed/cancelled/interrupted never count; the counter on screen always matches the rule.
+- Trial eligibility is checked before EVERY paywall/sheet/card; ineligible users never see "free"/"trial" wording (states 10d, 11b, 13b).
+- Background copy per iOS version (05 §9): never promise a background job finishes on iOS 16–25.
+- Delete removes the library copy only; never delete files in the user's Tunely folder or Photos.
+- Paywall: close X visible immediately, Yearly pre-selected, terms line + CTA change per plan, prices ONLY from the store (compute per-week and SAVE %). Intended US prices: weekly $4.99, yearly $29.99 (3-day trial), lifetime $39.99, exit $14.99 first year, win-back $17.99 first year.
+- Exit offer once ever with a real persisted timer. Max 1 unrequested paywall per session. Never a paywall during conversion or after an error.
+- Trial reminder notification 24 h before the trial ends (promise in onboarding). In-app fallback if notifications are denied.
+- Save to Files copies into the bookmarked Tunely folder (picked on first save). Don't claim files survive deletion for the app's own folder.
+- Ringtones ≤ 30 s, M4R AAC 128 kbps; guide uses the iOS 26 share sheet "Use as Ringtone", GarageBand guide for iOS ≤ 18.
+- Toasts are information only; decisions get screens/sheets.
+- Ads (free users only) follow `05` §12 exactly: our notice 42 first, ad only after Continue, never mid-task/at launch/after errors/over our UI, none for Pro. Cross-promo follows §13 (capped, dismissible, never a pop-up). No login, no referral in V1.0.
+- All numbers from `app_config.json`; all strings in ARB (`lib/l10n/app_en.arb`).
+- Accessibility: 200% text without clipping, Semantics labels on icon buttons, 44 pt targets, adjustable waveform handles.
+
+## Working style
+- Build one phase at a time (`docs/handoff/Cursor/CURSOR_BUILD_PROMPTS.md`). Don't start the next phase until the current one runs on a real iPhone and its items in `09_QA_Acceptance_Checklist.md` pass.
+- Ambiguity → `11_Open_Questions.md`; if unanswered, use the default and add `// TODO(question #n)`.
+- Unit tests for everything in `lib/core/rules/`, entitlement logic and the Analytics event mapping.
+- Keep Swift small, documented, and limited to the Pigeon API surface.
+
+## Account and referral
+- Login is optional and only for invite rewards (`12`). Never gate converting, buying or restoring behind an account. Account deletion must work in-app.

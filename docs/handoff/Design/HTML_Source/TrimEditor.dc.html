@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Trim and fade</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:inherit}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: {{t.bg}}; font-family: 'Plus Jakarta Sans', Inter, system-ui, sans-serif; color: {{t.text}}; display: flex; flex-direction: column; overflow: hidden; position: relative">
+  <div style="display: flex; align-items: center; justify-content: space-between; padding: 54px 8px 4px">
+    <a href="Convert.dc.html" aria-label="Back" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: {{t.text}}"><svg width="22" height="22" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M168.49,199.51a12,12,0,0,1-17,17l-80-80a12,12,0,0,1,0-17l80-80a12,12,0,0,1,17,17L97,128Z"/></svg></a>
+    <span style="font-size: 17px; font-weight: 800">Trim &amp; fade</span>
+    <a href="Convert.dc.html" style="height: 44px; padding: 0 10px; display: flex; align-items: center; font-size: 16px; font-weight: 800; color: {{t.link}}; text-decoration: none">Done</a>
+  </div>
+  <div style="flex: 1; display: flex; flex-direction: column; gap: 18px; padding: 10px 20px 0">
+    <div style="display: flex; justify-content: space-between; align-items: baseline"><span style="font-size: 30px; font-weight: 800; letter-spacing: -0.03em; font-variant-numeric: tabular-nums">0:12.40</span><span style="font-size: 13px; font-weight: 700; color: {{t.text2}}">Selected 0:08 – 0:38 · 30 s</span></div>
+    <div style="position: relative; height: 150px; border-radius: 18px; background: {{t.surface}}; border: 1px solid {{t.border}}; display: flex; align-items: center; gap: 2px; padding: 0 10px; overflow: hidden">
+      <span style="position: absolute; left: 19%; width: 71%; top: 0; bottom: 0; background: {{t.accentSoft}}"></span>
+      <span style="position: absolute; left: 19%; top: 0; bottom: 0; width: 4px; margin-left: -2px; background: {{t.accent}}"></span><span style="position: absolute; left: 19%; top: 50%; width: 18px; height: 40px; margin: -20px 0 0 -9px; border-radius: 9px; background: {{t.accent}}"></span>
+      <span style="position: absolute; left: 90%; top: 0; bottom: 0; width: 4px; margin-left: -2px; background: {{t.accent}}"></span><span style="position: absolute; left: 90%; top: 50%; width: 18px; height: 40px; margin: -20px 0 0 -9px; border-radius: 9px; background: {{t.accent}}"></span>
+      <span style="position: absolute; left: 30%; top: 0; bottom: 0; width: 2px; background: {{t.text}}"></span>
+      <sc-for list="{{wave}}" as="w" hint-placeholder-count="56"><span style="position: relative; flex: 1; border-radius: 2px; height: {{w.h}}; background: {{w.c}}"></span></sc-for>
+    </div>
+    <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; color: {{t.text3}}"><span>0:00</span><span>0:14</span><span>0:28</span><span>0:42</span></div>
+    <div style="display: flex; justify-content: center; align-items: center; gap: 18px">
+      <button type="button" aria-label="Back 1 second" style="height: 44px; padding: 0 14px; border-radius: 22px; border: 1px solid {{t.border}}; background: {{t.surface}}; font-family: inherit; font-size: 13px; font-weight: 800; color: {{t.text}}">−1 s</button>
+      <button type="button" aria-label="Play" style="width: 64px; height: 64px; border-radius: 32px; border: 0; background: {{t.accent}}; color: #FFFFFF; display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></svg></button>
+      <button type="button" aria-label="Forward 1 second" style="height: 44px; padding: 0 14px; border-radius: 22px; border: 1px solid {{t.border}}; background: {{t.surface}}; font-family: inherit; font-size: 13px; font-weight: 800; color: {{t.text}}">+1 s</button>
+    </div>
+    <div style="display: flex; flex-direction: column; border-radius: 18px; background: {{t.surface}}; border: 1px solid {{t.border}}">
+      <sc-for list="{{rows}}" as="r" hint-placeholder-count="3">
+        <div style="display: flex; align-items: center; justify-content: space-between; height: 52px; padding: 0 16px; border-bottom: {{r.line}}">
+          <span style="display: flex; flex-direction: column; gap: 1px"><span style="font-size: 15px; font-weight: 700">{{r.label}}</span><span style="font-size: 12px; font-weight: 600; color: {{t.text3}}">{{r.sub}}</span></span>
+          <button type="button" role="switch" aria-checked="{{r.aria}}" onClick="{{r.toggle}}" aria-label="{{r.label}}" style="width: 46px; height: 28px; border-radius: 14px; border: 0; padding: 0; background: {{r.track}}; position: relative"><span style="position: absolute; top: 2px; left: {{r.knob}}; width: 24px; height: 24px; border-radius: 12px; background: #FFFFFF; box-shadow: 0 1px 3px rgba(0,0,0,0.25)"></span></button>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme": {"editor": "enum", "options": ["light", "dark"], "default": "light"}, "$preview": {"width": 390, "height": 844}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { fi: true, fo: false }; }
+  renderVals() {
+    const T = {
+      light: { name:'light', bg: '#F5F4FA', surface: '#FFFFFF', surface2: '#EEECF6', border: '#E5E2F0', divider: '#EFEDF5', text: '#15132B', text2: '#5C5875', text3: '#6B6784', accent: '#5B3FE6', accentText: '#FFFFFF', accentSoft: '#EEEAFF', accentOnSoft: '#3F25C9', link: '#5B3FE6', success: '#0F7350', successSoft: '#E4F4EC', warn: '#9A5A12', warnSoft: '#FDF0DF', danger: '#C2331F', dangerSoft: '#FDECEA', hero: 'linear-gradient(135deg, #3F25C9 0%, #5B3FE6 55%, #7B4DFF 100%)', heroText: '#FFFFFF', tab: 'rgba(255,255,255,0.94)', toast: '#1C1A2E', shadow: '0 1px 2px rgba(21,19,43,0.05), 0 8px 24px rgba(21,19,43,0.06)', scrim: 'rgba(16,12,40,0.52)', gold: '#E0A21B', proBadgeBg: '#15132B', proBadgeText: '#FFD36B' },
+      dark: { name:'dark', bg: '#0E0D16', surface: '#181626', surface2: '#221F33', border: '#2C2942', divider: '#25223A', text: '#F3F1FF', text2: '#ABA7C6', text3: '#8C88A8', accent: '#6F4EF2', accentText: '#FFFFFF', accentSoft: 'rgba(132,102,255,0.18)', accentOnSoft: '#C4B5FF', link: '#B3A1FF', success: '#3CCB8C', successSoft: 'rgba(60,203,140,0.14)', warn: '#F2B25C', warnSoft: 'rgba(242,178,92,0.14)', danger: '#FF7A68', dangerSoft: 'rgba(255,122,104,0.14)', hero: 'linear-gradient(135deg, #3A22BD 0%, #5537E0 55%, #7A4FFF 100%)', heroText: '#FFFFFF', tab: 'rgba(24,22,38,0.94)', toast: '#2E2A48', shadow: '0 1px 2px rgba(0,0,0,0.3)', scrim: 'rgba(0,0,0,0.64)', gold: '#E0A21B', proBadgeBg: '#F3F1FF', proBadgeText: '#3F25C9' }
+    };
+    const t = T[this.props.theme === 'dark' ? 'dark' : 'light'];
+    const clean = !!this.props.clean && this.props.clean !== 'false';
+
+    const WH = [8, 14, 22, 12, 30, 20, 36, 26, 14, 40, 28, 18, 34, 46, 24, 16, 38, 50, 32, 20, 44, 36, 22, 14, 40, 28, 18, 48, 34, 24, 16, 42, 30, 20, 12, 36, 26, 16, 10, 24, 14, 8, 18, 10, 22, 30, 16, 12, 26, 18, 10, 14, 20, 12, 8, 6];
+    const wave = WH.map((h, i) => ({ h: (h * 1.8) + 'px', c: (i >= 10 && i <= 50) ? t.accent : t.text3 }));
+    const sw = (on) => ({ aria: on ? 'true' : 'false', track: on ? t.accent : t.border, knob: on ? '20px' : '2px' });
+    const rows = [
+      { label: 'Fade in', sub: '2 seconds', line: '1px solid ' + t.divider, ...sw(this.state.fi), toggle: () => this.setState({ fi: !this.state.fi }) },
+      { label: 'Fade out', sub: '2 seconds', line: '1px solid ' + t.divider, ...sw(this.state.fo), toggle: () => this.setState({ fo: !this.state.fo }) },
+      { label: 'Volume boost', sub: clean ? 'Up to +6 dB' : 'Pro · up to +6 dB', line: '0', ...sw(false), toggle: () => {} }
+    ];
+    return { t,  wave, rows };
+  }
+}
+</script>
+</body>
+</html>

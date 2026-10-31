@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Invite friends — signed out</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:var(--accent)}
+</style>
+</helmet>
+<div style="--accent: {{t.accent}}; width: 390px; height: 844px; box-sizing: border-box; background: {{t.bg}}; font-family: 'Plus Jakarta Sans', Inter, system-ui, sans-serif; color: {{t.text}}; display: flex; flex-direction: column; overflow: hidden">
+  <div style="display: flex; justify-content: flex-end; padding: 56px 12px 0">
+    <a href="AppSettings.dc.html" aria-label="Close" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; color: {{t.text}}">
+      <svg width="22" height="22" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M208.49,191.51a12,12,0,0,1-17,17L128,145,64.49,208.49a12,12,0,0,1-17-17L111,128,47.51,64.49a12,12,0,0,1,17-17L128,111l63.51-63.52a12,12,0,0,1,17,17L145,128Z"></path></svg>
+    </a>
+  </div>
+
+  <div style="flex: 1; display: flex; flex-direction: column; gap: 16px; padding: 0 24px">
+    <div style="position: relative; height: 160px; border-radius: 24px; overflow: hidden">
+      <img src="/_blob/736e6816a2541a674c460b93434c3153" alt="Friends together at sunset" style="width: 100%; height: 100%; object-fit: cover; display: block">
+      <span style="position: absolute; left: 14px; bottom: 14px; padding: 6px 12px; border-radius: 12px; background: {{t.surface}}; font-size: 13px; font-weight: 800; color: {{t.text}}">Give 1 week · Get 1 week</span>
+    </div>
+    <h1 style="margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15">Invite friends, get Pro free</h1>
+
+    <ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+      <li style="display: flex; align-items: center; gap: 12px; font-size: 15px"><span style="width: 26px; height: 26px; border-radius: 13px; background: {{t.accentSoft}}; color: {{t.accent}}; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex: none">1</span>Create a free account</li>
+      <li style="display: flex; align-items: center; gap: 12px; font-size: 15px"><span style="width: 26px; height: 26px; border-radius: 13px; background: {{t.accentSoft}}; color: {{t.accent}}; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex: none">2</span>Share your personal invite link</li>
+      <li style="display: flex; align-items: center; gap: 12px; font-size: 15px; line-height: 1.35"><span style="width: 26px; height: 26px; border-radius: 13px; background: {{t.accentSoft}}; color: {{t.accent}}; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex: none">3</span>You both get 1 week of Pro when your friend makes their first file</li>
+    </ol>
+
+    <div style="display: flex; align-items: center; gap: 10px; padding: 0 16px; height: 52px; border-radius: 16px; background: {{t.surface}}; border: 1px dashed #C9CFD8">
+      <svg width="18" height="18" viewBox="0 0 256 256" fill="{{t.text3}}" aria-hidden="true"><path d="M208,80H176V56a48,48,0,0,0-96,0V80H48A16,16,0,0,0,32,96V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V96A16,16,0,0,0,208,80ZM96,56a32,32,0,0,1,64,0V80H96ZM208,208H48V96H208V208Z"></path></svg>
+      <span style="flex: 1; font-size: 15px; font-weight: 600; color: {{t.text3}}; letter-spacing: 0.04em">tunely.app/i/••••••</span>
+      <span style="font-size: 12px; font-weight: 600; color: {{t.text2}}">Your link</span>
+    </div>
+
+    <div style="display: flex; gap: 8px; font-size: 13px; line-height: 1.4; color: {{t.text2}}">
+      <span style="display: flex; flex: none; margin-top: 1px"><svg width="16" height="16" viewBox="0 0 256 256" fill="{{t.success}}" aria-hidden="true"><path d="M208,40H48A16,16,0,0,0,32,56v56c0,52.72,25.52,84.67,46.93,102.19,23.06,18.86,46,25.26,47,25.53a8,8,0,0,0,4.2,0c1-.27,23.91-6.67,47-25.53C198.48,196.67,224,164.72,224,112V56A16,16,0,0,0,208,40Zm0,72c0,37.07-13.66,67.16-40.6,89.42A129.3,129.3,0,0,1,128,223.62a128.25,128.25,0,0,1-38.92-21.81C61.82,179.51,48,149.3,48,112l0-56,160,0ZM82.34,141.66a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35a8,8,0,0,1,11.32,11.32l-56,56a8,8,0,0,1-11.32,0Z"></path></svg></span>
+      Your account only keeps your invite link and free weeks safe if you change phones. Your files never leave your iPhone.
+    </div>
+  </div>
+
+  <div style="padding: 12px 24px 30px; display: flex; flex-direction: column; gap: 6px">
+    <a href="SignUp.dc.html" style="display: flex; align-items: center; justify-content: center; height: 56px; border-radius: 16px; background: {{t.accent}}; color: #FFFFFF; font-size: 17px; font-weight: 700; text-decoration: none">Create free account</a>
+    <a href="SignIn.dc.html" style="display: flex; align-items: center; justify-content: center; height: 44px; font-size: 15px; font-weight: 600; text-decoration: none">I already have an account</a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["light","dark"],"default":"light"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const T = {
+      light: { name:'light', bg: '#F5F4FA', surface: '#FFFFFF', surface2: '#EEECF6', border: '#E5E2F0', divider: '#EFEDF5', text: '#15132B', text2: '#5C5875', text3: '#6B6784', accent: '#5B3FE6', accentText: '#FFFFFF', accentSoft: '#EEEAFF', accentOnSoft: '#3F25C9', link: '#5B3FE6', success: '#0F7350', successSoft: '#E4F4EC', warn: '#9A5A12', warnSoft: '#FDF0DF', danger: '#C2331F', dangerSoft: '#FDECEA', hero: 'linear-gradient(135deg, #3F25C9 0%, #5B3FE6 55%, #7B4DFF 100%)', heroText: '#FFFFFF', tab: 'rgba(255,255,255,0.94)', toast: '#1C1A2E', shadow: '0 1px 2px rgba(21,19,43,0.05), 0 8px 24px rgba(21,19,43,0.06)', scrim: 'rgba(16,12,40,0.52)', gold: '#E0A21B', proBadgeBg: '#15132B', proBadgeText: '#FFD36B' },
+      dark: { name:'dark', bg: '#0E0D16', surface: '#181626', surface2: '#221F33', border: '#2C2942', divider: '#25223A', text: '#F3F1FF', text2: '#ABA7C6', text3: '#8C88A8', accent: '#6F4EF2', accentText: '#FFFFFF', accentSoft: 'rgba(132,102,255,0.18)', accentOnSoft: '#C4B5FF', link: '#B3A1FF', success: '#3CCB8C', successSoft: 'rgba(60,203,140,0.14)', warn: '#F2B25C', warnSoft: 'rgba(242,178,92,0.14)', danger: '#FF7A68', dangerSoft: 'rgba(255,122,104,0.14)', hero: 'linear-gradient(135deg, #3A22BD 0%, #5537E0 55%, #7A4FFF 100%)', heroText: '#FFFFFF', tab: 'rgba(24,22,38,0.94)', toast: '#2E2A48', shadow: '0 1px 2px rgba(0,0,0,0.3)', scrim: 'rgba(0,0,0,0.64)', gold: '#E0A21B', proBadgeBg: '#F3F1FF', proBadgeText: '#3F25C9' }
+    };
+    const t = T[this.props.theme === 'dark' ? 'dark' : 'light'];
+
+    return { t };
+  }
+}
+</script>
+</body>
+</html>

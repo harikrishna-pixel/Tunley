@@ -1,0 +1,12 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["TEAMID.com.marberx.audioconverter"],
+        "components": [
+          { "/": "/i/*", "comment": "Invite links open Redeem (53)" }
+        ]
+      }
+    ]
+  }
+}

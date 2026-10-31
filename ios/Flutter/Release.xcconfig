@@ -1,0 +1,6 @@
+#include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"
+#include "Generated.xcconfig"
+
+// Google's public test App ID.
+// TODO(question #18): production AdMob App ID before submission.
+GAD_APPLICATION_ID = ca-app-pub-3940256099942544~1458002511
