@@ -1,7 +1,17 @@
 import 'dart:async';
 
-/// Plans from `07`. Product IDs live in App Store Connect / RevenueCat.
+/// Plans from `07`. Product IDs live in App Store Connect.
 enum PlanKind { yearly, weekly, lifetime, exit, winBack }
+
+/// App Store Connect product IDs for the Flutter paywall.
+abstract final class ProductIds {
+  static const weekly = 'com.marberx.audioconverter.pro.weekly';
+  static const yearly = 'com.marberx.audioconverter.pro.yearly';
+  static const lifetime = 'com.marberx.audioconverter.pro.lifetime';
+  static const exit = 'com.marberx.audioconverter.pro.yearly.exit';
+
+  static const all = {weekly, yearly, lifetime, exit};
+}
 
 /// One purchasable plan with the store's own localized prices.
 class StorePlan {
@@ -77,7 +87,7 @@ enum PurchaseOutcome {
 
 enum RestoreOutcome { restored, none, offline, failed }
 
-/// The app's only door to purchases. RevenueCat in production.
+/// The app's only door to purchases. StoreKit in production.
 abstract class PurchasesService {
   Entitlement get current;
   Stream<Entitlement> get changes;
@@ -87,15 +97,14 @@ abstract class PurchasesService {
   Future<PurchaseOutcome> purchase(StorePlan plan);
   Future<RestoreOutcome> restore();
 
-  /// RevenueCat's (anonymous) `appUserID`; Mixpanel `distinct_id` (`08`).
+  /// Optional analytics id. StoreKit has none; Pro stays with the Apple ID.
   Future<String?> appUserId();
 
-  /// Links invite rewards to the account (RevenueCat `logIn`). Never called
-  /// on sign-out: Pro stays tied to the Apple ID (`12` §1.5).
+  /// Optional account link. StoreKit ignores this; Pro stays with the Apple ID.
   Future<void> logIn(String accountId);
 }
 
-/// Release build without a RevenueCat key: nothing to sell, never fake prices.
+/// Nothing to sell (tests, or the store is unreachable).
 class UnavailablePurchasesService implements PurchasesService {
   @override
   Entitlement get current => Entitlement.free;
@@ -123,8 +132,7 @@ class UnavailablePurchasesService implements PurchasesService {
   Future<void> logIn(String accountId) async {}
 }
 
-/// Debug-only stand-in when no RevenueCat key is set, so paywalls can be
-/// reviewed in the simulator. Release builds never use it.
+/// Widget-test stand-in. The running app uses StoreKit (`StoreKitPurchases`).
 class DemoPurchasesService implements PurchasesService {
   DemoPurchasesService({this.trialEligible = true});
 
@@ -156,7 +164,7 @@ class DemoPurchasesService implements PurchasesService {
       OfferingId.main => [
         StorePlan(
           kind: PlanKind.yearly,
-          productId: 'tunely.pro.yearly',
+          productId: ProductIds.yearly,
           price: 29.99,
           priceString: r'$29.99',
           currencyCode: 'USD',
@@ -165,14 +173,14 @@ class DemoPurchasesService implements PurchasesService {
         ),
         const StorePlan(
           kind: PlanKind.weekly,
-          productId: 'tunely.pro.weekly',
+          productId: ProductIds.weekly,
           price: 4.99,
           priceString: r'$4.99',
           currencyCode: 'USD',
         ),
         const StorePlan(
           kind: PlanKind.lifetime,
-          productId: 'tunely.pro.lifetime',
+          productId: ProductIds.lifetime,
           price: 39.99,
           priceString: r'$39.99',
           currencyCode: 'USD',
@@ -181,7 +189,7 @@ class DemoPurchasesService implements PurchasesService {
       OfferingId.exit => [
         StorePlan(
           kind: PlanKind.exit,
-          productId: 'tunely.pro.yearly.exit',
+          productId: ProductIds.exit,
           price: 29.99,
           priceString: r'$29.99',
           currencyCode: 'USD',
@@ -193,7 +201,7 @@ class DemoPurchasesService implements PurchasesService {
       OfferingId.winBack => const [
         StorePlan(
           kind: PlanKind.winBack,
-          productId: 'tunely.pro.yearly',
+          productId: ProductIds.yearly,
           price: 29.99,
           priceString: r'$29.99',
           currencyCode: 'USD',

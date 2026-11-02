@@ -48,7 +48,7 @@ final initialFreeLimitProvider = Provider<FreeLimitSnapshot>(
   (_) => _mustOverride('initialFreeLimit'),
 );
 
-/// Entitlement "pro" (RevenueCat). Pro hides every free-tier element.
+/// Entitlement "pro" (StoreKit). Pro hides every free-tier element.
 final isProProvider = Provider<bool>(
   (ref) => ref.watch(entitlementProvider).isPro,
 );

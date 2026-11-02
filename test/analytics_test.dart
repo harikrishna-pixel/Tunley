@@ -577,20 +577,29 @@ void main() {
       );
       expect(
         AnalyticsValues.plan(
-          const Entitlement(isPro: true, productId: 'tunely.pro.yearly.exit'),
+          const Entitlement(
+            isPro: true,
+            productId: 'com.marberx.audioconverter.pro.yearly.exit',
+          ),
         ),
         'yearly_exit',
       );
       expect(
         AnalyticsValues.plan(
-          const Entitlement(isPro: true, productId: 'tunely.pro.yearly'),
+          const Entitlement(
+            isPro: true,
+            productId: 'com.marberx.audioconverter.pro.yearly',
+          ),
           lastKind: PlanKind.winBack,
         ),
         'yearly_winback',
       );
       expect(
         AnalyticsValues.plan(
-          const Entitlement(isPro: true, productId: 'tunely.pro.lifetime'),
+          const Entitlement(
+            isPro: true,
+            productId: 'com.marberx.audioconverter.pro.lifetime',
+          ),
         ),
         'lifetime',
       );

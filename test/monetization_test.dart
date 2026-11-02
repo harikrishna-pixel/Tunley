@@ -14,6 +14,16 @@ import 'package:tunely/l10n/app_localizations.dart';
 import 'support/fakes.dart';
 
 void main() {
+  test('demo plans use the App Store product IDs', () async {
+    final main = await DemoPurchasesService().plans(OfferingId.main);
+    expect(
+      main.map((p) => p.productId),
+      containsAll([ProductIds.weekly, ProductIds.yearly, ProductIds.lifetime]),
+    );
+    final exit = await DemoPurchasesService().plans(OfferingId.exit);
+    expect(exit.single.productId, ProductIds.exit);
+  });
+
   group('paywall caps with real state', () {
     test(
       'P1 once, exit offer once ever, one unrequested per session',

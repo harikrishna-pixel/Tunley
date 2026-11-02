@@ -13,7 +13,7 @@
           "locale" : "en_US"
         }
       ],
-      "productID" : "tunely.pro.lifetime",
+      "productID" : "com.marberx.audioconverter.pro.lifetime",
       "referenceName" : "Lifetime",
       "type" : "NonConsumable"
     }
@@ -51,7 +51,7 @@
               "locale" : "en_US"
             }
           ],
-          "productID" : "tunely.pro.yearly",
+          "productID" : "com.marberx.audioconverter.pro.yearly",
           "recurringSubscriptionPeriod" : "P1Y",
           "referenceName" : "Yearly",
           "subscriptionGroupID" : "B2000001",
@@ -72,7 +72,7 @@
               "locale" : "en_US"
             }
           ],
-          "productID" : "tunely.pro.weekly",
+          "productID" : "com.marberx.audioconverter.pro.weekly",
           "recurringSubscriptionPeriod" : "P1W",
           "referenceName" : "Weekly",
           "subscriptionGroupID" : "B2000001",
@@ -99,7 +99,7 @@
               "locale" : "en_US"
             }
           ],
-          "productID" : "tunely.pro.yearly.exit",
+          "productID" : "com.marberx.audioconverter.pro.yearly.exit",
           "recurringSubscriptionPeriod" : "P1Y",
           "referenceName" : "Yearly exit offer",
           "subscriptionGroupID" : "B2000001",

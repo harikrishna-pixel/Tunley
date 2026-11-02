@@ -70,10 +70,10 @@ class MixpanelAnalytics implements Analytics {
   void reset() => _mixpanel.reset();
 }
 
-/// Console + in-memory list, shown in the Component gallery (debug builds and
-/// builds without a Mixpanel token).
+/// In-memory list for the Component gallery. Console printing is off so
+/// `flutter run` stays quiet until Mixpanel is wired later.
 class DebugAnalytics implements Analytics {
-  DebugAnalytics({this.log = kDebugMode});
+  DebugAnalytics({this.log = false});
 
   final bool log;
   final events = ValueNotifier<List<(String, Map<String, Object>)>>(const []);

@@ -21,7 +21,7 @@ import 'app/state.dart';
 import 'core/engine/audio_engine.dart';
 import 'core/entitlements/paywall_memory.dart';
 import 'core/entitlements/purchases.dart';
-import 'core/entitlements/revenuecat_purchases.dart';
+import 'core/entitlements/storekit_purchases.dart';
 import 'core/library/app_database.dart';
 import 'core/library/app_paths.dart';
 import 'core/library/preferences_store.dart';
@@ -111,13 +111,8 @@ Future<void> main() async {
   );
 }
 
-/// RevenueCat with the key from `--dart-define=REVENUECAT_IOS_KEY=...`.
-/// Without a key, debug builds use local demo plans; release builds sell nothing.
-PurchasesService _purchasesService() {
-  const key = String.fromEnvironment('REVENUECAT_IOS_KEY');
-  if (key.isNotEmpty) return RevenueCatPurchases(key);
-  return kDebugMode ? DemoPurchasesService() : UnavailablePurchasesService();
-}
+/// StoreKit products from App Store Connect (or `Tunely.storekit` in debug).
+PurchasesService _purchasesService() => StoreKitPurchases();
 
 /// LAME (LGPL) and libogg/libvorbis (BSD) on Settings › Licences.
 void _registerCodecLicences() {

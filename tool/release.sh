@@ -2,7 +2,7 @@
 # Builds the App Store / TestFlight IPA after checking every release gate that
 # can be checked from the repo (`14` › Release gates, `09` › App Store).
 #
-#   REVENUECAT_IOS_KEY=appl_… MIXPANEL_TOKEN=… \
+#   MIXPANEL_TOKEN=… \
 #   ADMOB_INTERSTITIAL_IOS=ca-app-pub-…/… ADMOB_REWARDED_IOS=ca-app-pub-…/… \
 #   LAME_SIGNOFF=yes tool/release.sh
 #
@@ -18,7 +18,6 @@ gate() { printf '  %-58s %s\n' "$1" "$2"; [[ "$2" == ok* ]] || fail=1; }
 echo "Release gates"
 [[ "${LAME_SIGNOFF:-}" == "yes" ]] && gate "LAME written legal sign-off (LAME_SIGNOFF=yes)" ok \
   || gate "LAME written legal sign-off (LAME_SIGNOFF=yes)" "MISSING"
-[[ -n "${REVENUECAT_IOS_KEY:-}" ]] && gate "RevenueCat key" ok || gate "RevenueCat key" "MISSING"
 [[ -n "${MIXPANEL_TOKEN:-}" ]] && gate "Mixpanel token (Tunely project)" ok || gate "Mixpanel token (Tunely project)" "MISSING"
 [[ -n "${ADMOB_INTERSTITIAL_IOS:-}" && -n "${ADMOB_REWARDED_IOS:-}" ]] \
   && gate "AdMob production ad units" ok || gate "AdMob production ad units" "MISSING"
@@ -55,7 +54,6 @@ fvm flutter test
 echo
 echo "Build IPA"
 fvm flutter build ipa --release \
-  --dart-define=REVENUECAT_IOS_KEY="${REVENUECAT_IOS_KEY:-}" \
   --dart-define=MIXPANEL_TOKEN="${MIXPANEL_TOKEN:-}" \
   --dart-define=ADMOB_INTERSTITIAL_IOS="${ADMOB_INTERSTITIAL_IOS:-}" \
   --dart-define=ADMOB_REWARDED_IOS="${ADMOB_REWARDED_IOS:-}" \
