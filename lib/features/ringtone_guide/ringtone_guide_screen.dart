@@ -57,7 +57,10 @@ class _RingtoneGuideScreenState extends ConsumerState<RingtoneGuideScreen> {
     if (item == null) {
       context.push(
         '/pick',
-        extra: const PickerIntent(mode: ConvertMode.ringtone),
+        extra: const PickerIntent(
+          mode: ConvertMode.ringtone,
+          videosOnly: true,
+        ),
       );
       return;
     }

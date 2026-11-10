@@ -1270,6 +1270,25 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsDebug => 'Debug';
 
   @override
+  String get debugUnlockPro => 'Unlock Pro (testing)';
+
+  @override
+  String get debugLockPro => 'Lock Pro (testing)';
+
+  @override
+  String get editExitTitle => 'Confirm Exit?';
+
+  @override
+  String get editExitBody =>
+      'Current edits will not be saved. Are you sure you want to exit?';
+
+  @override
+  String get editExitConfirm => 'Confirm Exit';
+
+  @override
+  String get editExitContinue => 'Continue Editing';
+
+  @override
   String formatKbps(String format, int kbps) {
     return '$format · $kbps kbps';
   }
@@ -2667,7 +2686,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get moreAppsIntro =>
-      'Small, honest apps from the team behind Tunely. Free to try.';
+      'Other Marberx apps. Tap Get to open the App Store page.';
 
   @override
   String get moreAppsPicked => 'Picked for you';
@@ -2677,10 +2696,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get moreAppsFooter =>
-      'Opens the App Store. No tracking, no rewards for installs.';
+      'Get opens the App Store. Soon means that app’s listing isn’t linked yet. No tracking, no rewards for installs.';
 
   @override
   String get moreAppsSoon => 'Soon';
+
+  @override
+  String get adLabel => 'Ad';
 
   @override
   String moreAppsGet(String name) {
@@ -2688,7 +2710,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get settingsMoreApps => 'More apps from Marberx';
+  String get settingsMoreApps => 'More Apps';
 
   @override
   String get houseCardEyebrow => 'From the makers of Tunely';
@@ -2722,7 +2744,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hidePassword => 'Hide password';
 
   @override
-  String get inviteBadge => 'Give 1 week · Get 1 week';
+  String get inviteBadge => 'Both get free credits';
 
   @override
   String get inviteTitle => 'Invite friends, get Pro free';
@@ -2735,7 +2757,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get inviteStep3 =>
-      'You both get 1 week of Pro when your friend makes their first file';
+      'You both receive free credits when your friend makes their first file';
 
   @override
   String get inviteYourLink => 'Your link';
@@ -2805,7 +2827,30 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get signUpSubtitle =>
-      'Free. Used only for your invite link and rewards.';
+      'Create a free account to save your invite link and rewards.';
+
+  @override
+  String get aboutTitle => 'About Us';
+
+  @override
+  String get aboutTagline => 'Convert and manage your media files easily.';
+
+  @override
+  String aboutVersion(String version) {
+    return 'Version $version';
+  }
+
+  @override
+  String get aboutPrivacy => 'Privacy Policy';
+
+  @override
+  String get aboutTerms => 'Terms of Use';
+
+  @override
+  String get aboutContact => 'Contact Us';
+
+  @override
+  String get settingsAbout => 'About Us';
 
   @override
   String get fieldFirstName => 'First name';
@@ -2931,6 +2976,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get accountServerError =>
       'Something went wrong on our side. Your details are still here, try again.';
+
+  @override
+  String get accountValidationError =>
+      'Please check the highlighted fields and try again.';
 
   @override
   String get tryAgain2 => 'Try again';
@@ -3072,6 +3121,16 @@ class AppLocalizationsEn extends AppLocalizations {
       'This code isn\'t valid, or an invite was already used on this iPhone.';
 
   @override
+  String get redeemValidCode => 'Valid invite code';
+
+  @override
+  String get redeemInvalidCode => 'Invalid invite code';
+
+  @override
+  String get redeemCodeMaxLength =>
+      'Invite code can contain a maximum of 10 characters.';
+
+  @override
   String get redeemCta => 'Apply code';
 
   @override
@@ -3110,7 +3169,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsInvite => 'Invite friends';
 
   @override
-  String get settingsInviteDetail => 'Get Pro free';
+  String get settingsInviteDetail => 'Free credits';
 
   @override
   String get settingsHaveCode => 'Have an invite code?';

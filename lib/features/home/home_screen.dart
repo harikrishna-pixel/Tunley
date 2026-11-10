@@ -43,13 +43,21 @@ class HomeScreen extends ConsumerWidget {
         l10n.heroTitleRingtone,
         l10n.heroCtaRingtone,
         PhosphorIcons.bellRinging(),
-        const PickerIntent(tab: PickerTab.videos, mode: ConvertMode.ringtone),
+        const PickerIntent(
+          tab: PickerTab.videos,
+          mode: ConvertMode.ringtone,
+          videosOnly: true,
+        ),
       ),
       UserGoal.mp3FromVideos => (
         l10n.heroTitleMp3,
         l10n.heroCtaMp3,
         PhosphorIcons.filmSlate(),
-        const PickerIntent(tab: PickerTab.videos, mode: ConvertMode.audioFile),
+        const PickerIntent(
+          tab: PickerTab.videos,
+          mode: ConvertMode.audioFile,
+          videosOnly: true,
+        ),
       ),
       UserGoal.convertFiles => (
         l10n.heroTitleConvert,
@@ -70,6 +78,7 @@ class HomeScreen extends ConsumerWidget {
             const PickerIntent(
               tab: PickerTab.videos,
               mode: ConvertMode.audioFile,
+              videosOnly: true,
             ),
           );
         },
@@ -118,10 +127,19 @@ class HomeScreen extends ConsumerWidget {
       (
         PhosphorIcons.speakerHigh(),
         l10n.toolBoost,
-        false,
+        !isPro,
         () {
           select('boost');
-          openPicker(const PickerIntent(openTrim: true));
+          if (isPro) {
+            openPicker(const PickerIntent(openTrim: true, openBoost: true));
+          } else {
+            ProGateSheet.show(
+              context,
+              feature: l10n.toolBoost,
+              analyticsFeature: 'boost',
+              detail: l10n.p2DetailBoost,
+            );
+          }
         },
       ),
       (
@@ -131,7 +149,9 @@ class HomeScreen extends ConsumerWidget {
         () {
           select('batch');
           if (isPro) {
-            openPicker(const PickerIntent(tab: PickerTab.videos));
+            openPicker(
+              const PickerIntent(tab: PickerTab.videos, videosOnly: true),
+            );
           } else {
             ProGateSheet.show(
               context,
@@ -221,10 +241,12 @@ class HomeScreen extends ConsumerWidget {
           Row(
             children: [
               Expanded(child: Text(l10n.homeRecent, style: text.sectionTitle)),
-              TextLinkButton(
-                label: l10n.seeAll,
-                onPressed: () => context.go('/files'),
-              ),
+              // Hide with a single file; show once 2+ are in Recent.
+              if (recent.length >= 2)
+                TextLinkButton(
+                  label: l10n.seeAll,
+                  onPressed: () => context.go('/files'),
+                ),
             ],
           ),
           const SizedBox(height: AppSpace.s4),

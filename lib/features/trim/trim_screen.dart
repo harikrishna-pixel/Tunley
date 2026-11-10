@@ -3,6 +3,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -10,15 +11,27 @@ import '../../app/config.dart';
 import '../../app/state.dart';
 import '../../app/transitions.dart';
 import '../../core/design_system/design_system.dart';
+import '../../core/engine/audio_engine.dart';
 import '../../core/format.dart';
 import '../../core/analytics/analytics.dart';
 import '../../core/analytics/events.dart';
 import '../../l10n/app_localizations.dart';
+import '../common/edit_exit.dart';
 import '../convert/convert_screen.dart';
 import '../paywall/pro_gate.dart';
 
 class TrimScreen extends ConsumerStatefulWidget {
-  const TrimScreen({super.key});
+  const TrimScreen({
+    super.key,
+    this.asEntry = false,
+    this.focusBoost = false,
+  });
+
+  /// Opened from Trim & fade / Volume boost (skip Convert until Done).
+  final bool asEntry;
+
+  /// Volume boost tool: title + boost row emphasis.
+  final bool focusBoost;
 
   @override
   ConsumerState<TrimScreen> createState() => _TrimScreenState();
@@ -32,19 +45,31 @@ class _TrimScreenState extends ConsumerState<TrimScreen> {
   bool _playing = false;
   bool _started = false;
   double _playhead = 0;
+  ConvertDraft? _snapshot;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_started) return;
     _started = true;
-    _playhead = ref.read(draftProvider)?.start ?? 0;
+    _snapshot = ref.read(draftProvider);
+    _playhead = _snapshot?.start ?? 0;
     afterRouteTransition(context, _prepare);
   }
 
   Future<void> _prepare() async {
     final draft = ref.read(draftProvider);
     if (draft == null) return;
+    if (draft.peaks.isEmpty) {
+      try {
+        final peaks = await ref
+            .read(audioEngineProvider)
+            .waveform(draft.source.path, buckets: waveformBuckets);
+        if (mounted) ref.read(draftProvider.notifier).setPeaks(peaks);
+      } on EngineException {
+        // Waveform is preview-only.
+      }
+    }
     try {
       await _player.setFilePath(draft.source.path, preload: true);
     } catch (_) {
@@ -113,6 +138,43 @@ class _TrimScreenState extends ConsumerState<TrimScreen> {
     ref.read(draftProvider.notifier).update((d) => d.copyWith(boost: value));
   }
 
+  void _logTrimApplied() {
+    final draft = ref.read(draftProvider);
+    final config = ref.read(appConfigProvider);
+    if (draft == null) return;
+    final fade = config.fadeDefaultSeconds;
+    ref
+        .read(analyticsProvider)
+        .trimApplied(
+          lengthS: draft.seconds,
+          fadeInS: draft.fadeIn ? fade : 0,
+          fadeOutS: draft.fadeOut ? fade : 0,
+          boostDb: draft.boost ? config.volumeBoostMaxDb : 0,
+        );
+  }
+
+  void _done() {
+    _logTrimApplied();
+    if (widget.asEntry) {
+      context.pushReplacement('/convert');
+    } else {
+      Navigator.of(context).maybePop();
+    }
+  }
+
+  Future<void> _leave() async {
+    if (!await confirmDiscardEdits(context) || !mounted) return;
+    if (widget.asEntry) {
+      ref.read(draftProvider.notifier).clear();
+    } else {
+      final snapshot = _snapshot;
+      if (snapshot != null) {
+        ref.read(draftProvider.notifier).set(snapshot);
+      }
+    }
+    if (mounted) Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -128,31 +190,22 @@ class _TrimScreenState extends ConsumerState<TrimScreen> {
         ? math.min(1.0, config.ringtoneMaxSeconds / total)
         : 1.0;
 
-    return Scaffold(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) _leave();
+      },
+      child: Scaffold(
       backgroundColor: colors.bg,
       body: SafeArea(
         child: Column(
           children: [
             NavHeader(
-              title: l10n.trimFade,
+              title: widget.focusBoost ? l10n.volumeBoost : l10n.trimFade,
+              onLeading: _leave,
               trailing: TextLinkButton(
                 label: l10n.done,
-                onPressed: () {
-                  final draft = ref.read(draftProvider);
-                  final config = ref.read(appConfigProvider);
-                  if (draft != null) {
-                    final fade = config.fadeDefaultSeconds;
-                    ref
-                        .read(analyticsProvider)
-                        .trimApplied(
-                          lengthS: draft.seconds,
-                          fadeInS: draft.fadeIn ? fade : 0,
-                          fadeOutS: draft.fadeOut ? fade : 0,
-                          boostDb: draft.boost ? config.volumeBoostMaxDb : 0,
-                        );
-                  }
-                  Navigator.of(context).maybePop();
-                },
+                onPressed: _done,
               ),
             ),
             Expanded(
@@ -198,7 +251,7 @@ class _TrimScreenState extends ConsumerState<TrimScreen> {
                   const SizedBox(height: AppSpace.s16),
                   AppCard(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: AppSpace.s12,
+                      horizontal: AppSpace.s16,
                       vertical: AppSpace.s14,
                     ),
                     child: draft.peaks.isEmpty
@@ -310,6 +363,7 @@ class _TrimScreenState extends ConsumerState<TrimScreen> {
           ],
         ),
       ),
+    ),
     );
   }
 }

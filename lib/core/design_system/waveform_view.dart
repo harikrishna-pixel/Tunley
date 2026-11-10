@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
 import 'theme_context.dart';
 
+/// Half-width of a trim handle — kept clear of the view edges so handles
+/// stay fully visible at 0% / 100%.
+const _handleInset = 8.0;
+
 /// Selectable waveform. Peaks are 0..1. [start] and [end] are fractions.
 class WaveformView extends StatefulWidget {
   const WaveformView({
@@ -33,11 +37,16 @@ class WaveformView extends StatefulWidget {
 class _WaveformViewState extends State<WaveformView> {
   _DragTarget? _drag;
 
+  double _usable(double width) => (width - _handleInset * 2).clamp(1.0, width);
+
+  double _xFor(double fraction, double width) =>
+      _handleInset + fraction.clamp(0.0, 1.0) * _usable(width);
+
   void _update(double dx, double width) {
     if (widget.onChanged == null || _drag == null || width <= 0) {
       return;
     }
-    final delta = dx / width;
+    final delta = dx / _usable(width);
     var start = widget.start;
     var end = widget.end;
     switch (_drag!) {
@@ -91,6 +100,7 @@ class _WaveformViewState extends State<WaveformView> {
                     handle: colors.accent,
                     playheadColor: colors.text,
                     grip: colors.accentText,
+                    inset: _handleInset,
                   ),
                   child: const SizedBox.expand(),
                 ),
@@ -103,8 +113,8 @@ class _WaveformViewState extends State<WaveformView> {
   }
 
   _DragTarget _hit(double x, double width) {
-    final startX = widget.start * width;
-    final endX = widget.end * width;
+    final startX = _xFor(widget.start, width);
+    final endX = _xFor(widget.end, width);
     if ((x - startX).abs() < 22) {
       return _DragTarget.start;
     }
@@ -128,6 +138,7 @@ class _WaveformPainter extends CustomPainter {
     required this.handle,
     required this.playheadColor,
     required this.grip,
+    required this.inset,
   });
 
   final List<double> peaks;
@@ -139,6 +150,12 @@ class _WaveformPainter extends CustomPainter {
   final Color handle;
   final Color playheadColor;
   final Color grip;
+  final double inset;
+
+  double _usable(Size size) => (size.width - inset * 2).clamp(1.0, size.width);
+
+  double _xFor(double fraction, Size size) =>
+      inset + fraction.clamp(0.0, 1.0) * _usable(size);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -148,27 +165,28 @@ class _WaveformPainter extends CustomPainter {
     const bar = 3.0;
     const gap = 2.0;
     final count = peaks.length;
+    final usable = _usable(size);
     final total = count * bar + (count - 1) * gap;
-    final scale = total > size.width ? size.width / total : 1.0;
+    final scale = total > usable ? usable / total : 1.0;
     final barWidth = bar * scale;
     final gapWidth = gap * scale;
     final selectedPaint = Paint()..color = selected;
     final outsidePaint = Paint()..color = outside;
     for (var i = 0; i < count; i++) {
-      final center = (i * (barWidth + gapWidth) + barWidth / 2) / size.width;
+      final left = inset + i * (barWidth + gapWidth);
+      final centerFrac = ((left - inset) + barWidth / 2) / usable;
       final height = (8 + peaks[i].clamp(0, 1) * (size.height - 16)).toDouble();
-      final left = i * (barWidth + gapWidth);
       final rect = RRect.fromRectAndRadius(
         Rect.fromLTWH(left, (size.height - height) / 2, barWidth, height),
         const Radius.circular(1.5),
       );
-      final inside = center >= start && center <= end;
+      final inside = centerFrac >= start && centerFrac <= end;
       canvas.drawRRect(rect, inside ? selectedPaint : outsidePaint);
     }
-    _handle(canvas, size, start * size.width);
-    _handle(canvas, size, end * size.width);
+    _handle(canvas, size, _xFor(start, size));
+    _handle(canvas, size, _xFor(end, size));
     if (playhead != null) {
-      final x = playhead!.clamp(0, 1) * size.width;
+      final x = _xFor(playhead!, size);
       canvas.drawRect(
         Rect.fromLTWH(x - 1, 0, 2, size.height),
         Paint()..color = playheadColor,
@@ -206,6 +224,7 @@ class _WaveformPainter extends CustomPainter {
         oldDelegate.end != end ||
         oldDelegate.playhead != playhead ||
         oldDelegate.peaks != peaks ||
-        oldDelegate.selected != selected;
+        oldDelegate.selected != selected ||
+        oldDelegate.inset != inset;
   }
 }

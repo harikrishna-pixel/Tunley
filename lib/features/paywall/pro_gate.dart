@@ -10,7 +10,11 @@ import '../../core/analytics/events.dart';
 import 'paywall_analytics.dart';
 import '../../l10n/app_localizations.dart';
 import '../../core/engine/audio_engine.dart';
-import 'checkout.dart';
+import 'checkout.dart'; // plansProvider
+import 'paywall_screen.dart';
+
+/// Sheet result: free alternative chosen, or open the main paywall.
+enum _ProGateResult { freeAlternative, openPaywall }
 
 /// P2 (11 / 11b): a gate on a Pro control. Never counts a conversion.
 abstract final class ProGateSheet {
@@ -36,7 +40,7 @@ abstract final class ProGateSheet {
       feature: analyticsFeature,
     );
     if (!context.mounted) return false;
-    final result = await AppBottomSheet.show<bool>(
+    final result = await AppBottomSheet.show<_ProGateResult>(
       context: context,
       builder: (_) => _FeatureSheet(
         feature: feature,
@@ -48,19 +52,23 @@ abstract final class ProGateSheet {
     final container = context.mounted
         ? ProviderScope.containerOf(context, listen: false)
         : null;
-    if (container?.read(entitlementProvider).isPro ?? false) {
+    if (result == _ProGateResult.openPaywall && context.mounted) {
+      view.closed();
+      await openPaywall(context, PaywallSource.feature);
+    } else if (container?.read(entitlementProvider).isPro ?? false) {
       view.purchased();
     } else {
       view.closed();
     }
-    if (result == true) {
+    if (result == _ProGateResult.freeAlternative) {
       analytics.freeAlternativeUsed(feature: analyticsFeature);
+      return true;
     }
-    return result ?? false;
+    return false;
   }
 }
 
-class _FeatureSheet extends ConsumerStatefulWidget {
+class _FeatureSheet extends ConsumerWidget {
   const _FeatureSheet({
     required this.feature,
     required this.detail,
@@ -74,27 +82,13 @@ class _FeatureSheet extends ConsumerStatefulWidget {
   final String? freeAlternative;
 
   @override
-  ConsumerState<_FeatureSheet> createState() => _FeatureSheetState();
-}
-
-class _FeatureSheetState extends ConsumerState<_FeatureSheet> {
-  bool _busy = false;
-
-  Future<void> _buy(StorePlan yearly) async {
-    setState(() => _busy = true);
-    final ok = await checkout(context, ref, yearly, trigger: 'pro_feature');
-    if (!mounted) return;
-    setState(() => _busy = false);
-    if (ok) Navigator.of(context).pop(false);
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final colors = context.colors;
     final text = context.appText;
     final plans = ref.watch(plansProvider(OfferingId.main)).value;
     final yearly = plans?.where((p) => p.kind == PlanKind.yearly).firstOrNull;
+    final trial = yearly?.showsTrial ?? false;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -110,10 +104,10 @@ class _FeatureSheetState extends ConsumerState<_FeatureSheet> {
                 borderRadius: BorderRadius.circular(AppRadius.row),
               ),
               child: PhosphorIcon(
-                widget.isFormat
+                isFormat
                     ? PhosphorIcons.fileAudio()
                     : PhosphorIcons.crown(PhosphorIconsStyle.fill),
-                color: widget.isFormat ? colors.heroText : colors.gold,
+                color: isFormat ? colors.heroText : colors.gold,
                 size: 26,
               ),
             ),
@@ -123,13 +117,13 @@ class _FeatureSheetState extends ConsumerState<_FeatureSheet> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.isFormat
-                        ? l10n.p2FormatTitle(widget.feature)
-                        : l10n.p2FeatureTitle(widget.feature),
+                    isFormat
+                        ? l10n.p2FormatTitle(feature)
+                        : l10n.p2FeatureTitle(feature),
                     style: text.dialogTitle,
                   ),
                   Text(
-                    widget.detail ?? l10n.p2DetailPro,
+                    detail ?? l10n.p2DetailPro,
                     style: text.caption.copyWith(color: colors.text2),
                   ),
                 ],
@@ -170,17 +164,19 @@ class _FeatureSheetState extends ConsumerState<_FeatureSheet> {
         ),
         const SizedBox(height: AppSpace.s16),
         PrimaryButton(
-          label: yearly?.showsTrial ?? false
+          label: trial
               ? l10n.p2CtaTrial(yearly!.trialDays!)
               : l10n.p2CtaNoTrial,
-          onPressed: yearly == null || _busy ? null : () => _buy(yearly),
+          onPressed: () =>
+              Navigator.of(context).pop(_ProGateResult.openPaywall),
         ),
-        if (widget.freeAlternative != null) ...[
+        if (freeAlternative != null) ...[
           const SizedBox(height: AppSpace.s4),
           Center(
             child: TextLinkButton(
-              label: widget.freeAlternative!,
-              onPressed: () => Navigator.of(context).pop(true),
+              label: freeAlternative!,
+              onPressed: () =>
+                  Navigator.of(context).pop(_ProGateResult.freeAlternative),
             ),
           ),
         ],

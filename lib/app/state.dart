@@ -9,6 +9,7 @@ import '../core/format.dart';
 import '../core/library/app_database.dart';
 import '../core/library/app_paths.dart';
 import '../core/library/library_repository.dart';
+import '../core/library/picked_store.dart';
 import '../core/library/preferences_store.dart';
 import '../core/library/usage_store.dart';
 import '../core/rules/free_limit.dart';
@@ -67,7 +68,14 @@ class PreferencesController extends Notifier<UserPrefs> {
     await ref.read(preferencesStoreProvider).write(next);
   }
 
-  Future<void> setGoal(UserGoal goal) => _save(state.copyWith(goal: goal));
+  Future<void> setGoal(UserGoal goal) => _save(state.copyWith(goals: {goal}));
+
+  /// O2 multi-select: tap toggles a goal.
+  Future<void> toggleGoal(UserGoal goal) {
+    final next = {...state.goals};
+    if (!next.add(goal)) next.remove(goal);
+    return _save(state.copyWith(goals: next));
+  }
 
   Future<void> setFrequency(UsageFrequency frequency) =>
       _save(state.copyWith(frequency: frequency));
@@ -78,8 +86,12 @@ class PreferencesController extends Notifier<UserPrefs> {
   Future<void> rememberFormat(OutFormat format) =>
       _save(state.copyWith(lastFormat: format));
 
-  Future<void> completeOnboarding() =>
-      _save(state.copyWith(onboardingDone: true));
+  Future<void> completeOnboarding() => _save(
+    state.copyWith(
+      onboardingDone: true,
+      goals: state.goals.isEmpty ? {UserGoal.ringtones} : state.goals,
+    ),
+  );
 }
 
 final preferencesProvider = NotifierProvider<PreferencesController, UserPrefs>(
@@ -177,10 +189,13 @@ class SourceFile {
   bool get isVideo => info.hasVideo;
 }
 
-/// Videos and audio files picked in this session, newest first.
+/// Videos and audio files the user imported. Kept across relaunches under
+/// Documents/Picked (see [PickedStore]).
 class PickedSources extends Notifier<List<SourceFile>> {
   @override
   List<SourceFile> build() => const [];
+
+  void replaceAll(List<SourceFile> sources) => state = List.unmodifiable(sources);
 
   void add(SourceFile source) {
     state = [source, ...state.where((s) => s.path != source.path)];
@@ -189,6 +204,10 @@ class PickedSources extends Notifier<List<SourceFile>> {
 
 final pickedSourcesProvider = NotifierProvider<PickedSources, List<SourceFile>>(
   PickedSources.new,
+);
+
+final pickedStoreProvider = Provider<PickedStore>(
+  (_) => _mustOverride('pickedStore'),
 );
 
 enum Quality { standard, high, best }
@@ -382,6 +401,8 @@ class DraftController extends Notifier<ConvertDraft?> {
         ? _ringtoneSelection(next)
         : next;
   }
+
+  void clear() => state = null;
 
   ConvertDraft _forMode(ConvertDraft draft, ConvertMode mode) {
     if (mode == ConvertMode.audioFile) {

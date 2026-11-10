@@ -52,7 +52,8 @@ class PaywallView {
     var eligible = false;
     try {
       final plans = await container.read(plansProvider(offering).future);
-      eligible = plans.any((plan) => plan.introEligible);
+      // Trial is Yearly only; Weekly must never count as trial-eligible.
+      eligible = plans.any((plan) => plan.showsTrial);
     } on Object {
       eligible = false;
     }

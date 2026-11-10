@@ -14,6 +14,7 @@ import '../../core/engine/audio_engine.dart';
 import '../../core/format.dart';
 import '../../core/rules/merge_rules.dart';
 import '../../l10n/app_localizations.dart';
+import '../common/edit_exit.dart';
 import '../common/media_widgets.dart';
 import '../picker/picker_screen.dart';
 
@@ -100,6 +101,12 @@ class _MergeScreenState extends ConsumerState<MergeScreen> {
     context.push('/progress');
   }
 
+  Future<void> _leave() async {
+    if (!await confirmDiscardEdits(context) || !mounted) return;
+    ref.read(mergeProvider.notifier).reset();
+    if (mounted) Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -119,13 +126,19 @@ class _MergeScreenState extends ConsumerState<MergeScreen> {
             estimate,
           );
 
-    return Scaffold(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) _leave();
+      },
+      child: Scaffold(
       backgroundColor: colors.bg,
       body: SafeArea(
         child: Column(
           children: [
             NavHeader(
               title: l10n.mergeTitle,
+              onLeading: _leave,
               trailing: TextLinkButton(
                 label: l10n.mergeAdd,
                 onPressed: files.length < max ? _add : null,
@@ -262,6 +275,7 @@ class _MergeScreenState extends ConsumerState<MergeScreen> {
           ],
         ),
       ),
+    ),
     );
   }
 }

@@ -25,6 +25,14 @@ class TunelyApp extends StatelessWidget {
           routerConfig: router,
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
+          builder: (context, child) {
+            // Tap outside any field dismisses the keyboard app-wide.
+            return GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+              child: child,
+            );
+          },
         );
       },
     );

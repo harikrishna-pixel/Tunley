@@ -919,6 +919,12 @@
     }
   },
   "settingsDebug": "Debug",
+  "debugUnlockPro": "Unlock Pro (testing)",
+  "debugLockPro": "Lock Pro (testing)",
+  "editExitTitle": "Confirm Exit?",
+  "editExitBody": "Current edits will not be saved. Are you sure you want to exit?",
+  "editExitConfirm": "Confirm Exit",
+  "editExitContinue": "Continue Editing",
   "formatKbps": "{format} · {kbps} kbps",
   "@formatKbps": {
     "placeholders": {
@@ -1869,11 +1875,12 @@
   "rewardedWatch": "Watch a short ad for 1 more",
   "rewardedEarned": "+1 free conversion today",
   "moreAppsTitle": "More from Marberx",
-  "moreAppsIntro": "Small, honest apps from the team behind Tunely. Free to try.",
+  "moreAppsIntro": "Other Marberx apps. Tap Get to open the App Store page.",
   "moreAppsPicked": "Picked for you",
   "moreAppsAlso": "Also from us",
-  "moreAppsFooter": "Opens the App Store. No tracking, no rewards for installs.",
+  "moreAppsFooter": "Get opens the App Store. Soon means that app’s listing isn’t linked yet. No tracking, no rewards for installs.",
   "moreAppsSoon": "Soon",
+  "adLabel": "Ad",
   "moreAppsGet": "Get {name}",
   "@moreAppsGet": {
     "placeholders": {
@@ -1882,7 +1889,7 @@
       }
     }
   },
-  "settingsMoreApps": "More apps from Marberx",
+  "settingsMoreApps": "More Apps",
   "houseCardEyebrow": "From the makers of Tunely",
   "houseCardShrinkVideo": "That video was {size}. Shrink makes videos smaller.",
   "@houseCardShrinkVideo": {
@@ -1899,11 +1906,11 @@
   "galleryAnalyticsLive": "Sending to Mixpanel. Check Live View in the Tunely-Dev project.",
   "showPassword": "Show password",
   "hidePassword": "Hide password",
-  "inviteBadge": "Give 1 week · Get 1 week",
+  "inviteBadge": "Both get free credits",
   "inviteTitle": "Invite friends, get Pro free",
   "inviteStep1": "Create a free account",
   "inviteStep2": "Share your personal invite link",
-  "inviteStep3": "You both get 1 week of Pro when your friend makes their first file",
+  "inviteStep3": "You both receive free credits when your friend makes their first file",
   "inviteYourLink": "Your link",
   "invitePrivacy": "Your account only keeps your invite link and free weeks safe if you change phones. Your files never leave your iPhone.",
   "inviteCreateAccount": "Create free account",
@@ -1942,7 +1949,21 @@
   "inviteCapReached": "You've reached this year's invite limit. Your friends still get their week.",
   "inviteLoadFailed": "Couldn't load your invite stats.",
   "signUpTitle": "Create your account",
-  "signUpSubtitle": "Free. Used only for your invite link and rewards.",
+  "signUpSubtitle": "Create a free account to save your invite link and rewards.",
+  "aboutTitle": "About Us",
+  "aboutTagline": "Convert and manage your media files easily.",
+  "aboutVersion": "Version {version}",
+  "@aboutVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "aboutPrivacy": "Privacy Policy",
+  "aboutTerms": "Terms of Use",
+  "aboutContact": "Contact Us",
+  "settingsAbout": "About Us",
   "fieldFirstName": "First name",
   "fieldLastName": "Last name",
   "fieldEmail": "Email",
@@ -1989,6 +2010,7 @@
   "fieldPasswordWeak": "At least 8 characters, with a number",
   "accountOffline": "You're offline. Connect to the internet and try again.",
   "accountServerError": "Something went wrong on our side. Your details are still here, try again.",
+  "accountValidationError": "Please check the highlighted fields and try again.",
   "tryAgain2": "Try again",
   "accountTitle": "Account",
   "verifyBannerBold": "Verify your email",
@@ -2055,6 +2077,9 @@
   "redeemLabel": "Invite code",
   "redeemFromLink": "Added from your friend's link",
   "redeemInvalid": "This code isn't valid, or an invite was already used on this iPhone.",
+  "redeemValidCode": "Valid invite code",
+  "redeemInvalidCode": "Invalid invite code",
+  "redeemCodeMaxLength": "Invite code can contain a maximum of 10 characters.",
   "redeemCta": "Apply code",
   "redeemSkip": "Skip",
   "redeemSuccessTitle": "1 week of Pro unlocked",
@@ -2083,7 +2108,7 @@
   "settingsAccountSignedOut": "Sign in or create account",
   "settingsAccountOptional": "Optional · only for invite rewards",
   "settingsInvite": "Invite friends",
-  "settingsInviteDetail": "Get Pro free",
+  "settingsInviteDetail": "Free credits",
   "settingsHaveCode": "Have an invite code?",
   "onboardingInviteCode": "Got an invite code?"
 }

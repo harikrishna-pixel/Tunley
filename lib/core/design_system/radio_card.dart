@@ -117,3 +117,35 @@ class RadioMark extends StatelessWidget {
     );
   }
 }
+
+/// Checkbox mark for multi-select cards (onboarding goals).
+class CheckMark extends StatelessWidget {
+  const CheckMark({super.key, required this.selected});
+
+  final bool selected;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    return AnimatedContainer(
+      duration: AppMotion.of(
+        const Duration(milliseconds: 150),
+        MediaQuery.disableAnimationsOf(context),
+      ),
+      width: 22,
+      height: 22,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: selected ? colors.accent : Colors.transparent,
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(
+          color: selected ? colors.accent : colors.border,
+          width: 2,
+        ),
+      ),
+      child: selected
+          ? Icon(Icons.check, size: 14, color: colors.accentText)
+          : null,
+    );
+  }
+}

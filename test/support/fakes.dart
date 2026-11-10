@@ -14,6 +14,7 @@ import 'package:tunely/app/state.dart';
 import 'package:tunely/core/engine/audio_engine.dart';
 import 'package:tunely/core/library/app_database.dart';
 import 'package:tunely/core/library/app_paths.dart';
+import 'package:tunely/core/library/picked_store.dart';
 import 'package:tunely/core/library/preferences_store.dart';
 import 'package:tunely/app/monetization.dart';
 import 'package:tunely/core/entitlements/paywall_memory.dart';
@@ -362,6 +363,9 @@ ProviderContainer testContainer({
       ),
       preferencesStoreProvider.overrideWithValue(
         prefs ?? MemoryPreferencesStore(),
+      ),
+      pickedStoreProvider.overrideWithValue(
+        PickedStore.memory(AppPaths(dir.path)),
       ),
       purchasesServiceProvider.overrideWithValue(
         purchases ?? DemoPurchasesService(),

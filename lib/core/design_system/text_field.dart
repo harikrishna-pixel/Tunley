@@ -59,6 +59,14 @@ class _AppTextFieldState extends State<AppTextField> {
   late bool _hidden = widget.obscure;
 
   @override
+  void didUpdateWidget(covariant AppTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Never inherit a password-obscured state onto a normal field (email).
+    if (!widget.obscure && _hidden) _hidden = false;
+    if (widget.obscure != oldWidget.obscure) _hidden = widget.obscure;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final colors = context.colors;
@@ -71,6 +79,9 @@ class _AppTextFieldState extends State<AppTextField> {
     final style = widget.large
         ? text.navTitle.copyWith(letterSpacing: 3, fontWeight: FontWeight.w800)
         : text.body;
+    // Only password fields may obscure. Key stops iOS/Flutter from recycling
+    // a password TextField onto the email row.
+    final obscure = widget.obscure && _hidden;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
@@ -84,16 +95,24 @@ class _AppTextFieldState extends State<AppTextField> {
         ),
         const SizedBox(height: AppSpace.s8),
         TextField(
+          key: ValueKey('app_field_${widget.label}_${widget.obscure}'),
           controller: widget.controller,
-          obscureText: _hidden,
-          keyboardType: widget.keyboardType,
+          obscureText: obscure,
+          keyboardType: widget.obscure
+              ? (widget.keyboardType ?? TextInputType.visiblePassword)
+              : widget.keyboardType,
           textInputAction: widget.textInputAction,
           autofillHints: widget.autofillHints,
           onChanged: widget.onChanged,
-          onSubmitted: widget.onSubmitted,
+          onSubmitted: (value) {
+            FocusManager.instance.primaryFocus?.unfocus();
+            widget.onSubmitted?.call(value);
+          },
+          onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
           autofocus: widget.autofocus,
           autocorrect: false,
           enableSuggestions: !widget.obscure,
+          enableIMEPersonalizedLearning: !widget.obscure,
           textCapitalization: widget.textCapitalization,
           inputFormatters: widget.inputFormatters,
           style: style.copyWith(color: colors.text),
@@ -115,10 +134,12 @@ class _AppTextFieldState extends State<AppTextField> {
             ),
             suffixIcon: widget.obscure
                 ? IconButton(
+                    // eyeSlash = viewing off (password hidden);
+                    // eye = viewing on (password shown).
                     tooltip: _hidden ? l10n.showPassword : l10n.hidePassword,
                     onPressed: () => setState(() => _hidden = !_hidden),
                     icon: PhosphorIcon(
-                      _hidden ? PhosphorIcons.eye() : PhosphorIcons.eyeSlash(),
+                      _hidden ? PhosphorIcons.eyeSlash() : PhosphorIcons.eye(),
                       color: colors.text2,
                       size: 22,
                     ),

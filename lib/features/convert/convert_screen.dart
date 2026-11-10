@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import '../../app/config.dart';
 import '../../app/state.dart';
@@ -16,6 +15,7 @@ import '../../core/analytics/analytics.dart';
 import '../../core/analytics/events.dart';
 import '../../core/analytics/values.dart';
 import '../../l10n/app_localizations.dart';
+import '../common/edit_exit.dart';
 import '../common/media_widgets.dart';
 import '../errors/error_screen.dart';
 import '../paywall/daily_limit_dialog.dart';
@@ -24,9 +24,7 @@ import '../paywall/pro_gate.dart';
 const waveformBuckets = 64;
 
 class ConvertScreen extends ConsumerStatefulWidget {
-  const ConvertScreen({super.key, this.openTrim = false});
-
-  final bool openTrim;
+  const ConvertScreen({super.key});
 
   @override
   ConsumerState<ConvertScreen> createState() => _ConvertScreenState();
@@ -56,7 +54,12 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
     } on EngineException {
       // The waveform is a preview only; conversion reports real errors.
     }
-    if (mounted && widget.openTrim) context.push('/trim');
+  }
+
+  Future<void> _leave() async {
+    if (!await confirmDiscardEdits(context) || !mounted) return;
+    ref.read(draftProvider.notifier).clear();
+    if (mounted) Navigator.of(context).pop();
   }
 
   Future<void> _pickFormat(OutFormat format) async {
@@ -230,7 +233,12 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
         ? l10n.readyForIphone
         : l10n.summarySize(estimate.label, Fmt.bytes(draft.source.info.bytes));
 
-    return Scaffold(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) _leave();
+      },
+      child: Scaffold(
       backgroundColor: colors.bg,
       body: SafeArea(
         bottom: false,
@@ -240,6 +248,7 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
               title: draft.isRingtone
                   ? l10n.convertTitleRingtone
                   : l10n.convertTitleAudio,
+              onLeading: _leave,
             ),
             Expanded(
               child: ListView(
@@ -320,6 +329,7 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
           ],
         ),
       ),
+    ),
     );
   }
 }
@@ -417,84 +427,7 @@ class _AudioSettings extends ConsumerWidget {
               style: text.footnote.copyWith(color: colors.text3),
             ),
           ),
-        const SizedBox(height: AppSpace.s8),
-        _TrimRow(draft: draft),
       ],
-    );
-  }
-}
-
-class _TrimRow extends StatelessWidget {
-  const _TrimRow({required this.draft});
-
-  final ConvertDraft draft;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    final colors = context.colors;
-    final text = context.appText;
-    final range = draft.isTrimmed
-        ? l10n.trimSummaryRange(
-            Fmt.duration(draft.start),
-            Fmt.duration(draft.end),
-          )
-        : l10n.trimSummaryFull(Fmt.duration(draft.sourceSeconds));
-    final fade = switch ((draft.fadeIn, draft.fadeOut)) {
-      (true, true) => l10n.fadeBoth,
-      (true, false) => l10n.fadeInOnly,
-      (false, true) => l10n.fadeOutOnly,
-      (false, false) => l10n.fadeNone,
-    };
-    return Material(
-      color: colors.surface,
-      borderRadius: BorderRadius.circular(AppRadius.card),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(AppRadius.card),
-        onTap: () => context.push('/trim'),
-        child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpace.s16,
-            vertical: AppSpace.s16,
-          ),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppRadius.card),
-            border: Border.all(color: colors.border),
-          ),
-          child: Row(
-            children: [
-              PhosphorIcon(
-                PhosphorIcons.scissors(),
-                color: colors.text,
-                size: 22,
-              ),
-              const SizedBox(width: AppSpace.s14),
-              Flexible(
-                child: Text(
-                  l10n.trimFade,
-                  style: text.subhead.copyWith(fontWeight: FontWeight.w700),
-                ),
-              ),
-              const SizedBox(width: AppSpace.s8),
-              Expanded(
-                child: Text(
-                  l10n.trimSummary(range, fade),
-                  textAlign: TextAlign.end,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: text.caption.copyWith(color: colors.text2),
-                ),
-              ),
-              const SizedBox(width: AppSpace.s6),
-              PhosphorIcon(
-                PhosphorIcons.caretRight(),
-                color: colors.text3,
-                size: 18,
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }
@@ -570,7 +503,7 @@ class _RingtoneSettings extends ConsumerWidget {
               const SizedBox(height: AppSpace.s12),
               Container(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpace.s8,
+                  horizontal: AppSpace.s12,
                   vertical: AppSpace.s6,
                 ),
                 decoration: BoxDecoration(

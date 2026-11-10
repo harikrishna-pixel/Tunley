@@ -81,10 +81,13 @@ class _AppShellState extends ConsumerState<AppShell> {
       );
     });
 
-    void go(int index) => navigationShell.goBranch(
-      index,
-      initialLocation: index == navigationShell.currentIndex,
-    );
+    void go(int index) {
+      FocusManager.instance.primaryFocus?.unfocus();
+      navigationShell.goBranch(
+        index,
+        initialLocation: index == navigationShell.currentIndex,
+      );
+    }
 
     if (!AdaptiveLayout.isWide(MediaQuery.sizeOf(context))) {
       return Scaffold(

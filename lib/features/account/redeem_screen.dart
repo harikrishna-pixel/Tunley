@@ -35,6 +35,10 @@ class _RedeemScreenState extends ConsumerState<RedeemScreen> {
   bool _busy = false;
   AccountError? _error;
   RedeemResult? _result;
+  bool _valid = false;
+  DateTime? _maxLengthToastAt;
+
+  static const _maxCodeLength = 10;
 
   @override
   void dispose() {
@@ -42,15 +46,33 @@ class _RedeemScreenState extends ConsumerState<RedeemScreen> {
     super.dispose();
   }
 
-  Future<void> _apply() async {
-    if (!ReferralCode.looksValid(_code.text)) {
-      setState(() => _error = AccountError.invalidCode);
+  void _toastMaxLength() {
+    final now = DateTime.now();
+    final last = _maxLengthToastAt;
+    if (last != null && now.difference(last) < const Duration(seconds: 2)) {
       return;
     }
+    _maxLengthToastAt = now;
+    if (!mounted) return;
+    TunelyToast.show(
+      context,
+      message: AppLocalizations.of(context).redeemCodeMaxLength,
+    );
+  }
+
+  Future<void> _apply() async {
     setState(() {
       _busy = true;
       _error = null;
+      _valid = false;
     });
+    if (!ReferralCode.looksValid(_code.text)) {
+      setState(() {
+        _busy = false;
+        _error = AccountError.invalidCode;
+      });
+      return;
+    }
     try {
       final result = await ref
           .read(referralProvider.notifier)
@@ -60,9 +82,24 @@ class _RedeemScreenState extends ConsumerState<RedeemScreen> {
                 ? RedeemSource.deepLink
                 : RedeemSource.manual,
           );
+      if (!mounted) return;
+      setState(() => _valid = true);
+      await Future<void>.delayed(const Duration(milliseconds: 450));
       if (mounted) setState(() => _result = result);
     } on AccountException catch (e) {
-      if (mounted) setState(() => _error = e.error);
+      if (mounted) {
+        setState(() {
+          // Treat redeem failures as invalid so the user sees a clear
+          // "Invalid invite code" instead of a generic server message.
+          _error = switch (e.error) {
+            AccountError.offline => AccountError.offline,
+            AccountError.rateLimited => AccountError.rateLimited,
+            _ => AccountError.invalidCode,
+          };
+        });
+      }
+    } on Object {
+      if (mounted) setState(() => _error = AccountError.invalidCode);
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -152,16 +189,10 @@ class _RedeemScreenState extends ConsumerState<RedeemScreen> {
       );
     }
 
-    final invalid =
-        _error == AccountError.invalidCode ||
-        _error == AccountError.deviceUsed ||
-        _error == AccountError.selfReferral ||
-        _error == AccountError.capReached;
     return FormScaffold(
       header: header,
       content: [
-        Align(
-          alignment: AlignmentDirectional.centerStart,
+        Center(
           child: Container(
             width: 64,
             height: 64,
@@ -180,16 +211,24 @@ class _RedeemScreenState extends ConsumerState<RedeemScreen> {
         const SizedBox(height: AppSpace.s16),
         Semantics(
           header: true,
-          child: Text(l10n.redeemTitle, style: text.largeTitle),
+          child: Text(
+            l10n.redeemTitle,
+            textAlign: TextAlign.center,
+            style: text.largeTitle,
+          ),
         ),
         const SizedBox(height: AppSpace.s8),
-        Text(l10n.redeemBody, style: text.body.copyWith(color: colors.text2)),
+        Text(
+          l10n.redeemBody,
+          textAlign: TextAlign.center,
+          style: text.body.copyWith(color: colors.text2),
+        ),
         const SizedBox(height: AppSpace.s20),
         AppTextField(
           label: l10n.redeemLabel,
           controller: _code,
           large: true,
-          error: invalid ? '' : null,
+          error: _error == AccountError.invalidCode ? '' : null,
           hint: widget.args.fromLink && _error == null
               ? l10n.redeemFromLink
               : null,
@@ -198,13 +237,31 @@ class _RedeemScreenState extends ConsumerState<RedeemScreen> {
           textInputAction: TextInputAction.done,
           inputFormatters: [
             FilteringTextInputFormatter.allow(RegExp('[A-Za-z0-9]')),
-            LengthLimitingTextInputFormatter(10),
+            _MaxLengthToastFormatter(
+              maxLength: _maxCodeLength,
+              onExceeded: _toastMaxLength,
+            ),
           ],
+          onChanged: (_) {
+            if (_error != null || _valid) {
+              setState(() {
+                _error = null;
+                _valid = false;
+              });
+            }
+          },
           onSubmitted: (_) => _apply(),
         ),
         if (_error != null) ...[
           const SizedBox(height: AppSpace.s12),
-          InlineErrorBox(message: accountErrorText(l10n, _error!)),
+          InlineErrorBox(
+            message: _error == AccountError.invalidCode
+                ? l10n.redeemInvalidCode
+                : accountErrorText(l10n, _error!),
+          ),
+        ] else if (_valid) ...[
+          const SizedBox(height: AppSpace.s12),
+          StatusBox(message: l10n.redeemValidCode),
         ],
       ],
       footer: [
@@ -212,6 +269,36 @@ class _RedeemScreenState extends ConsumerState<RedeemScreen> {
         const SizedBox(height: AppSpace.s4),
         TextLinkButton(label: l10n.redeemSkip, muted: true, onPressed: _close),
       ],
+    );
+  }
+}
+
+/// Keeps the 10-character cap and notifies when the user tries to go past it.
+class _MaxLengthToastFormatter extends TextInputFormatter {
+  _MaxLengthToastFormatter({
+    required this.maxLength,
+    required this.onExceeded,
+  });
+
+  final int maxLength;
+  final VoidCallback onExceeded;
+
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    if (newValue.text.length <= maxLength) return newValue;
+    onExceeded();
+    if (oldValue.text.length >= maxLength) {
+      return TextEditingValue(
+        text: oldValue.text.substring(0, maxLength),
+        selection: TextSelection.collapsed(offset: maxLength),
+      );
+    }
+    return TextEditingValue(
+      text: newValue.text.substring(0, maxLength),
+      selection: TextSelection.collapsed(offset: maxLength),
     );
   }
 }

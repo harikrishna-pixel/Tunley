@@ -5,6 +5,7 @@ import 'theme_context.dart';
 import 'tokens.dart';
 
 /// Icon, label, optional value and a chevron. Lives inside a `ListGroup`.
+/// The chevron sits in a fixed trailing slot so every row lines up.
 class SettingsRow extends StatelessWidget {
   const SettingsRow({
     super.key,
@@ -23,6 +24,8 @@ class SettingsRow extends StatelessWidget {
   final Color? iconColor;
   final VoidCallback? onTap;
 
+  static const _chevronSlot = 22.0;
+
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
@@ -39,34 +42,56 @@ class SettingsRow extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Icon(icon, size: 22, color: iconColor ?? colors.text),
+                SizedBox(
+                  width: 22,
+                  child: Icon(icon, size: 22, color: iconColor ?? colors.text),
+                ),
                 const SizedBox(width: AppSpace.s14),
                 Expanded(
-                  child: Text(
-                    label,
-                    style: text.subhead.copyWith(fontWeight: FontWeight.w600),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          label,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: text.subhead.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      if (value != null) ...[
+                        const SizedBox(width: AppSpace.s8),
+                        Flexible(
+                          child: Text(
+                            value!,
+                            textAlign: TextAlign.end,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: text.caption.copyWith(
+                              color: valueHighlight
+                                  ? colors.success
+                                  : colors.text2,
+                              fontWeight:
+                                  valueHighlight ? FontWeight.w800 : null,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
                   ),
                 ),
-                if (value != null) ...[
-                  const SizedBox(width: AppSpace.s8),
-                  Flexible(
-                    child: Text(
-                      value!,
-                      textAlign: TextAlign.end,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: text.caption.copyWith(
-                        color: valueHighlight ? colors.success : colors.text2,
-                        fontWeight: valueHighlight ? FontWeight.w800 : null,
-                      ),
+                const SizedBox(width: AppSpace.s6),
+                SizedBox(
+                  width: _chevronSlot,
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: PhosphorIcon(
+                      PhosphorIcons.caretRight(),
+                      size: 18,
+                      color: colors.text3,
                     ),
                   ),
-                ],
-                const SizedBox(width: AppSpace.s6),
-                PhosphorIcon(
-                  PhosphorIcons.caretRight(),
-                  size: 18,
-                  color: colors.text3,
                 ),
               ],
             ),

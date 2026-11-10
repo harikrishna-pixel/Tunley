@@ -15,14 +15,16 @@ import '../../l10n/app_localizations.dart';
 import '../settings/settings_screen.dart';
 import 'account_widgets.dart';
 
-Widget _title(BuildContext context, String title, String subtitle) {
+Widget _title(BuildContext context, String title, [String? subtitle]) {
   final text = context.appText;
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Semantics(header: true, child: Text(title, style: text.largeTitle)),
-      const SizedBox(height: AppSpace.s6),
-      Text(subtitle, style: text.body.copyWith(color: context.colors.text2)),
+      if (subtitle != null && subtitle.isNotEmpty) ...[
+        const SizedBox(height: AppSpace.s6),
+        Text(subtitle, style: text.body.copyWith(color: context.colors.text2)),
+      ],
       const SizedBox(height: AppSpace.s20),
     ],
   );
@@ -121,6 +123,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       if (mounted) context.pop(true);
     } on AccountException catch (e) {
       if (mounted) setState(() => _error = e.error);
+    } on Object {
+      if (mounted) setState(() => _error = AccountError.server);
     } finally {
       if (mounted) setState(() => _busy = false);
     }
@@ -135,151 +139,143 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
     final strong = AccountRules.passwordStrong(_password.text);
     final engine = ref.read(audioEngineProvider);
 
-    return FormScaffold(
-      header: const NavHeader(title: ''),
-      content: [
-        _title(context, l10n.signUpTitle, l10n.signUpSubtitle),
-        if (_error != null && _error != AccountError.emailExists) ...[
-          InlineErrorBox(message: accountErrorText(l10n, _error!)),
-          const SizedBox(height: AppSpace.s16),
-        ],
-        if (_error == AccountError.emailExists) ...[
-          InlineErrorBox(
-            message: l10n.emailExists,
-            action: TextLinkButton(
-              label: l10n.emailExistsSignIn,
-              onPressed: () => context.pushReplacement('/account/sign-in'),
-            ),
-          ),
-          const SizedBox(height: AppSpace.s16),
-        ],
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: AppTextField(
-                label: l10n.fieldFirstName,
-                controller: _first,
-                error: err(AccountRules.name(_first.text)),
-                textCapitalization: TextCapitalization.words,
-                textInputAction: TextInputAction.next,
-                autofillHints: const [AutofillHints.givenName],
-                onChanged: (_) => setState(() {}),
-              ),
-            ),
-            const SizedBox(width: AppSpace.s12),
-            Expanded(
-              child: AppTextField(
-                label: l10n.fieldLastName,
-                controller: _last,
-                error: err(AccountRules.name(_last.text)),
-                textCapitalization: TextCapitalization.words,
-                textInputAction: TextInputAction.next,
-                autofillHints: const [AutofillHints.familyName],
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: AppSpace.s16),
-        AppTextField(
-          label: l10n.fieldEmail,
-          controller: _email,
-          error: err(AccountRules.email(_email.text)),
-          keyboardType: TextInputType.emailAddress,
-          textInputAction: TextInputAction.next,
-          autofillHints: const [AutofillHints.email],
-        ),
-        const SizedBox(height: AppSpace.s16),
-        AppTextField(
-          label: l10n.fieldPassword,
-          controller: _password,
-          obscure: true,
-          error: err(AccountRules.password(_password.text)),
-          hint: l10n.passwordRule,
-          hintOk: strong,
-          textInputAction: TextInputAction.done,
-          autofillHints: const [AutofillHints.newPassword],
-          onChanged: (_) => setState(() {}),
-          onSubmitted: (_) => _submit(),
-        ),
-        const SizedBox(height: AppSpace.s16),
-        Container(
-          padding: const EdgeInsets.all(AppSpace.s16),
-          decoration: BoxDecoration(
-            color: colors.accentSoft,
-            borderRadius: BorderRadius.circular(AppRadius.card),
-          ),
-          child: Row(
+    return AutofillGroup(
+      child: FormScaffold(
+        header: const NavHeader(title: ''),
+        content: [
+          _title(context, l10n.signUpTitle, l10n.signUpSubtitle),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      l10n.signUpCodePreview,
-                      style: text.caption.copyWith(
-                        color: colors.accentOnSoft,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    Text(
-                      _preview,
-                      style: text.navTitle.copyWith(letterSpacing: 1),
-                    ),
-                  ],
+                child: AppTextField(
+                  label: l10n.fieldFirstName,
+                  controller: _first,
+                  error: err(AccountRules.name(_first.text)),
+                  textCapitalization: TextCapitalization.words,
+                  textInputAction: TextInputAction.next,
+                  autofillHints: const [AutofillHints.givenName],
+                  onChanged: (_) => setState(() {}),
                 ),
               ),
               const SizedBox(width: AppSpace.s12),
-              Flexible(
-                child: Text(
-                  l10n.signUpCodeLater,
-                  textAlign: TextAlign.end,
-                  style: text.footnote.copyWith(color: colors.accentOnSoft),
+              Expanded(
+                child: AppTextField(
+                  label: l10n.fieldLastName,
+                  controller: _last,
+                  error: err(AccountRules.name(_last.text)),
+                  textCapitalization: TextCapitalization.words,
+                  textInputAction: TextInputAction.next,
+                  autofillHints: const [AutofillHints.familyName],
                 ),
               ),
             ],
           ),
-        ),
-      ],
-      footer: [
-        PrimaryButton(label: l10n.signUpCta, onPressed: _busy ? null : _submit),
-        const SizedBox(height: AppSpace.s10),
-        Text.rich(
-          TextSpan(
-            text: l10n.signUpTermsPrefix,
-            style: text.footnote.copyWith(color: colors.text2),
-            children: [
-              TextSpan(
-                text: l10n.termsLink,
-                style: TextStyle(
-                  color: colors.link,
-                  decoration: TextDecoration.underline,
-                ),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () => engine.openUrl(termsUrl),
-              ),
-              TextSpan(text: l10n.signUpTermsAnd),
-              TextSpan(
-                text: l10n.privacyLink,
-                style: TextStyle(
-                  color: colors.link,
-                  decoration: TextDecoration.underline,
-                ),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () => engine.openUrl(privacyUrl),
-              ),
-              const TextSpan(text: '.'),
-            ],
+          const SizedBox(height: AppSpace.s16),
+          AppTextField(
+            label: l10n.fieldEmail,
+            controller: _email,
+            error: err(AccountRules.email(_email.text)),
+            keyboardType: TextInputType.emailAddress,
+            textInputAction: TextInputAction.next,
+            autofillHints: const [AutofillHints.email],
           ),
-          textAlign: TextAlign.center,
-        ),
-        _footerLink(
-          context,
-          prefix: l10n.signUpHaveAccount,
-          link: l10n.signInLink,
-          onTap: () => context.pushReplacement('/account/sign-in'),
-        ),
-      ],
+          const SizedBox(height: AppSpace.s16),
+          AppTextField(
+            label: l10n.fieldPassword,
+            controller: _password,
+            obscure: true,
+            error: err(AccountRules.password(_password.text)),
+            hint: l10n.passwordRule,
+            hintOk: strong,
+            textInputAction: TextInputAction.done,
+            autofillHints: const [AutofillHints.newPassword],
+            onChanged: (_) => setState(() {}),
+            onSubmitted: (_) => _submit(),
+          ),
+          const SizedBox(height: AppSpace.s16),
+          Container(
+            padding: const EdgeInsets.all(AppSpace.s16),
+            decoration: BoxDecoration(
+              color: colors.accentSoft,
+              borderRadius: BorderRadius.circular(AppRadius.card),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.signUpCodePreview,
+                  style: text.caption.copyWith(
+                    color: colors.accentOnSoft,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                Text(
+                  _preview,
+                  style: text.navTitle.copyWith(letterSpacing: 1),
+                ),
+              ],
+            ),
+          ),
+        ],
+        footer: [
+          // Keep account errors above the CTA so they stay on-screen.
+          if (_error != null && _error != AccountError.emailExists) ...[
+            InlineErrorBox(message: accountErrorText(l10n, _error!)),
+            const SizedBox(height: AppSpace.s12),
+          ],
+          if (_error == AccountError.emailExists) ...[
+            InlineErrorBox(
+              message: l10n.emailExists,
+              action: TextLinkButton(
+                label: l10n.emailExistsSignIn,
+                onPressed: () => context.pushReplacement('/account/sign-in'),
+              ),
+            ),
+            const SizedBox(height: AppSpace.s12),
+          ],
+          PrimaryButton(
+            label: l10n.signUpCta,
+            onPressed: _busy ? null : _submit,
+          ),
+          const SizedBox(height: AppSpace.s10),
+          Text.rich(
+            TextSpan(
+              text: l10n.signUpTermsPrefix,
+              style: text.footnote.copyWith(color: colors.text2),
+              children: [
+                TextSpan(
+                  text: l10n.termsLink,
+                  style: TextStyle(
+                    color: colors.link,
+                    decoration: TextDecoration.underline,
+                  ),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () => engine.openUrl(termsUrl),
+                ),
+                TextSpan(text: l10n.signUpTermsAnd),
+                TextSpan(
+                  text: l10n.privacyLink,
+                  style: TextStyle(
+                    color: colors.link,
+                    decoration: TextDecoration.underline,
+                  ),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () => engine.openUrl(privacyUrl),
+                ),
+                const TextSpan(text: '.'),
+              ],
+            ),
+            textAlign: TextAlign.center,
+          ),
+          _footerLink(
+            context,
+            prefix: l10n.signUpHaveAccount,
+            link: l10n.signInLink,
+            onTap: () => context.pushReplacement('/account/sign-in'),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -322,6 +318,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
       if (mounted) context.pop(true);
     } on AccountException catch (e) {
       if (mounted) setState(() => _error = e.error);
+    } on Object {
+      if (mounted) setState(() => _error = AccountError.server);
     } finally {
       if (mounted) setState(() => _busy = false);
     }

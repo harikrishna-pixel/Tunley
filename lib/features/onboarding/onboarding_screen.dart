@@ -29,6 +29,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   int _page = 0;
   final _started = DateTime.now();
 
+  /// O3 starts with nothing selected until the user taps a frequency.
+  bool _frequencyChosen = false;
+
   Analytics get _analytics => ref.read(analyticsProvider);
 
   @override
@@ -94,6 +97,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       4 => l10n.getStarted,
       _ => l10n.continueAction,
     };
+    // O2 / O3: nothing pre-selected; Continue stays off until a choice.
+    final canContinue = switch (_page) {
+      1 => prefs.goals.isNotEmpty,
+      2 => _frequencyChosen,
+      _ => true,
+    };
 
     return Scaffold(
       backgroundColor: colors.bg,
@@ -111,14 +120,6 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 height: 44,
                 child: Row(
                   children: [
-                    Semantics(
-                      label: l10n.onboardingStep(_page + 1, _pages),
-                      child: _Dots(
-                        count: _pages,
-                        index: _page,
-                        duration: _duration,
-                      ),
-                    ),
                     const Spacer(),
                     if (_page < _pages - 1)
                       TextLinkButton(
@@ -146,27 +147,28 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     title: l10n.o2Title,
                     body: l10n.o2Body,
                     footer: l10n.o2Footer,
+                    multiSelect: true,
                     options: [
                       _Option(
                         PhosphorIcons.bellRinging(),
                         l10n.goalRingtones,
                         l10n.goalRingtonesDetail,
-                        prefs.goal == UserGoal.ringtones,
-                        () => notifier.setGoal(UserGoal.ringtones),
+                        prefs.goals.contains(UserGoal.ringtones),
+                        () => notifier.toggleGoal(UserGoal.ringtones),
                       ),
                       _Option(
                         PhosphorIcons.filmSlate(),
                         l10n.goalMp3,
                         l10n.goalMp3Detail,
-                        prefs.goal == UserGoal.mp3FromVideos,
-                        () => notifier.setGoal(UserGoal.mp3FromVideos),
+                        prefs.goals.contains(UserGoal.mp3FromVideos),
+                        () => notifier.toggleGoal(UserGoal.mp3FromVideos),
                       ),
                       _Option(
                         PhosphorIcons.arrowsLeftRight(),
                         l10n.goalConvert,
                         l10n.goalConvertDetail,
-                        prefs.goal == UserGoal.convertFiles,
-                        () => notifier.setGoal(UserGoal.convertFiles),
+                        prefs.goals.contains(UserGoal.convertFiles),
+                        () => notifier.toggleGoal(UserGoal.convertFiles),
                       ),
                     ],
                   ),
@@ -178,24 +180,34 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                         null,
                         l10n.freqDaily,
                         l10n.freqDailyDetail,
-                        prefs.frequency == UsageFrequency.everyDay,
-                        () => notifier.setFrequency(UsageFrequency.everyDay),
+                        _frequencyChosen &&
+                            prefs.frequency == UsageFrequency.everyDay,
+                        () {
+                          setState(() => _frequencyChosen = true);
+                          notifier.setFrequency(UsageFrequency.everyDay);
+                        },
                       ),
                       _Option(
                         null,
                         l10n.freqWeekly,
                         l10n.freqWeeklyDetail,
-                        prefs.frequency == UsageFrequency.fewTimesAWeek,
-                        () =>
-                            notifier.setFrequency(UsageFrequency.fewTimesAWeek),
+                        _frequencyChosen &&
+                            prefs.frequency == UsageFrequency.fewTimesAWeek,
+                        () {
+                          setState(() => _frequencyChosen = true);
+                          notifier.setFrequency(UsageFrequency.fewTimesAWeek);
+                        },
                       ),
                       _Option(
                         null,
                         l10n.freqRarely,
                         l10n.freqRarelyDetail,
-                        prefs.frequency == UsageFrequency.onceInAWhile,
-                        () =>
-                            notifier.setFrequency(UsageFrequency.onceInAWhile),
+                        _frequencyChosen &&
+                            prefs.frequency == UsageFrequency.onceInAWhile,
+                        () {
+                          setState(() => _frequencyChosen = true);
+                          notifier.setFrequency(UsageFrequency.onceInAWhile);
+                        },
                       ),
                     ],
                   ),
@@ -209,7 +221,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  PrimaryButton(label: cta, onPressed: _next),
+                  PrimaryButton(
+                    label: cta,
+                    onPressed: canContinue ? _next : null,
+                  ),
                   if (_page == _pages - 1) ...[
                     const SizedBox(height: AppSpace.s12),
                     Row(
@@ -239,9 +254,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                             .read(preferencesProvider.notifier)
                             .completeOnboarding();
                         if (!context.mounted) return;
-                        GoRouter.of(context)
-                          ..go('/home')
-                          ..push('/redeem');
+                        // Go straight to redeem — don't flash Home first.
+                        context.pushReplacement('/redeem');
                       },
                     ),
                   ],
@@ -251,39 +265,6 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class _Dots extends StatelessWidget {
-  const _Dots({
-    required this.count,
-    required this.index,
-    required this.duration,
-  });
-
-  final int count;
-  final int index;
-  final Duration duration;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    return Row(
-      children: [
-        for (var i = 0; i < count; i++)
-          AnimatedContainer(
-            duration: duration,
-            curve: Curves.easeOutCubic,
-            margin: const EdgeInsets.only(right: 6),
-            width: i == index ? 26 : 6,
-            height: 6,
-            decoration: BoxDecoration(
-              color: i == index ? colors.accent : colors.border,
-              borderRadius: BorderRadius.circular(3),
-            ),
-          ),
-      ],
     );
   }
 }
@@ -349,25 +330,16 @@ class _ValueDemo extends StatelessWidget {
                           ),
                         ),
                         Positioned(
-                          left: 12,
-                          bottom: 12,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: AppSpace.s10,
-                              vertical: AppSpace.s4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: const Color(0x80000000),
-                              borderRadius: BorderRadius.circular(
-                                AppRadius.chip,
-                              ),
-                            ),
-                            child: Text(
-                              l10n.o1DemoFile,
-                              style: text.footnote.copyWith(
-                                color: colors.heroText,
-                                fontWeight: FontWeight.w700,
-                              ),
+                          left: 14,
+                          right: 14,
+                          bottom: 14,
+                          child: Text(
+                            l10n.o1DemoFile,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: text.caption.copyWith(
+                              color: colors.text2,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
@@ -434,25 +406,6 @@ class _ValueDemo extends StatelessWidget {
                       const SizedBox(height: AppSpace.s14),
                       const _DemoBars(),
                     ],
-                  ),
-                ),
-              ),
-              Positioned(
-                left: 168,
-                top: 100,
-                child: Container(
-                  width: 48,
-                  height: 48,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: colors.surface,
-                    shape: BoxShape.circle,
-                    boxShadow: colors.shadow,
-                  ),
-                  child: PhosphorIcon(
-                    PhosphorIcons.arrowRight(PhosphorIconsStyle.bold),
-                    color: colors.accent,
-                    size: 22,
                   ),
                 ),
               ),
@@ -543,12 +496,14 @@ class _Choice extends StatelessWidget {
     required this.body,
     required this.options,
     this.footer,
+    this.multiSelect = false,
   });
 
   final String title;
   final String body;
   final List<_Option> options;
   final String? footer;
+  final bool multiSelect;
 
   @override
   Widget build(BuildContext context) {
@@ -566,6 +521,7 @@ class _Choice extends StatelessWidget {
             title: option.title,
             subtitle: option.subtitle,
             selected: option.selected,
+            multiSelect: multiSelect,
             onTap: option.onTap,
           ),
           const SizedBox(height: AppSpace.s10),
@@ -583,7 +539,7 @@ class _Choice extends StatelessWidget {
   }
 }
 
-/// Large single-choice card with optional icon tile and a radio on the right.
+/// Large choice card with optional icon tile; radio or checkbox on the right.
 class ChoiceCard extends StatelessWidget {
   const ChoiceCard({
     super.key,
@@ -592,12 +548,14 @@ class ChoiceCard extends StatelessWidget {
     required this.onTap,
     this.subtitle,
     this.icon,
+    this.multiSelect = false,
   });
 
   final IconData? icon;
   final String title;
   final String? subtitle;
   final bool selected;
+  final bool multiSelect;
   final VoidCallback onTap;
 
   @override
@@ -607,7 +565,7 @@ class ChoiceCard extends StatelessWidget {
     return Semantics(
       button: true,
       selected: selected,
-      inMutuallyExclusiveGroup: true,
+      inMutuallyExclusiveGroup: multiSelect ? null : true,
       child: Material(
         color: colors.surface,
         borderRadius: BorderRadius.circular(AppRadius.card),
@@ -660,7 +618,10 @@ class ChoiceCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: AppSpace.s8),
-                RadioMark(selected: selected),
+                if (multiSelect)
+                  CheckMark(selected: selected)
+                else
+                  RadioMark(selected: selected),
               ],
             ),
           ),
@@ -761,59 +722,58 @@ class _Privacy extends StatelessWidget {
 
     return _Page(
       children: [
-        Stack(
-          alignment: Alignment.center,
+        Column(
           children: [
-            Column(
+            Row(
               children: [
-                Row(
-                  children: [
-                    tile(dim: false),
-                    const SizedBox(width: AppSpace.s10),
-                    tile(picked: true),
-                    const SizedBox(width: AppSpace.s10),
-                    tile(dim: false),
-                  ],
+                tile(dim: false),
+                const SizedBox(width: AppSpace.s10),
+                tile(picked: true),
+                const SizedBox(width: AppSpace.s10),
+                tile(dim: false),
+              ],
+            ),
+            const SizedBox(height: AppSpace.s10),
+            Row(
+              children: [
+                tile(),
+                const SizedBox(width: AppSpace.s10),
+                tile(),
+                const SizedBox(width: AppSpace.s10),
+                tile(),
+              ],
+            ),
+          ],
+        ),
+        const SizedBox(height: AppSpace.s16),
+        Center(
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpace.s20,
+              vertical: AppSpace.s10,
+            ),
+            decoration: BoxDecoration(
+              color: colors.surface,
+              borderRadius: BorderRadius.circular(AppRadius.hero),
+              border: Border.all(color: colors.accent.withValues(alpha: 0.35)),
+              boxShadow: colors.shadow,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                PhosphorIcon(
+                  PhosphorIcons.lockSimple(),
+                  color: colors.accent,
+                  size: 18,
                 ),
-                const SizedBox(height: AppSpace.s10),
-                Row(
-                  children: [
-                    tile(),
-                    const SizedBox(width: AppSpace.s10),
-                    tile(),
-                    const SizedBox(width: AppSpace.s10),
-                    tile(),
-                  ],
+                const SizedBox(width: AppSpace.s8),
+                Text(
+                  l10n.o5Pill,
+                  style: text.subhead.copyWith(fontWeight: FontWeight.w800),
                 ),
               ],
             ),
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSpace.s20,
-                vertical: AppSpace.s10,
-              ),
-              decoration: BoxDecoration(
-                color: colors.surface,
-                borderRadius: BorderRadius.circular(AppRadius.hero),
-                boxShadow: colors.shadow,
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  PhosphorIcon(
-                    PhosphorIcons.lockSimple(),
-                    color: colors.accent,
-                    size: 18,
-                  ),
-                  const SizedBox(width: AppSpace.s8),
-                  Text(
-                    l10n.o5Pill,
-                    style: text.subhead.copyWith(fontWeight: FontWeight.w800),
-                  ),
-                ],
-              ),
-            ),
-          ],
+          ),
         ),
         const SizedBox(height: AppSpace.s24),
         Text(l10n.o5Title, style: text.largeTitle),

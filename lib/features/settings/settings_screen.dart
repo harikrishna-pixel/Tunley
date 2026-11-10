@@ -78,13 +78,20 @@ class SettingsScreen extends ConsumerWidget {
     final isPro = ref.watch(isProProvider);
     final prefs = ref.watch(preferencesProvider);
     final folder = ref.watch(_folderNameProvider).value;
-    final version = ref.watch(appInfoProvider).value?.version ?? '';
 
-    final goal = switch (prefs.goal) {
+    String goalLabel(UserGoal goal) => switch (goal) {
       UserGoal.ringtones => l10n.goalRingtones,
       UserGoal.mp3FromVideos => l10n.goalMp3,
       UserGoal.convertFiles => l10n.goalConvert,
     };
+    final goal = [
+      for (final g in const [
+        UserGoal.ringtones,
+        UserGoal.mp3FromVideos,
+        UserGoal.convertFiles,
+      ])
+        if (prefs.goals.contains(g)) goalLabel(g),
+    ].join(', ');
     final format =
         prefs.defaultFormat == OutFormat.wav ||
             prefs.defaultFormat == OutFormat.flac
@@ -188,6 +195,11 @@ class SettingsScreen extends ConsumerWidget {
               label: l10n.settingsMoreApps,
               onTap: () => context.push('/more-apps', extra: 'settings'),
             ),
+            SettingsRow(
+              icon: PhosphorIcons.info(),
+              label: l10n.settingsAbout,
+              onTap: () => context.push('/about'),
+            ),
           ],
         ),
         section(l10n.settingsSubscription),
@@ -218,44 +230,21 @@ class SettingsScreen extends ConsumerWidget {
             ),
           ],
         ),
-        const SizedBox(height: AppSpace.s12),
-        Wrap(
-          alignment: WrapAlignment.center,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            TextLinkButton(
-              label: l10n.settingsTerms,
-              muted: true,
-              onPressed: () => _open(context, ref, termsUrl),
-            ),
-            TextLinkButton(
-              label: l10n.settingsPrivacy,
-              muted: true,
-              onPressed: () => _open(context, ref, privacyUrl),
-            ),
-            TextLinkButton(
-              label: l10n.settingsLicences,
-              muted: true,
-              onPressed: () => showLicensePage(
-                context: context,
-                applicationName: l10n.homeTitle,
-                applicationVersion: version,
-              ),
-            ),
-            if (version.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpace.s8),
-                child: Text(
-                  l10n.settingsVersion(version),
-                  style: text.caption.copyWith(color: colors.text3),
-                ),
-              ),
-          ],
-        ),
         if (kDebugMode) ...[
           section(l10n.settingsDebug),
           ListGroup(
             children: [
+              SettingsRow(
+                icon: PhosphorIcons.crown(PhosphorIconsStyle.fill),
+                label: isPro ? l10n.debugLockPro : l10n.debugUnlockPro,
+                onTap: () async {
+                  final unlock = !isPro;
+                  await ref
+                      .read(purchasesServiceProvider)
+                      .setDebugPro(unlock);
+                  await ref.read(paywallProvider.notifier).cachePro(unlock);
+                },
+              ),
               SettingsRow(
                 icon: PhosphorIcons.squaresFour(),
                 label: l10n.galleryTitle,

@@ -25,8 +25,11 @@ String accountErrorText(AppLocalizations l10n, AccountError error) =>
       AccountError.wrongPassword => l10n.changePasswordWrong,
       AccountError.invalidCode ||
       AccountError.deviceUsed ||
-      AccountError.selfReferral => l10n.redeemInvalid,
-      _ => l10n.accountServerError,
+      AccountError.selfReferral ||
+      AccountError.capReached => l10n.redeemInvalidCode,
+      AccountError.validation => l10n.accountValidationError,
+      AccountError.unauthorized => l10n.signInError,
+      AccountError.server => l10n.accountServerError,
     };
 
 class InlineErrorBox extends StatelessWidget {
@@ -75,7 +78,7 @@ class InlineErrorBox extends StatelessWidget {
   }
 }
 
-/// "Give 1 week · Get 1 week" banner on 46 / 47.
+/// Invite offer banner on 46 / 47.
 // TODO(question #26): final invite artwork; brand gradient until then.
 class InviteBanner extends StatelessWidget {
   const InviteBanner({super.key, this.height = 190});
@@ -159,35 +162,44 @@ class InitialsAvatar extends StatelessWidget {
   }
 }
 
-/// Screen padding + content + bottom actions, scrolling at large text sizes.
+/// Screen padding + content + bottom actions.
+/// By default the keyboard does not push the CTA; the form scrolls instead.
 class FormScaffold extends StatelessWidget {
   const FormScaffold({
     super.key,
     required this.header,
     required this.content,
     required this.footer,
+    this.resizeToAvoidBottomInset = false,
   });
 
   final Widget header;
   final List<Widget> content;
   final List<Widget> footer;
 
+  /// When false (default), the footer stays put while the keyboard is open.
+  final bool resizeToAvoidBottomInset;
+
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
+    final keyboard = MediaQuery.viewInsetsOf(context).bottom;
     return Scaffold(
       backgroundColor: colors.bg,
+      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       body: SafeArea(
         child: Column(
           children: [
             header,
             Expanded(
               child: ListView(
-                padding: const EdgeInsets.fromLTRB(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
+                padding: EdgeInsets.fromLTRB(
                   AppSpace.screen,
                   0,
                   AppSpace.screen,
-                  AppSpace.s24,
+                  AppSpace.s24 + (resizeToAvoidBottomInset ? 0 : keyboard),
                 ),
                 children: content,
               ),

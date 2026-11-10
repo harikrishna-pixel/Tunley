@@ -34,7 +34,9 @@ class PickerIntent {
     this.tab,
     this.mode,
     this.openTrim = false,
+    this.openBoost = false,
     this.purpose = PickerPurpose.convert,
+    this.videosOnly = false,
   });
 
   final PickerTab? tab;
@@ -42,9 +44,23 @@ class PickerIntent {
 
   /// Trim & fade / Volume boost tiles go straight on to the trim editor.
   final bool openTrim;
+
+  /// Volume boost tile: open trim with boost on, no Convert underneath.
+  final bool openBoost;
   final PickerPurpose purpose;
 
+  /// Video to MP3 / Batch / ringtone: Videos + Recent only (no Audio files).
+  final bool videosOnly;
+
   bool get isMerge => purpose != PickerPurpose.convert;
+}
+
+/// Args for `/trim` so entry tools don't stack Convert under the editor.
+class TrimRouteArgs {
+  const TrimRouteArgs({this.asEntry = false, this.focusBoost = false});
+
+  final bool asEntry;
+  final bool focusBoost;
 }
 
 const _audioExtensions = [
@@ -116,6 +132,9 @@ class _PickerScreenState extends ConsumerState<PickerScreen> {
         (personal.picker == PickerSource.audioFiles
             ? PickerTab.audio
             : PickerTab.videos);
+    if (widget.intent.videosOnly && _tab == PickerTab.audio) {
+      _tab = PickerTab.videos;
+    }
     if (widget.intent.isMerge) return;
     final first = ref
         .read(pickedSourcesProvider)
@@ -131,16 +150,26 @@ class _PickerScreenState extends ConsumerState<PickerScreen> {
     String? name,
     required String origin,
   }) async {
-    _origin[path] = origin;
-    final info = await _engine.inspect(path);
-    final thumb = info.hasVideo ? await _engine.thumbnail(path) : null;
+    final displayName = name ?? path.split('/').last;
+    final durable = await ref
+        .read(pickedStoreProvider)
+        .durablePath(path, displayName);
+    _origin[durable] = origin;
+    final info = await _engine.inspect(durable);
+    final thumb = info.hasVideo ? await _engine.thumbnail(durable) : null;
     final source = SourceFile(
-      path: path,
-      name: name ?? path.split('/').last,
+      path: durable,
+      name: displayName,
       info: info,
       thumbnailPath: thumb,
     );
     ref.read(pickedSourcesProvider.notifier).add(source);
+    unawaited(
+      ref.read(pickedStoreProvider).write([
+        for (final s in ref.read(pickedSourcesProvider))
+          (path: s.path, name: s.name),
+      ]),
+    );
     return source;
   }
 
@@ -289,7 +318,22 @@ class _PickerScreenState extends ConsumerState<PickerScreen> {
     }
     if (!mounted) return;
     ref.read(draftProvider.notifier).start(source, mode: widget.intent.mode);
-    context.push('/convert', extra: widget.intent.openTrim);
+    // Trim & fade / Volume boost: replace the picker so Convert is never under
+    // the editor (avoids flicker and a wrong Back target).
+    if (widget.intent.openTrim || widget.intent.openBoost) {
+      if (widget.intent.openBoost) {
+        ref.read(draftProvider.notifier).update((d) => d.copyWith(boost: true));
+      }
+      context.pushReplacement(
+        '/trim',
+        extra: TrimRouteArgs(
+          asEntry: true,
+          focusBoost: widget.intent.openBoost,
+        ),
+      );
+    } else {
+      context.push('/convert');
+    }
   }
 
   @override
@@ -337,26 +381,7 @@ class _PickerScreenState extends ConsumerState<PickerScreen> {
         bottom: false,
         child: Column(
           children: [
-            NavHeader(
-              title: l10n.pickerTitle,
-              trailing: Semantics(
-                button: true,
-                label: l10n.pickerOpenFiles,
-                child: InkResponse(
-                  onTap: _loading ? null : _pickAudio,
-                  radius: 24,
-                  child: SizedBox(
-                    width: 44,
-                    height: 44,
-                    child: PhosphorIcon(
-                      PhosphorIcons.folder(),
-                      color: colors.link,
-                      size: 24,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            NavHeader(title: l10n.pickerTitle),
             Padding(
               padding: const EdgeInsets.fromLTRB(
                 AppSpace.screen,
@@ -370,10 +395,11 @@ class _PickerScreenState extends ConsumerState<PickerScreen> {
                     value: PickerTab.videos,
                     label: l10n.pickerVideos,
                   ),
-                  SegmentedItem(
-                    value: PickerTab.audio,
-                    label: l10n.pickerAudio,
-                  ),
+                  if (!widget.intent.videosOnly)
+                    SegmentedItem(
+                      value: PickerTab.audio,
+                      label: l10n.pickerAudio,
+                    ),
                   SegmentedItem(
                     value: PickerTab.recent,
                     label: l10n.pickerRecent,

@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math' as math;
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/account/account_api.dart';
@@ -16,39 +15,19 @@ import 'config.dart';
 import 'monetization.dart';
 import 'state.dart';
 
-/// No API configured in a release build: every call reports a server error.
-class UnconfiguredAccountApi extends DemoAccountApi {
-  @override
-  Future<AuthSession> signUp({
-    required String firstName,
-    required String lastName,
-    required String email,
-    required String password,
-    required String deviceId,
-  }) => throw const AccountException(AccountError.server);
-
-  @override
-  Future<AuthSession> logIn({
-    required String email,
-    required String password,
-  }) => throw const AccountException(AccountError.server);
-
-  @override
-  Future<RedeemResult> redeem({
-    required String code,
-    required String appUserId,
-    required String? deviceCheckToken,
-  }) => throw const AccountException(AccountError.server);
-}
+/// Local demo backend kept for the app lifetime so sign-up → sign-in works.
+final _demoAccountApiProvider = Provider<DemoAccountApi>((ref) {
+  final days = ref.watch(appConfigProvider).referral.friendDays;
+  return DemoAccountApi(friendDays: days);
+});
 
 final accountApiProvider = Provider<AccountApi>((ref) {
   final config = ref.watch(appConfigProvider).referral;
   final base = config.apiBaseUrl;
   if (base != null) return HttpAccountApi(baseUrl: base, appId: config.appId);
-  // TODO(question #25): real Marberx API URL; debug builds use a demo backend.
-  return kDebugMode
-      ? DemoAccountApi(friendDays: config.friendDays)
-      : UnconfiguredAccountApi();
+  // TODO(question #25): real Marberx API URL. Until then, local demo so
+  // create / sign-in / redeem work without a generic server error.
+  return ref.watch(_demoAccountApiProvider);
 });
 
 /// Overridden in `main` with [SecureTokenStore].

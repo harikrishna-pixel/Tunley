@@ -723,11 +723,37 @@ class _EmptyFilesState extends ConsumerState<_EmptyFiles> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          shrink.name,
-                          style: text.subhead.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
+                        Row(
+                          children: [
+                            Flexible(
+                              child: Text(
+                                shrink.name,
+                                style: text.subhead.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: AppSpace.s8),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 6,
+                                vertical: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: colors.surface2,
+                                borderRadius: BorderRadius.circular(
+                                  AppRadius.badge,
+                                ),
+                              ),
+                              child: Text(
+                                l10n.adLabel,
+                                style: text.micro.copyWith(
+                                  color: colors.text3,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         Text(
                           shrink.pitch == null

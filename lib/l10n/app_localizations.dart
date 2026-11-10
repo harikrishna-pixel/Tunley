@@ -2283,6 +2283,42 @@ abstract class AppLocalizations {
   /// **'Debug'**
   String get settingsDebug;
 
+  /// No description provided for @debugUnlockPro.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock Pro (testing)'**
+  String get debugUnlockPro;
+
+  /// No description provided for @debugLockPro.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock Pro (testing)'**
+  String get debugLockPro;
+
+  /// No description provided for @editExitTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Exit?'**
+  String get editExitTitle;
+
+  /// No description provided for @editExitBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Current edits will not be saved. Are you sure you want to exit?'**
+  String get editExitBody;
+
+  /// No description provided for @editExitConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Exit'**
+  String get editExitConfirm;
+
+  /// No description provided for @editExitContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue Editing'**
+  String get editExitContinue;
+
   /// No description provided for @formatKbps.
   ///
   /// In en, this message translates to:
@@ -4530,7 +4566,7 @@ abstract class AppLocalizations {
   /// No description provided for @moreAppsIntro.
   ///
   /// In en, this message translates to:
-  /// **'Small, honest apps from the team behind Tunely. Free to try.'**
+  /// **'Other Marberx apps. Tap Get to open the App Store page.'**
   String get moreAppsIntro;
 
   /// No description provided for @moreAppsPicked.
@@ -4548,7 +4584,7 @@ abstract class AppLocalizations {
   /// No description provided for @moreAppsFooter.
   ///
   /// In en, this message translates to:
-  /// **'Opens the App Store. No tracking, no rewards for installs.'**
+  /// **'Get opens the App Store. Soon means that app’s listing isn’t linked yet. No tracking, no rewards for installs.'**
   String get moreAppsFooter;
 
   /// No description provided for @moreAppsSoon.
@@ -4556,6 +4592,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Soon'**
   String get moreAppsSoon;
+
+  /// No description provided for @adLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Ad'**
+  String get adLabel;
 
   /// No description provided for @moreAppsGet.
   ///
@@ -4566,7 +4608,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsMoreApps.
   ///
   /// In en, this message translates to:
-  /// **'More apps from Marberx'**
+  /// **'More Apps'**
   String get settingsMoreApps;
 
   /// No description provided for @houseCardEyebrow.
@@ -4626,7 +4668,7 @@ abstract class AppLocalizations {
   /// No description provided for @inviteBadge.
   ///
   /// In en, this message translates to:
-  /// **'Give 1 week · Get 1 week'**
+  /// **'Both get free credits'**
   String get inviteBadge;
 
   /// No description provided for @inviteTitle.
@@ -4650,7 +4692,7 @@ abstract class AppLocalizations {
   /// No description provided for @inviteStep3.
   ///
   /// In en, this message translates to:
-  /// **'You both get 1 week of Pro when your friend makes their first file'**
+  /// **'You both receive free credits when your friend makes their first file'**
   String get inviteStep3;
 
   /// No description provided for @inviteYourLink.
@@ -4758,8 +4800,50 @@ abstract class AppLocalizations {
   /// No description provided for @signUpSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Free. Used only for your invite link and rewards.'**
+  /// **'Create a free account to save your invite link and rewards.'**
   String get signUpSubtitle;
+
+  /// No description provided for @aboutTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'About Us'**
+  String get aboutTitle;
+
+  /// No description provided for @aboutTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Convert and manage your media files easily.'**
+  String get aboutTagline;
+
+  /// No description provided for @aboutVersion.
+  ///
+  /// In en, this message translates to:
+  /// **'Version {version}'**
+  String aboutVersion(String version);
+
+  /// No description provided for @aboutPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get aboutPrivacy;
+
+  /// No description provided for @aboutTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Use'**
+  String get aboutTerms;
+
+  /// No description provided for @aboutContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Us'**
+  String get aboutContact;
+
+  /// No description provided for @settingsAbout.
+  ///
+  /// In en, this message translates to:
+  /// **'About Us'**
+  String get settingsAbout;
 
   /// No description provided for @fieldFirstName.
   ///
@@ -4994,6 +5078,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Something went wrong on our side. Your details are still here, try again.'**
   String get accountServerError;
+
+  /// No description provided for @accountValidationError.
+  ///
+  /// In en, this message translates to:
+  /// **'Please check the highlighted fields and try again.'**
+  String get accountValidationError;
 
   /// No description provided for @tryAgain2.
   ///
@@ -5247,6 +5337,24 @@ abstract class AppLocalizations {
   /// **'This code isn\'t valid, or an invite was already used on this iPhone.'**
   String get redeemInvalid;
 
+  /// No description provided for @redeemValidCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Valid invite code'**
+  String get redeemValidCode;
+
+  /// No description provided for @redeemInvalidCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid invite code'**
+  String get redeemInvalidCode;
+
+  /// No description provided for @redeemCodeMaxLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite code can contain a maximum of 10 characters.'**
+  String get redeemCodeMaxLength;
+
   /// No description provided for @redeemCta.
   ///
   /// In en, this message translates to:
@@ -5316,7 +5424,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsInviteDetail.
   ///
   /// In en, this message translates to:
-  /// **'Get Pro free'**
+  /// **'Free credits'**
   String get settingsInviteDetail;
 
   /// No description provided for @settingsHaveCode.

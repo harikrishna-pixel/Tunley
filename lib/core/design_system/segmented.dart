@@ -11,6 +11,8 @@ class SegmentedItem<T> {
   final String label;
 }
 
+/// iOS-style segmented control with one sliding pill (no per-segment shadow
+/// flicker when the selection moves).
 class SegmentedControl<T> extends StatelessWidget {
   const SegmentedControl({
     super.key,
@@ -26,6 +28,10 @@ class SegmentedControl<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
+    final reduce = MediaQuery.disableAnimationsOf(context);
+    final duration = AppMotion.of(const Duration(milliseconds: 220), reduce);
+    final index = items.indexWhere((item) => item.value == value).clamp(0, items.length - 1);
+
     return DecoratedBox(
       decoration: BoxDecoration(
         color: colors.surface2,
@@ -33,74 +39,73 @@ class SegmentedControl<T> extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.all(AppSpace.s4),
-        child: Row(
-          children: [
-            for (final item in items)
-              Expanded(
-                child: _Segment(
-                  label: item.label,
-                  selected: item.value == value,
-                  onTap: () {
-                    if (item.value == value) {
-                      return;
-                    }
-                    HapticFeedback.selectionClick();
-                    onChanged(item.value);
-                  },
-                ),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final segmentWidth = constraints.maxWidth / items.length;
+            return SizedBox(
+              height: 36,
+              child: Stack(
+                children: [
+                  AnimatedPositioned(
+                    duration: duration,
+                    curve: Curves.easeOutCubic,
+                    left: segmentWidth * index,
+                    top: 0,
+                    width: segmentWidth,
+                    height: 36,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: colors.surface,
+                        borderRadius: BorderRadius.circular(AppRadius.chip),
+                        boxShadow: colors.shadow,
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      for (final item in items)
+                        Expanded(
+                          child: Semantics(
+                            button: true,
+                            selected: item.value == value,
+                            label: item.label,
+                            child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                onTap: () {
+                                  if (item.value == value) return;
+                                  HapticFeedback.selectionClick();
+                                  onChanged(item.value);
+                                },
+                                borderRadius: BorderRadius.circular(
+                                  AppRadius.chip,
+                                ),
+                                child: SizedBox(
+                                  height: 36,
+                                  child: Center(
+                                    child: AnimatedDefaultTextStyle(
+                                      duration: duration,
+                                      curve: Curves.easeOut,
+                                      style: context.appText.caption.copyWith(
+                                        color: item.value == value
+                                            ? colors.text
+                                            : colors.text3,
+                                        fontWeight: FontWeight.w800,
+                                      ),
+                                      child: Text(item.label),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ],
               ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _Segment extends StatelessWidget {
-  const _Segment({
-    required this.label,
-    required this.selected,
-    required this.onTap,
-  });
-
-  final String label;
-  final bool selected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    return Semantics(
-      button: true,
-      selected: selected,
-      label: label,
-      child: Material(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(AppRadius.chip),
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(AppRadius.chip),
-          child: AnimatedContainer(
-            duration: AppMotion.of(
-              const Duration(milliseconds: 180),
-              MediaQuery.disableAnimationsOf(context),
-            ),
-            curve: Curves.easeOut,
-            height: 36,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: selected ? colors.surface : colors.surface.withAlpha(0),
-              borderRadius: BorderRadius.circular(AppRadius.chip),
-              boxShadow: selected ? colors.shadow : null,
-            ),
-            child: Text(
-              label,
-              style: context.appText.caption.copyWith(
-                color: selected ? colors.text : colors.text3,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     );

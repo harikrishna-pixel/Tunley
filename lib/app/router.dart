@@ -29,6 +29,7 @@ import 'monetization.dart';
 import '../features/onboarding/onboarding_screen.dart';
 import '../features/preferences/preferences_screen.dart';
 import '../features/ringtone_guide/ringtone_guide_screen.dart';
+import '../features/settings/about_screen.dart';
 import '../features/settings/settings_screen.dart';
 import '../features/trim/trim_screen.dart';
 import 'shell.dart';
@@ -159,6 +160,7 @@ GoRouter createRouter({bool onboarded = true}) {
       ),
       _push('/account/delete', (_) => const DeleteAccountScreen()),
       _push('/preferences', (_) => const PreferencesScreen()),
+      _push('/about', (_) => const AboutScreen()),
       _push(
         '/help',
         (state) => HelpScreen(initialSlug: state.extra as String?),
@@ -174,11 +176,20 @@ GoRouter createRouter({bool onboarded = true}) {
           intent: state.extra as PickerIntent? ?? const PickerIntent(),
         ),
       ),
+      _push('/convert', (_) => const ConvertScreen()),
       _push(
-        '/convert',
-        (state) => ConvertScreen(openTrim: state.extra as bool? ?? false),
+        '/trim',
+        (state) {
+          final extra = state.extra;
+          final args = extra is TrimRouteArgs
+              ? extra
+              : TrimRouteArgs(asEntry: extra == true);
+          return TrimScreen(
+            asEntry: args.asEntry,
+            focusBoost: args.focusBoost,
+          );
+        },
       ),
-      _push('/trim', (_) => const TrimScreen()),
       _push('/merge', (_) => const MergeScreen()),
       _push('/batch', (_) => const BatchScreen()),
       GoRoute(

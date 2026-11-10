@@ -2,7 +2,8 @@ import PhotosUI
 import UIKit
 import UniformTypeIdentifiers
 
-/// PHPicker for videos. Needs no Photos permission; each pick is copied into `tmp/Tunely/picked/`.
+/// PHPicker for videos. Needs no Photos permission; each pick is copied into
+/// `Documents/Picked/` so the grid still shows them after a relaunch.
 final class VideoPicker: NSObject, PHPickerViewControllerDelegate {
   private var completion: ((Result<[URL], EngineError>) -> Void)?
 
@@ -32,7 +33,8 @@ final class VideoPicker: NSObject, PHPickerViewControllerDelegate {
 
     let dir: URL
     do {
-      dir = try Storage.freshTempDir("picked")
+      try Storage.ensureDir(Storage.pickedDir)
+      dir = Storage.pickedDir
     } catch {
       completion(.failure(EngineError.from(error)))
       return

@@ -355,7 +355,17 @@ class HttpAccountApi implements AccountApi {
 /// one redemption per device, no self-referral.
 class DemoAccountApi implements AccountApi {
   DemoAccountApi({this.friendDays = 7, math.Random? random})
-    : _random = random ?? math.Random();
+    : _random = random ?? math.Random() {
+    // Known code for local testing when no friend has signed up yet.
+    _users['demo@tunely.app'] = _DemoUser(
+      id: 'demo',
+      firstName: 'Alex',
+      lastName: 'Friend',
+      email: 'demo@tunely.app',
+      password: 'DemoPass1!',
+      code: 'DEMOCODE',
+    )..verified = true;
+  }
 
   final int friendDays;
   final math.Random _random;

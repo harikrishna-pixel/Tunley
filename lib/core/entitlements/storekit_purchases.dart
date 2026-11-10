@@ -55,7 +55,17 @@ class StoreKitPurchases implements PurchasesService {
       if (await _store.isAvailable()) {
         await _loadProducts();
         final loaded = await _fromStore(offering);
-        if (loaded.isNotEmpty || !kDebugMode) return loaded;
+        final usable =
+            offering != OfferingId.main ||
+            loaded.any((plan) => plan.kind == PlanKind.yearly);
+        if (loaded.isNotEmpty && usable) return loaded;
+        // Partial / empty store response (common with `flutter run`, which
+        // does not attach the Xcode StoreKit config): use demo in debug.
+        if (kDebugMode) {
+          _usingDemo = true;
+          return await _demo.plans(offering);
+        }
+        return loaded;
       }
     } on Object {
       // Simulator without StoreKit config: show local plans in debug.
@@ -115,14 +125,40 @@ class StoreKitPurchases implements PurchasesService {
   Future<RestoreOutcome> restore() async {
     if (_usingDemo) return _demo.restore();
     try {
-      if (!await _store.isAvailable()) return RestoreOutcome.offline;
-      await SK2Transaction.restorePurchases();
+      // Do not gate on isAvailable() — it can be false while online and
+      // wrongly show the offline dialog. Always ask StoreKit, then report
+      // restored / none from current entitlements.
+      try {
+        await SK2Transaction.restorePurchases();
+      } on Object {
+        // Fall through to the plugin restore.
+      }
+      try {
+        await _store.restorePurchases();
+      } on Object {
+        // Entitlements below still decide the result.
+      }
       await _refreshEntitlement();
       return _current.isPro ? RestoreOutcome.restored : RestoreOutcome.none;
     } on PlatformException catch (error) {
+      await _refreshEntitlement();
+      if (_current.isPro) return RestoreOutcome.restored;
       return _offline(error) ? RestoreOutcome.offline : RestoreOutcome.failed;
     } on Object {
+      await _refreshEntitlement();
+      if (_current.isPro) return RestoreOutcome.restored;
       return RestoreOutcome.failed;
+    }
+  }
+
+  @override
+  Future<void> setDebugPro(bool enabled) async {
+    if (!kDebugMode) return;
+    _usingDemo = true;
+    await _demo.setDebugPro(enabled);
+    if (!enabled) {
+      _usingDemo = false;
+      _changes.add(_current);
     }
   }
 
@@ -159,20 +195,28 @@ class StoreKitPurchases implements PurchasesService {
   }
 
   Future<StorePlan?> _plan(PlanKind kind) async {
-    final id = switch (kind) {
-      PlanKind.weekly => ProductIds.weekly,
-      PlanKind.yearly || PlanKind.winBack => ProductIds.yearly,
-      PlanKind.lifetime => ProductIds.lifetime,
-      PlanKind.exit => ProductIds.exit,
-    };
+    final ids = ProductIds.aliases(kind);
+    final id = ids.firstWhere(
+      (candidate) => _products.containsKey(candidate),
+      orElse: () => ProductIds.canonical(kind),
+    );
     final product = _products[id];
     if (product == null) return null;
-    final intro = _sk1[id]?.introductoryPrice;
+    SKProductDiscountWrapper? intro = _sk1[id]?.introductoryPrice;
+    if (intro == null) {
+      for (final alias in ids) {
+        intro = _sk1[alias]?.introductoryPrice;
+        if (intro != null) break;
+      }
+    }
     final eligible = intro != null && await _introEligible(id);
+    // Free trial belongs on Yearly only; Weekly never gets trial copy.
     final trial =
+        kind == PlanKind.yearly &&
         intro != null &&
         intro.paymentMode == SKProductDiscountPaymentMode.freeTrail;
     final paidIntro =
+        (kind == PlanKind.exit || kind == PlanKind.winBack) &&
         intro != null &&
         intro.paymentMode != SKProductDiscountPaymentMode.freeTrail;
     return StorePlan(
@@ -186,12 +230,13 @@ class StoreKitPurchases implements PurchasesService {
       introPriceString: paidIntro && eligible
           ? _format(product, _amount(intro.price))
           : null,
-      introEligible: eligible,
+      introEligible: (trial || paidIntro) && eligible,
     );
   }
 
   Future<StorePlan?> _winBack() async {
-    final product = _products[ProductIds.yearly];
+    final product =
+        _products[ProductIds.yearly] ?? _products[ProductIds.yearlyShort];
     if (product is! AppStoreProduct2Details) return null;
     final offers =
         product.sk2Product.subscription?.promotionalOffers ?? const [];
@@ -366,7 +411,13 @@ class StoreKitPurchases implements PurchasesService {
   }
 
   static bool _offline(PlatformException error) {
-    final code = '${error.code} ${error.message ?? ''}'.toLowerCase();
-    return code.contains('network') || code.contains('offline');
+    final code = error.code.toLowerCase();
+    final message = (error.message ?? '').toLowerCase();
+    // Only clear connectivity failures — not generic StoreKit errors.
+    return code == 'storekit_network_error' ||
+        code == 'billing_unavailable' ||
+        message.contains('network connection was lost') ||
+        message.contains('the internet connection appears to be offline') ||
+        message.contains('not connected to the internet');
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ import 'core/entitlements/purchases.dart';
 import 'core/entitlements/storekit_purchases.dart';
 import 'core/library/app_database.dart';
 import 'core/library/app_paths.dart';
+import 'core/library/picked_store.dart';
 import 'core/library/preferences_store.dart';
 import 'core/library/usage_store.dart';
 import 'core/notifications/trial_reminder.dart';
@@ -47,6 +49,7 @@ Future<void> main() async {
   final freeLimit = await UsageStore(db).readFreeLimit(DateTime.now());
   final sharedPrefs = await SharedPreferences.getInstance();
   final prefsStore = PreferencesStore(sharedPrefs);
+  final pickedStore = PickedStore(sharedPrefs, paths);
   final purchases = _purchasesService();
   await purchases.init();
   final reminder = LocalTrialReminder();
@@ -61,6 +64,7 @@ Future<void> main() async {
       appDatabaseProvider.overrideWithValue(db),
       initialFreeLimitProvider.overrideWithValue(freeLimit),
       preferencesStoreProvider.overrideWithValue(prefsStore),
+      pickedStoreProvider.overrideWithValue(pickedStore),
       purchasesServiceProvider.overrideWithValue(purchases),
       paywallStoreProvider.overrideWithValue(PaywallStore(sharedPrefs)),
       trialReminderProvider.overrideWithValue(reminder),
@@ -81,6 +85,39 @@ Future<void> main() async {
   analytics.appOpened(
     source: await reminder.openedFromReminder ? 'notification' : 'icon',
   );
+  unawaited(() async {
+    try {
+      final engine = container.read(audioEngineProvider);
+      final restored = <SourceFile>[];
+      for (final entry in pickedStore.read()) {
+        if (!await File(entry.path).exists()) continue;
+        try {
+          final info = await engine.inspect(entry.path);
+          final thumb =
+              info.hasVideo ? await engine.thumbnail(entry.path) : null;
+          restored.add(
+            SourceFile(
+              path: entry.path,
+              name: entry.name.isEmpty
+                  ? entry.path.split('/').last
+                  : entry.name,
+              info: info,
+              thumbnailPath: thumb,
+            ),
+          );
+        } on Object {
+          // Drop unreadable leftovers.
+        }
+      }
+      if (restored.isEmpty) return;
+      container.read(pickedSourcesProvider.notifier).replaceAll(restored);
+      await pickedStore.write([
+        for (final s in restored) (path: s.path, name: s.name),
+      ]);
+    } on Object {
+      // Keep going if a leftover can't be inspected.
+    }
+  }());
 
   DateTime? backgroundedAt;
   AppLifecycleListener(

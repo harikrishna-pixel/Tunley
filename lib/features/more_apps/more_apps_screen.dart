@@ -91,9 +91,29 @@ class _MoreAppsScreenState extends ConsumerState<MoreAppsScreen> {
 
     Widget get(MoreApp app, int position, {required bool primary}) {
       final enabled = app.hasStoreId;
+      // Get = CTA to the App Store. Soon = info chip until the App Store ID
+      // is set in app_config.json (not a tappable button).
+      if (!enabled) {
+        return Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpace.s12,
+            vertical: AppSpace.s8,
+          ),
+          decoration: BoxDecoration(
+            color: colors.surface2,
+            borderRadius: BorderRadius.circular(AppRadius.proChip),
+          ),
+          child: Text(
+            l10n.moreAppsSoon,
+            style: text.caption.copyWith(
+              fontWeight: FontWeight.w700,
+              color: colors.text3,
+            ),
+          ),
+        );
+      }
       return Semantics(
         button: true,
-        enabled: enabled,
         label: l10n.moreAppsGet(app.name),
         excludeSemantics: true,
         child: Material(
@@ -101,14 +121,12 @@ class _MoreAppsScreenState extends ConsumerState<MoreAppsScreen> {
           borderRadius: BorderRadius.circular(AppRadius.proChip),
           child: InkWell(
             borderRadius: BorderRadius.circular(AppRadius.proChip),
-            onTap: enabled
-                ? () => openMarberxApp(
-                    ref,
-                    app,
-                    screen: 'more_apps',
-                    position: position,
-                  )
-                : null,
+            onTap: () => openMarberxApp(
+              ref,
+              app,
+              screen: 'more_apps',
+              position: position,
+            ),
             child: ConstrainedBox(
               constraints: const BoxConstraints(minWidth: 64, minHeight: 40),
               child: Padding(
@@ -116,7 +134,7 @@ class _MoreAppsScreenState extends ConsumerState<MoreAppsScreen> {
                 child: Center(
                   widthFactor: 1,
                   child: Text(
-                    enabled ? l10n.get : l10n.moreAppsSoon,
+                    l10n.get,
                     style: text.subhead.copyWith(
                       fontWeight: FontWeight.w800,
                       color: primary ? colors.accentText : colors.accentOnSoft,

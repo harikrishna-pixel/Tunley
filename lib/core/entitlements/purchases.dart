@@ -4,13 +4,43 @@ import 'dart:async';
 enum PlanKind { yearly, weekly, lifetime, exit, winBack }
 
 /// App Store Connect product IDs for the Flutter paywall.
+/// Prefixed IDs are canonical; short IDs are accepted if the dashboard
+/// was set up with them first.
 abstract final class ProductIds {
   static const weekly = 'com.marberx.audioconverter.pro.weekly';
   static const yearly = 'com.marberx.audioconverter.pro.yearly';
   static const lifetime = 'com.marberx.audioconverter.pro.lifetime';
   static const exit = 'com.marberx.audioconverter.pro.yearly.exit';
 
-  static const all = {weekly, yearly, lifetime, exit};
+  static const weeklyShort = 'audioconverter.pro.weekly';
+  static const yearlyShort = 'audioconverter.pro.yearly';
+  static const lifetimeShort = 'audioconverter.pro.lifetime';
+  static const exitShort = 'audioconverter.pro.yearly.exit';
+
+  static const all = {
+    weekly,
+    yearly,
+    lifetime,
+    exit,
+    weeklyShort,
+    yearlyShort,
+    lifetimeShort,
+    exitShort,
+  };
+
+  static String canonical(PlanKind kind) => switch (kind) {
+    PlanKind.weekly => weekly,
+    PlanKind.yearly || PlanKind.winBack => yearly,
+    PlanKind.lifetime => lifetime,
+    PlanKind.exit => exit,
+  };
+
+  static List<String> aliases(PlanKind kind) => switch (kind) {
+    PlanKind.weekly => const [weekly, weeklyShort],
+    PlanKind.yearly || PlanKind.winBack => const [yearly, yearlyShort],
+    PlanKind.lifetime => const [lifetime, lifetimeShort],
+    PlanKind.exit => const [exit, exitShort],
+  };
 }
 
 /// One purchasable plan with the store's own localized prices.
@@ -43,7 +73,9 @@ class StorePlan {
   /// From `checkTrialOrIntroductoryPriceEligibility` before every paywall.
   final bool introEligible;
 
-  bool get showsTrial => trialDays != null && introEligible;
+  /// Free trial is Yearly only (`07`); Weekly / Lifetime never show trial copy.
+  bool get showsTrial =>
+      kind == PlanKind.yearly && trialDays != null && introEligible;
 }
 
 enum OfferingId { main, exit, winBack }
@@ -102,6 +134,9 @@ abstract class PurchasesService {
 
   /// Optional account link. StoreKit ignores this; Pro stays with the Apple ID.
   Future<void> logIn(String accountId);
+
+  /// Debug / widget-test only. Production callers no-op unless overridden.
+  Future<void> setDebugPro(bool enabled) async {}
 }
 
 /// Nothing to sell (tests, or the store is unreachable).
@@ -130,6 +165,9 @@ class UnavailablePurchasesService implements PurchasesService {
 
   @override
   Future<void> logIn(String accountId) async {}
+
+  @override
+  Future<void> setDebugPro(bool enabled) async {}
 }
 
 /// Widget-test stand-in. The running app uses StoreKit (`StoreKitPurchases`).
@@ -236,4 +274,16 @@ class DemoPurchasesService implements PurchasesService {
   @override
   Future<RestoreOutcome> restore() async =>
       _current.isPro ? RestoreOutcome.restored : RestoreOutcome.none;
+
+  @override
+  Future<void> setDebugPro(bool enabled) async {
+    if (enabled) {
+      final plans = await this.plans(OfferingId.main);
+      final life = plans.firstWhere((p) => p.kind == PlanKind.lifetime);
+      await purchase(life);
+    } else {
+      _current = Entitlement.free;
+      _changes.add(_current);
+    }
+  }
 }

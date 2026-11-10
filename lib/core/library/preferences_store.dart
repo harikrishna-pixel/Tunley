@@ -7,7 +7,7 @@ import '../rules/personalization.dart';
 class UserPrefs {
   const UserPrefs({
     required this.onboardingDone,
-    required this.goal,
+    required this.goals,
     required this.frequency,
     required this.defaultFormat,
     required this.defaultKbps,
@@ -16,14 +16,17 @@ class UserPrefs {
 
   static const initial = UserPrefs(
     onboardingDone: false,
-    goal: UserGoal.ringtones,
+    goals: {},
     frequency: UsageFrequency.fewTimesAWeek,
     defaultFormat: OutFormat.mp3,
     defaultKbps: 256,
   );
 
   final bool onboardingDone;
-  final UserGoal goal;
+
+  /// One or more goals from O2 (multi-select). [goal] is the primary for
+  /// personalisation (hero, paywall header).
+  final Set<UserGoal> goals;
   final UsageFrequency frequency;
   final OutFormat defaultFormat;
   final int defaultKbps;
@@ -31,9 +34,21 @@ class UserPrefs {
   /// Last audio format converted to ("Convert files" goal starts from it).
   final OutFormat? lastFormat;
 
+  /// Primary goal: first match in product order among the selected set.
+  UserGoal get goal {
+    for (final candidate in const [
+      UserGoal.ringtones,
+      UserGoal.mp3FromVideos,
+      UserGoal.convertFiles,
+    ]) {
+      if (goals.contains(candidate)) return candidate;
+    }
+    return UserGoal.ringtones;
+  }
+
   UserPrefs copyWith({
     bool? onboardingDone,
-    UserGoal? goal,
+    Set<UserGoal>? goals,
     UsageFrequency? frequency,
     OutFormat? defaultFormat,
     int? defaultKbps,
@@ -41,7 +56,7 @@ class UserPrefs {
   }) {
     return UserPrefs(
       onboardingDone: onboardingDone ?? this.onboardingDone,
-      goal: goal ?? this.goal,
+      goals: goals ?? this.goals,
       frequency: frequency ?? this.frequency,
       defaultFormat: defaultFormat ?? this.defaultFormat,
       defaultKbps: defaultKbps ?? this.defaultKbps,
@@ -57,6 +72,7 @@ class PreferencesStore {
 
   static const _onboarding = 'onboarding_done';
   static const _goal = 'goal';
+  static const _goals = 'goals';
   static const _frequency = 'frequency';
   static const _format = 'default_format';
   static const _kbps = 'default_kbps';
@@ -67,12 +83,27 @@ class PreferencesStore {
     return values.where((v) => v.name == raw).firstOrNull ?? fallback;
   }
 
+  Set<UserGoal> _readGoals() {
+    final raw = _prefs.getStringList(_goals);
+    if (raw != null) {
+      return {
+        for (final name in raw)
+          ...UserGoal.values.where((goal) => goal.name == name),
+      };
+    }
+    // Older builds stored a single `goal` string.
+    if (_prefs.containsKey(_goal)) {
+      return {_enum(UserGoal.values, _goal, UserGoal.ringtones)};
+    }
+    return {};
+  }
+
   UserPrefs read() {
     const d = UserPrefs.initial;
     final last = _prefs.getString(_last);
     return UserPrefs(
       onboardingDone: _prefs.getBool(_onboarding) ?? false,
-      goal: _enum(UserGoal.values, _goal, d.goal),
+      goals: _readGoals(),
       frequency: _enum(UsageFrequency.values, _frequency, d.frequency),
       defaultFormat: _enum(OutFormat.values, _format, d.defaultFormat),
       defaultKbps: _prefs.getInt(_kbps) ?? d.defaultKbps,
@@ -82,7 +113,17 @@ class PreferencesStore {
 
   Future<void> write(UserPrefs prefs) async {
     await _prefs.setBool(_onboarding, prefs.onboardingDone);
-    await _prefs.setString(_goal, prefs.goal.name);
+    await _prefs.setStringList(
+      _goals,
+      prefs.goals.map((goal) => goal.name).toList(),
+    );
+    // Only persist the legacy single-goal key once a goal is chosen, so O2
+    // never comes back with a default selection from the fallback.
+    if (prefs.goals.isEmpty) {
+      await _prefs.remove(_goal);
+    } else {
+      await _prefs.setString(_goal, prefs.goal.name);
+    }
     await _prefs.setString(_frequency, prefs.frequency.name);
     await _prefs.setString(_format, prefs.defaultFormat.name);
     await _prefs.setInt(_kbps, prefs.defaultKbps);

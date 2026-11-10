@@ -11,6 +11,12 @@ enum Storage {
     return docs.appendingPathComponent("Library", isDirectory: true)
   }
 
+  /// Durable copies of videos/audio the user picked (survive relaunch).
+  static var pickedDir: URL {
+    let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    return docs.appendingPathComponent("Picked", isDirectory: true)
+  }
+
   static var cacheDir: URL {
     let caches = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
     return caches.appendingPathComponent("Tunely", isDirectory: true)

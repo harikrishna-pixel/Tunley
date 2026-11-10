@@ -52,9 +52,12 @@ class HeroCard extends StatelessWidget {
                 children: [
                   if (hasMedia)
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _Thumb(path: thumbnailPath, tag: thumbnailTag),
-                        const SizedBox(width: AppSpace.s14),
+                        if (thumbnailPath != null) ...[
+                          _Thumb(path: thumbnailPath, tag: thumbnailTag),
+                          const SizedBox(width: AppSpace.s14),
+                        ],
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,

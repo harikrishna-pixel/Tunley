@@ -150,113 +150,162 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
       },
       child: Scaffold(
         backgroundColor: colors.bg,
-        body: Column(
+        body: Stack(
           children: [
-            // The header scrolls with the plans so 200% text never clips.
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.only(bottom: AppSpace.s16),
-                children: [
-                  _Header(title: header, benefits: benefits, onClose: _close),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                      AppSpace.screen,
-                      AppSpace.s20,
-                      AppSpace.screen,
-                      0,
+            Column(
+              children: [
+                // Header scrolls with plans so 200% text never clips.
+                Expanded(
+                  child: ListView(
+                    padding: const EdgeInsets.only(bottom: AppSpace.s16),
+                    children: [
+                      _Header(title: header, benefits: benefits),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(
+                          AppSpace.screen,
+                          AppSpace.s20,
+                          AppSpace.screen,
+                          0,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            if (plansAsync.isLoading)
+                              Padding(
+                                padding: const EdgeInsets.all(AppSpace.s24),
+                                child: Text(
+                                  l10n.pwLoading,
+                                  textAlign: TextAlign.center,
+                                  style: text.caption.copyWith(
+                                    color: colors.text2,
+                                  ),
+                                ),
+                              )
+                            else if (yearly == null)
+                              StatusBox(
+                                message: l10n.pwUnavailable,
+                                tone: StatusTone.warn,
+                              )
+                            else ...[
+                              if (yearly.showsTrial) ...[
+                                _Timeline(yearly: yearly),
+                                const SizedBox(height: AppSpace.s16),
+                              ],
+                              for (final kind in order)
+                                if (plan(kind) case final p?) ...[
+                                  _PlanCard(
+                                    plan: p,
+                                    weekly: weekly,
+                                    selected: _selected == kind,
+                                    onTap: () {
+                                      setState(() => _selected = kind);
+                                      ref
+                                          .read(analyticsProvider)
+                                          .planSelected(
+                                            plan: AnalyticsValues.planKind(
+                                              kind,
+                                            ),
+                                            trigger: _trigger,
+                                          );
+                                    },
+                                  ),
+                                  const SizedBox(height: AppSpace.s12),
+                                ],
+                            ],
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SafeArea(
+                  top: false,
+                  minimum: const EdgeInsets.only(bottom: AppSpace.s8),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpace.screen,
                     ),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        if (plansAsync.isLoading)
-                          Padding(
-                            padding: const EdgeInsets.all(AppSpace.s24),
-                            child: Text(
-                              l10n.pwLoading,
-                              textAlign: TextAlign.center,
-                              style: text.caption.copyWith(color: colors.text2),
-                            ),
-                          )
-                        else if (yearly == null)
-                          StatusBox(
-                            message: l10n.pwUnavailable,
-                            tone: StatusTone.warn,
-                          )
-                        else ...[
-                          if (yearly.showsTrial) ...[
-                            _Timeline(yearly: yearly),
-                            const SizedBox(height: AppSpace.s16),
-                          ],
-                          for (final kind in order)
-                            if (plan(kind) case final p?) ...[
-                              _PlanCard(
-                                plan: p,
-                                weekly: weekly,
-                                selected: _selected == kind,
-                                onTap: () {
-                                  setState(() => _selected = kind);
-                                  ref
-                                      .read(analyticsProvider)
-                                      .planSelected(
-                                        plan: AnalyticsValues.planKind(kind),
-                                        trigger: _trigger,
-                                      );
-                                },
-                              ),
-                              const SizedBox(height: AppSpace.s12),
-                            ],
+                        if (yearly != null) ...[
+                          Text(
+                            terms(),
+                            textAlign: TextAlign.center,
+                            style: text.caption.copyWith(color: colors.text2),
+                          ),
+                          const SizedBox(height: AppSpace.s10),
+                          PrimaryButton(
+                            label: cta,
+                            onPressed: selected == null || _busy
+                                ? null
+                                : () => _buy(selected),
+                          ),
                         ],
+                        Wrap(
+                          alignment: WrapAlignment.center,
+                          children: [
+                            TextLinkButton(
+                              label: l10n.pwRestore,
+                              muted: true,
+                              onPressed: () => restorePurchases(context, ref),
+                            ),
+                            TextLinkButton(
+                              label: l10n.settingsTerms,
+                              muted: true,
+                              onPressed: () => ref
+                                  .read(audioEngineProvider)
+                                  .openUrl(termsUrl),
+                            ),
+                            TextLinkButton(
+                              label: l10n.settingsPrivacy,
+                              muted: true,
+                              onPressed: () => ref
+                                  .read(audioEngineProvider)
+                                  .openUrl(privacyUrl),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
-                ],
-              ),
-            ),
-            SafeArea(
-              top: false,
-              minimum: const EdgeInsets.only(bottom: AppSpace.s8),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpace.screen,
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      terms(),
-                      textAlign: TextAlign.center,
-                      style: text.caption.copyWith(color: colors.text2),
-                    ),
-                    const SizedBox(height: AppSpace.s10),
-                    PrimaryButton(
-                      label: cta,
-                      onPressed: selected == null || _busy
-                          ? null
-                          : () => _buy(selected),
-                    ),
-                    Wrap(
-                      alignment: WrapAlignment.center,
-                      children: [
-                        TextLinkButton(
-                          label: l10n.pwRestore,
-                          muted: true,
-                          onPressed: () => restorePurchases(context, ref),
+              ],
+            ),
+            // Close stays pinned top-right (does not scroll away).
+            Positioned(
+              top: 0,
+              right: 0,
+              child: SafeArea(
+                bottom: false,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    top: AppSpace.s8,
+                    right: AppSpace.s8,
+                  ),
+                  child: Semantics(
+                    container: true,
+                    button: true,
+                    label: l10n.close,
+                    child: Material(
+                      color: colors.surface.withValues(alpha: 0.92),
+                      shape: const CircleBorder(),
+                      elevation: 1,
+                      child: InkResponse(
+                        onTap: _close,
+                        radius: 24,
+                        child: SizedBox(
+                          width: 44,
+                          height: 44,
+                          child: PhosphorIcon(
+                            PhosphorIcons.x(PhosphorIconsStyle.bold),
+                            color: colors.text,
+                            size: 22,
+                          ),
                         ),
-                        TextLinkButton(
-                          label: l10n.settingsTerms,
-                          muted: true,
-                          onPressed: () =>
-                              ref.read(audioEngineProvider).openUrl(termsUrl),
-                        ),
-                        TextLinkButton(
-                          label: l10n.settingsPrivacy,
-                          muted: true,
-                          onPressed: () =>
-                              ref.read(audioEngineProvider).openUrl(privacyUrl),
-                        ),
-                      ],
+                      ),
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),
@@ -268,15 +317,10 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
 }
 
 class _Header extends StatelessWidget {
-  const _Header({
-    required this.title,
-    required this.benefits,
-    required this.onClose,
-  });
+  const _Header({required this.title, required this.benefits});
 
   final String title;
   final List<String> benefits;
-  final VoidCallback onClose;
 
   @override
   Widget build(BuildContext context) {
@@ -365,25 +409,8 @@ class _Header extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const Spacer(),
-                    Semantics(
-                      container: true,
-                      button: true,
-                      label: l10n.close,
-                      child: InkResponse(
-                        onTap: onClose,
-                        radius: 24,
-                        child: SizedBox(
-                          width: 44,
-                          height: 44,
-                          child: PhosphorIcon(
-                            PhosphorIcons.x(PhosphorIconsStyle.bold),
-                            color: colors.heroText,
-                            size: 22,
-                          ),
-                        ),
-                      ),
-                    ),
+                    // Room for the pinned close button overlay.
+                    const SizedBox(width: 52),
                   ],
                 ),
                 const SizedBox(height: AppSpace.s12),
