@@ -20,9 +20,8 @@ import '../paywall/checkout.dart';
 import '../paywall/paywall_screen.dart';
 import '../paywall/pro_gate.dart';
 
-// TODO(question #11): confirm the published URLs.
-const termsUrl = 'https://marberx.com/tunely/terms';
-const privacyUrl = 'https://marberx.com/tunely/privacy';
+const termsUrl = 'https://marberx.com/apps_terms_conditions.html';
+const privacyUrl = 'https://marberx.com/apps_privacy_policy.html';
 const manageSubscriptionsUrl = 'https://apps.apple.com/account/subscriptions';
 
 final _folderNameProvider = FutureProvider.autoDispose<String?>((ref) async {

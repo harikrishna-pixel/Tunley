@@ -82,20 +82,12 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   bool _busy = false;
   AccountError? _error;
 
-  /// Random tail for the live preview; the server makes the real code.
-  final String _tail = ReferralCode.suggest('').substring(4);
-
   @override
   void dispose() {
     for (final c in [_first, _last, _email, _password]) {
       c.dispose();
     }
     super.dispose();
-  }
-
-  String get _preview {
-    final name = ReferralCode.namePart(_first.text);
-    return name.length < 2 ? 'TUNE$_tail' : '$name${_tail.substring(0, 2)}';
   }
 
   Future<void> _submit() async {
@@ -192,30 +184,6 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
             autofillHints: const [AutofillHints.newPassword],
             onChanged: (_) => setState(() {}),
             onSubmitted: (_) => _submit(),
-          ),
-          const SizedBox(height: AppSpace.s16),
-          Container(
-            padding: const EdgeInsets.all(AppSpace.s16),
-            decoration: BoxDecoration(
-              color: colors.accentSoft,
-              borderRadius: BorderRadius.circular(AppRadius.card),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  l10n.signUpCodePreview,
-                  style: text.caption.copyWith(
-                    color: colors.accentOnSoft,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                Text(
-                  _preview,
-                  style: text.navTitle.copyWith(letterSpacing: 1),
-                ),
-              ],
-            ),
           ),
         ],
         footer: [

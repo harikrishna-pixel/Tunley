@@ -30,8 +30,6 @@ class HomeScreen extends ConsumerWidget {
     ref.watch(freeLimitProvider);
     final freeLimit = ref.read(freeLimitProvider.notifier);
     final recent = ref.watch(recentItemsProvider).value ?? const [];
-    final picked = ref.watch(pickedSourcesProvider);
-    final heroVideo = picked.where((s) => s.isVideo).firstOrNull;
 
     void openPicker(PickerIntent intent) =>
         context.push('/pick', extra: intent);
@@ -208,10 +206,8 @@ class HomeScreen extends ConsumerWidget {
           title: heroTitle,
           buttonLabel: heroCta,
           buttonIcon: heroIcon,
-          thumbnailPath: heroVideo?.thumbnailPath,
-          thumbnailTag: heroVideo == null
-              ? null
-              : Fmt.duration(heroVideo.info.durationSec),
+          // Home hero stays the default CTA art — imported picks must not
+          // appear here as a blank duration thumb (Janaki #65).
           showBars: true,
           onPressed: () {
             select(switch (goal) {

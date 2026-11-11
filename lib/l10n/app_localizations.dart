@@ -4566,7 +4566,7 @@ abstract class AppLocalizations {
   /// No description provided for @moreAppsIntro.
   ///
   /// In en, this message translates to:
-  /// **'Other Marberx apps. Tap Get to open the App Store page.'**
+  /// **'Other Marberx apps. Get opens the App Store; Soon means the listing isn’t linked yet.'**
   String get moreAppsIntro;
 
   /// No description provided for @moreAppsPicked.

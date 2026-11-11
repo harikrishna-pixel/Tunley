@@ -89,42 +89,50 @@ class _FeatureSheet extends ConsumerWidget {
     final plans = ref.watch(plansProvider(OfferingId.main)).value;
     final yearly = plans?.where((p) => p.kind == PlanKind.yearly).firstOrNull;
     final trial = yearly?.showsTrial ?? false;
+    final title = isFormat
+        ? l10n.p2FormatTitle(feature)
+        : l10n.p2FeatureTitle(feature);
+    final subtitle = detail ?? l10n.p2DetailPro;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 56,
-              height: 56,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                gradient: colors.heroGradient,
-                borderRadius: BorderRadius.circular(AppRadius.row),
-              ),
-              child: PhosphorIcon(
-                isFormat
-                    ? PhosphorIcons.fileAudio()
-                    : PhosphorIcons.crown(PhosphorIconsStyle.fill),
-                color: isFormat ? colors.heroText : colors.gold,
-                size: 26,
-              ),
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Container(
+                  width: 64,
+                  height: 64,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    gradient: colors.heroGradient,
+                    borderRadius: BorderRadius.circular(AppRadius.hero),
+                    boxShadow: colors.shadow,
+                  ),
+                  child: PhosphorIcon(
+                    isFormat
+                        ? PhosphorIcons.fileAudio(PhosphorIconsStyle.fill)
+                        : PhosphorIcons.crown(PhosphorIconsStyle.fill),
+                    color: colors.heroText,
+                    size: 30,
+                  ),
+                ),
+                const Positioned(top: -4, right: -4, child: ProBadge()),
+              ],
             ),
             const SizedBox(width: AppSpace.s14),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text(title, style: text.dialogTitle),
+                  const SizedBox(height: AppSpace.s4),
                   Text(
-                    isFormat
-                        ? l10n.p2FormatTitle(feature)
-                        : l10n.p2FeatureTitle(feature),
-                    style: text.dialogTitle,
-                  ),
-                  Text(
-                    detail ?? l10n.p2DetailPro,
-                    style: text.caption.copyWith(color: colors.text2),
+                    subtitle,
+                    style: text.body.copyWith(color: colors.text2),
                   ),
                 ],
               ),
@@ -137,6 +145,7 @@ class _FeatureSheet extends ConsumerWidget {
           decoration: BoxDecoration(
             color: colors.surface2,
             borderRadius: BorderRadius.circular(AppRadius.row),
+            border: Border.all(color: colors.border),
           ),
           child: Column(
             children: [
@@ -146,22 +155,70 @@ class _FeatureSheet extends ConsumerWidget {
                 l10n.p2Benefit3,
               ])
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: AppSpace.s4),
+                  padding: const EdgeInsets.symmetric(vertical: AppSpace.s6),
                   child: Row(
                     children: [
-                      PhosphorIcon(
-                        PhosphorIcons.checkCircle(PhosphorIconsStyle.fill),
-                        color: colors.success,
-                        size: 20,
+                      Container(
+                        width: 28,
+                        height: 28,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: colors.successSoft,
+                          shape: BoxShape.circle,
+                        ),
+                        child: PhosphorIcon(
+                          PhosphorIcons.check(PhosphorIconsStyle.bold),
+                          color: colors.success,
+                          size: 14,
+                        ),
                       ),
-                      const SizedBox(width: AppSpace.s10),
-                      Expanded(child: Text(benefit, style: text.subhead)),
+                      const SizedBox(width: AppSpace.s12),
+                      Expanded(
+                        child: Text(
+                          benefit,
+                          style: text.subhead.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
             ],
           ),
         ),
+        if (trial && yearly?.trialDays != null) ...[
+          const SizedBox(height: AppSpace.s12),
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpace.s14,
+              vertical: AppSpace.s12,
+            ),
+            decoration: BoxDecoration(
+              color: colors.accentSoft,
+              borderRadius: BorderRadius.circular(AppRadius.row),
+            ),
+            child: Row(
+              children: [
+                PhosphorIcon(
+                  PhosphorIcons.gift(PhosphorIconsStyle.fill),
+                  color: colors.accentOnSoft,
+                  size: 20,
+                ),
+                const SizedBox(width: AppSpace.s10),
+                Expanded(
+                  child: Text(
+                    l10n.p2CtaTrial(yearly!.trialDays!),
+                    style: text.subhead.copyWith(
+                      color: colors.accentOnSoft,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
         const SizedBox(height: AppSpace.s16),
         PrimaryButton(
           label: trial

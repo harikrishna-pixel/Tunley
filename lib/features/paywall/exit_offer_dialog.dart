@@ -53,8 +53,10 @@ class _ExitOffer extends ConsumerStatefulWidget {
 
 class _ExitOfferState extends ConsumerState<_ExitOffer> {
   Timer? _timer;
+  Timer? _closeTimer;
   Duration _left = Duration.zero;
   bool _busy = false;
+  bool _showClose = false;
   PaywallView? _view;
 
   @override
@@ -68,6 +70,9 @@ class _ExitOfferState extends ConsumerState<_ExitOffer> {
         trigger: 'exit_offer',
         offering: OfferingId.exit,
       );
+    });
+    _closeTimer = Timer(const Duration(milliseconds: 1500), () {
+      if (mounted) setState(() => _showClose = true);
     });
     _tick();
     _timer = Timer.periodic(const Duration(seconds: 1), (_) => _tick());
@@ -91,6 +96,7 @@ class _ExitOfferState extends ConsumerState<_ExitOffer> {
   @override
   void dispose() {
     _timer?.cancel();
+    _closeTimer?.cancel();
     _view?.closed();
     super.dispose();
   }
@@ -183,19 +189,31 @@ class _ExitOfferState extends ConsumerState<_ExitOffer> {
               Positioned(
                 right: 4,
                 top: 4,
-                child: Semantics(
-                  button: true,
-                  label: l10n.close,
-                  child: InkResponse(
-                    onTap: () => Navigator.of(context).pop(false),
-                    radius: 24,
-                    child: SizedBox(
-                      width: 48,
-                      height: 48,
-                      child: PhosphorIcon(
-                        PhosphorIcons.x(PhosphorIconsStyle.bold),
-                        color: colors.heroText,
-                        size: 22,
+                child: AnimatedOpacity(
+                  opacity: _showClose ? 1 : 0,
+                  duration: AppMotion.of(
+                    AppMotion.scrim,
+                    MediaQuery.disableAnimationsOf(context),
+                  ),
+                  child: IgnorePointer(
+                    ignoring: !_showClose,
+                    child: Semantics(
+                      button: true,
+                      label: l10n.close,
+                      child: InkResponse(
+                        onTap: () => Navigator.of(context).pop(false),
+                        radius: 22,
+                        child: SizedBox(
+                          width: 44,
+                          height: 44,
+                          child: Center(
+                            child: PhosphorIcon(
+                              PhosphorIcons.x(PhosphorIconsStyle.bold),
+                              color: colors.heroText.withValues(alpha: 0.75),
+                              size: 16,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),

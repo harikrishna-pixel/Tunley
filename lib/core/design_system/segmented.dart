@@ -57,7 +57,7 @@ class SegmentedControl<T> extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: colors.surface,
                         borderRadius: BorderRadius.circular(AppRadius.chip),
-                        boxShadow: colors.shadow,
+                        // No shadow — avoids flicker while the pill slides.
                       ),
                     ),
                   ),

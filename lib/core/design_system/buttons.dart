@@ -11,19 +11,22 @@ class PrimaryButton extends StatelessWidget {
     required this.onPressed,
     this.icon,
     this.iconTrailing = false,
+    this.loading = false,
   });
 
   final String label;
   final VoidCallback? onPressed;
   final IconData? icon;
   final bool iconTrailing;
+  /// When true, keeps the button size and shows a spinner instead of the label.
+  final bool loading;
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    final enabled = onPressed != null;
-    final background = enabled ? colors.accent : colors.surface2;
-    final foreground = enabled ? colors.accentText : colors.text3;
+    final enabled = onPressed != null && !loading;
+    final background = enabled || loading ? colors.accent : colors.surface2;
+    final foreground = enabled || loading ? colors.accentText : colors.text3;
 
     return Semantics(
       button: true,
@@ -33,32 +36,45 @@ class PrimaryButton extends StatelessWidget {
         color: background,
         borderRadius: BorderRadius.circular(AppRadius.button),
         child: InkWell(
-          onTap: onPressed,
+          onTap: enabled ? onPressed : null,
           borderRadius: BorderRadius.circular(AppRadius.button),
           child: SizedBox(
             height: 54,
             width: double.infinity,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (icon != null && !iconTrailing) ...[
-                  PhosphorIcon(icon!, size: 18, color: foreground),
-                  const SizedBox(width: AppSpace.s8),
-                ],
-                Flexible(
-                  child: Text(
-                    label,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: context.appText.button.copyWith(color: foreground),
+            child: loading
+                ? Center(
+                    child: SizedBox(
+                      width: 22,
+                      height: 22,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.5,
+                        color: foreground,
+                      ),
+                    ),
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (icon != null && !iconTrailing) ...[
+                        PhosphorIcon(icon!, size: 18, color: foreground),
+                        const SizedBox(width: AppSpace.s8),
+                      ],
+                      Flexible(
+                        child: Text(
+                          label,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: context.appText.button.copyWith(
+                            color: foreground,
+                          ),
+                        ),
+                      ),
+                      if (icon != null && iconTrailing) ...[
+                        const SizedBox(width: AppSpace.s8),
+                        PhosphorIcon(icon!, size: 18, color: foreground),
+                      ],
+                    ],
                   ),
-                ),
-                if (icon != null && iconTrailing) ...[
-                  const SizedBox(width: AppSpace.s8),
-                  PhosphorIcon(icon!, size: 18, color: foreground),
-                ],
-              ],
-            ),
           ),
         ),
       ),

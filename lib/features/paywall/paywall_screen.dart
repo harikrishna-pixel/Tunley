@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -38,6 +40,8 @@ class PaywallScreen extends ConsumerStatefulWidget {
 class _PaywallScreenState extends ConsumerState<PaywallScreen> {
   PlanKind _selected = PlanKind.yearly;
   bool _busy = false;
+  bool _showClose = false;
+  Timer? _closeTimer;
   PaywallView? _view;
 
   String get _trigger => paywallTrigger(widget.source);
@@ -49,11 +53,21 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
       if (!mounted) return;
       _view = await PaywallView.open(context, trigger: _trigger);
     });
+    // Slight delay so the offer is read first; X stays reachable after ~1.5s.
+    _closeTimer = Timer(const Duration(milliseconds: 1500), () {
+      if (mounted) setState(() => _showClose = true);
+    });
     if (widget.source == PaywallSource.onboarding) {
       Future.microtask(
         () => ref.read(paywallProvider.notifier).markShown(PaywallTrigger.p1),
       );
     }
+  }
+
+  @override
+  void dispose() {
+    _closeTimer?.cancel();
+    super.dispose();
   }
 
   Future<void> _close() async {
@@ -237,6 +251,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                           const SizedBox(height: AppSpace.s10),
                           PrimaryButton(
                             label: cta,
+                            loading: _busy,
                             onPressed: selected == null || _busy
                                 ? null
                                 : () => _buy(selected),
@@ -272,7 +287,8 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                 ),
               ],
             ),
-            // Close stays pinned top-right (does not scroll away).
+            // Close: pinned top-right, appears after a short delay (smaller,
+            // lightly transparent). Hit area stays 44 pt.
             Positioned(
               top: 0,
               right: 0,
@@ -283,24 +299,42 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                     top: AppSpace.s8,
                     right: AppSpace.s8,
                   ),
-                  child: Semantics(
-                    container: true,
-                    button: true,
-                    label: l10n.close,
-                    child: Material(
-                      color: colors.surface.withValues(alpha: 0.92),
-                      shape: const CircleBorder(),
-                      elevation: 1,
-                      child: InkResponse(
-                        onTap: _close,
-                        radius: 24,
-                        child: SizedBox(
-                          width: 44,
-                          height: 44,
-                          child: PhosphorIcon(
-                            PhosphorIcons.x(PhosphorIconsStyle.bold),
-                            color: colors.text,
-                            size: 22,
+                  child: AnimatedOpacity(
+                    opacity: _showClose ? 1 : 0,
+                    duration: AppMotion.of(
+                      AppMotion.scrim,
+                      MediaQuery.disableAnimationsOf(context),
+                    ),
+                    child: IgnorePointer(
+                      ignoring: !_showClose,
+                      child: Semantics(
+                        container: true,
+                        button: true,
+                        label: l10n.close,
+                        child: InkResponse(
+                          onTap: _close,
+                          radius: 22,
+                          child: SizedBox(
+                            width: 44,
+                            height: 44,
+                            child: Center(
+                              child: Container(
+                                width: 28,
+                                height: 28,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: colors.surface.withValues(
+                                    alpha: 0.45,
+                                  ),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: PhosphorIcon(
+                                  PhosphorIcons.x(PhosphorIconsStyle.bold),
+                                  color: colors.text.withValues(alpha: 0.65),
+                                  size: 12,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),

@@ -2686,7 +2686,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get moreAppsIntro =>
-      'Other Marberx apps. Tap Get to open the App Store page.';
+      'Other Marberx apps. Get opens the App Store; Soon means the listing isn’t linked yet.';
 
   @override
   String get moreAppsPicked => 'Picked for you';

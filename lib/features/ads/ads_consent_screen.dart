@@ -96,7 +96,7 @@ class _AdsConsentScreenState extends ConsumerState<AdsConsentScreen> {
                 children: [
                   const SizedBox(height: AppSpace.s24 * 3),
                   Align(
-                    alignment: AlignmentDirectional.centerStart,
+                    alignment: Alignment.center,
                     child: Container(
                       width: 88,
                       height: 88,

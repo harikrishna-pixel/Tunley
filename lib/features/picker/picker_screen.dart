@@ -135,12 +135,7 @@ class _PickerScreenState extends ConsumerState<PickerScreen> {
     if (widget.intent.videosOnly && _tab == PickerTab.audio) {
       _tab = PickerTab.videos;
     }
-    if (widget.intent.isMerge) return;
-    final first = ref
-        .read(pickedSourcesProvider)
-        .where((s) => s.isVideo == (_tab == PickerTab.videos))
-        .firstOrNull;
-    if (first != null) _selection = [first.path];
+    // Do not pre-select an imported file — user picks manually.
   }
 
   AudioEngine get _engine => ref.read(audioEngineProvider);
@@ -379,53 +374,75 @@ class _PickerScreenState extends ConsumerState<PickerScreen> {
       backgroundColor: colors.bg,
       body: SafeArea(
         bottom: false,
-        child: Column(
+        child: Stack(
           children: [
-            NavHeader(title: l10n.pickerTitle),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(
-                AppSpace.screen,
-                0,
-                AppSpace.screen,
-                AppSpace.s12,
-              ),
-              child: SegmentedControl<PickerTab>(
-                items: [
-                  SegmentedItem(
-                    value: PickerTab.videos,
-                    label: l10n.pickerVideos,
+            Column(
+              children: [
+                NavHeader(title: l10n.pickerTitle),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpace.screen,
+                    0,
+                    AppSpace.screen,
+                    AppSpace.s12,
                   ),
-                  if (!widget.intent.videosOnly)
-                    SegmentedItem(
-                      value: PickerTab.audio,
-                      label: l10n.pickerAudio,
-                    ),
-                  SegmentedItem(
-                    value: PickerTab.recent,
-                    label: l10n.pickerRecent,
+                  child: SegmentedControl<PickerTab>(
+                    items: [
+                      SegmentedItem(
+                        value: PickerTab.videos,
+                        label: l10n.pickerVideos,
+                      ),
+                      if (!widget.intent.videosOnly)
+                        SegmentedItem(
+                          value: PickerTab.audio,
+                          label: l10n.pickerAudio,
+                        ),
+                      SegmentedItem(
+                        value: PickerTab.recent,
+                        label: l10n.pickerRecent,
+                      ),
+                    ],
+                    value: _tab,
+                    onChanged: (tab) => setState(() => _tab = tab),
                   ),
-                ],
-                value: _tab,
-                onChanged: (tab) => setState(() => _tab = tab),
-              ),
-            ),
-            Expanded(
-              child: AnimatedSwitcher(
-                duration: AppMotion.of(
-                  AppMotion.tab,
-                  MediaQuery.disableAnimationsOf(context),
                 ),
-                child: KeyedSubtree(key: ValueKey(_tab), child: body),
+                Expanded(
+                  child: AnimatedSwitcher(
+                    duration: AppMotion.of(
+                      AppMotion.tab,
+                      MediaQuery.disableAnimationsOf(context),
+                    ),
+                    child: KeyedSubtree(key: ValueKey(_tab), child: body),
+                  ),
+                ),
+                _Footer(
+                  selection: selection,
+                  loading: _loading,
+                  hint: hint,
+                  onContinue: selection.isEmpty
+                      ? null
+                      : () => _continueWith(selection),
+                ),
+              ],
+            ),
+            if (_loading)
+              Positioned.fill(
+                child: AbsorbPointer(
+                  child: ColoredBox(
+                    color: colors.scrim.withValues(alpha: 0.28),
+                    child: Center(
+                      child: SizedBox(
+                        width: 36,
+                        height: 36,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 3,
+                          color: colors.accent,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               ),
-            ),
-            _Footer(
-              selection: selection,
-              loading: _loading,
-              hint: hint,
-              onContinue: selection.isEmpty
-                  ? null
-                  : () => _continueWith(selection),
-            ),
           ],
         ),
       ),
