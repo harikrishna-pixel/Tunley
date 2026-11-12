@@ -204,15 +204,19 @@ class FormScaffold extends StatelessWidget {
                 children: content,
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(
-                AppSpace.screen,
-                AppSpace.s8,
-                AppSpace.screen,
-                AppSpace.s8,
+            if (footer.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpace.screen,
+                  AppSpace.s8,
+                  AppSpace.screen,
+                  AppSpace.s8,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: footer,
+                ),
               ),
-              child: Column(mainAxisSize: MainAxisSize.min, children: footer),
-            ),
           ],
         ),
       ),

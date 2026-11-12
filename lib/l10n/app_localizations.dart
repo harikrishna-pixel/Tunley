@@ -4668,7 +4668,7 @@ abstract class AppLocalizations {
   /// No description provided for @inviteBadge.
   ///
   /// In en, this message translates to:
-  /// **'Both get free credits'**
+  /// **'Both get 1 week Pro free'**
   String get inviteBadge;
 
   /// No description provided for @inviteTitle.
@@ -4692,7 +4692,7 @@ abstract class AppLocalizations {
   /// No description provided for @inviteStep3.
   ///
   /// In en, this message translates to:
-  /// **'You both receive free credits when your friend makes their first file'**
+  /// **'You both get 1 week of Pro when your friend makes their first file'**
   String get inviteStep3;
 
   /// No description provided for @inviteYourLink.
@@ -5424,7 +5424,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsInviteDetail.
   ///
   /// In en, this message translates to:
-  /// **'Free credits'**
+  /// **'Both get 1 week Pro'**
   String get settingsInviteDetail;
 
   /// No description provided for @settingsHaveCode.

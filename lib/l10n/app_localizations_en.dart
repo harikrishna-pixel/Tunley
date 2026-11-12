@@ -2744,7 +2744,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hidePassword => 'Hide password';
 
   @override
-  String get inviteBadge => 'Both get free credits';
+  String get inviteBadge => 'Both get 1 week Pro free';
 
   @override
   String get inviteTitle => 'Invite friends, get Pro free';
@@ -2757,7 +2757,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get inviteStep3 =>
-      'You both receive free credits when your friend makes their first file';
+      'You both get 1 week of Pro when your friend makes their first file';
 
   @override
   String get inviteYourLink => 'Your link';
@@ -3169,7 +3169,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsInvite => 'Invite friends';
 
   @override
-  String get settingsInviteDetail => 'Free credits';
+  String get settingsInviteDetail => 'Both get 1 week Pro';
 
   @override
   String get settingsHaveCode => 'Have an invite code?';

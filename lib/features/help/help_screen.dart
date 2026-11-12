@@ -307,7 +307,10 @@ class _FaqTile extends StatelessWidget {
 
 /// Help article for iOS 18 and older (`05` §7).
 class GarageBandScreen extends ConsumerStatefulWidget {
-  const GarageBandScreen({super.key});
+  const GarageBandScreen({super.key, this.leading = NavLeading.back});
+
+  /// Close when opened from the ringtone guide / Settings; back from Help.
+  final NavLeading leading;
 
   @override
   ConsumerState<GarageBandScreen> createState() => _GarageBandScreenState();
@@ -343,7 +346,7 @@ class _GarageBandScreenState extends ConsumerState<GarageBandScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            NavHeader(title: l10n.gbTitle),
+            NavHeader(title: l10n.gbTitle, leading: widget.leading),
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.fromLTRB(

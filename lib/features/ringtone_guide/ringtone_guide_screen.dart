@@ -87,7 +87,8 @@ class _RingtoneGuideScreenState extends ConsumerState<RingtoneGuideScreen> {
   Widget build(BuildContext context) {
     final info = ref.watch(appInfoProvider).value;
     if (info != null && osMajor(info) > 0 && osMajor(info) < 26) {
-      return const GarageBandScreen();
+      // Same entry as Settings › How to set a ringtone — use close, not back.
+      return const GarageBandScreen(leading: NavLeading.close);
     }
     final l10n = AppLocalizations.of(context);
     final colors = context.colors;
@@ -133,7 +134,11 @@ class _RingtoneGuideScreenState extends ConsumerState<RingtoneGuideScreen> {
           bottom: false,
           child: Column(
             children: [
-              NavHeader(title: l10n.guideTitle, onLeading: _back),
+              NavHeader(
+                title: l10n.guideTitle,
+                leading: NavLeading.close,
+                onLeading: () => Navigator.of(context).maybePop(),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppSpace.screen,

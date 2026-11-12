@@ -497,11 +497,13 @@ class _DeleteAccountScreenState extends ConsumerState<DeleteAccountScreen> {
             ],
           ),
         );
+    // Buttons live in the scroll body so the keyboard can resize the
+    // scaffold without a fixed footer jumping up/down on dismiss.
     return FormScaffold(
+      resizeToAvoidBottomInset: true,
       header: const NavHeader(title: ''),
       content: [
-        Align(
-          alignment: AlignmentDirectional.centerStart,
+        Center(
           child: Container(
             width: 64,
             height: 64,
@@ -559,8 +561,7 @@ class _DeleteAccountScreenState extends ConsumerState<DeleteAccountScreen> {
           autofillHints: const [AutofillHints.password],
           onSubmitted: (_) => _delete(),
         ),
-      ],
-      footer: [
+        const SizedBox(height: AppSpace.s24),
         Semantics(
           button: true,
           child: Material(
@@ -589,6 +590,7 @@ class _DeleteAccountScreenState extends ConsumerState<DeleteAccountScreen> {
           onPressed: () => context.pop(),
         ),
       ],
+      footer: const [],
     );
   }
 }

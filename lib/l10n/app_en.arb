@@ -1906,11 +1906,11 @@
   "galleryAnalyticsLive": "Sending to Mixpanel. Check Live View in the Tunely-Dev project.",
   "showPassword": "Show password",
   "hidePassword": "Hide password",
-  "inviteBadge": "Both get free credits",
+  "inviteBadge": "Both get 1 week Pro free",
   "inviteTitle": "Invite friends, get Pro free",
   "inviteStep1": "Create a free account",
   "inviteStep2": "Share your personal invite link",
-  "inviteStep3": "You both receive free credits when your friend makes their first file",
+  "inviteStep3": "You both get 1 week of Pro when your friend makes their first file",
   "inviteYourLink": "Your link",
   "invitePrivacy": "Your account only keeps your invite link and free weeks safe if you change phones. Your files never leave your iPhone.",
   "inviteCreateAccount": "Create free account",
@@ -2108,7 +2108,7 @@
   "settingsAccountSignedOut": "Sign in or create account",
   "settingsAccountOptional": "Optional · only for invite rewards",
   "settingsInvite": "Invite friends",
-  "settingsInviteDetail": "Free credits",
+  "settingsInviteDetail": "Both get 1 week Pro",
   "settingsHaveCode": "Have an invite code?",
   "onboardingInviteCode": "Got an invite code?"
 }
