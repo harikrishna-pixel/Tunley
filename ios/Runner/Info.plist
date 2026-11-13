@@ -59,6 +59,11 @@
 	<true/>
 	<key>GADApplicationIdentifier</key>
 	<string>$(GAD_APPLICATION_ID)</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>Allow tracking to see more relevant ads. Tunely works the same either way.</string>
 	<key>SKAdNetworkItems</key>
@@ -66,6 +71,10 @@
 		<dict>
 			<key>SKAdNetworkIdentifier</key>
 			<string>cstr6suwn9.skadnetwork</string>
+		</dict>
+		<dict>
+			<key>SKAdNetworkIdentifier</key>
+			<string>su67r6k2v3.skadnetwork</string>
 		</dict>
 	</array>
 	<key>UIFileSharingEnabled</key>

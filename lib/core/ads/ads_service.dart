@@ -2,19 +2,20 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:unity_levelplay_mediation/unity_levelplay_mediation.dart';
 
 import '../analytics/analytics.dart';
 import '../analytics/events.dart';
 
 enum AdFormat { interstitial, rewarded }
 
-/// Every ad goes through this (`05` §12). Implementations never draw our UI
-/// over a network ad and fail silently on no fill or offline.
+/// Every ad goes through this (`05` §12 / `17`). Implementations never draw
+/// our UI over a network ad and fail silently on no fill or offline.
 abstract class AdsService {
   String get provider;
 
-  /// Consent (UMP in the EEA/UK/CH, form only if required), then SDK start.
-  /// Returns whether ads may be requested.
+  /// Consent / privacy flags, then SDK start. Returns whether ads may be
+  /// requested.
   Future<bool> init();
 
   Future<void> load(AdFormat format);
@@ -73,6 +74,9 @@ class AdUnits {
 }
 
 /// Google AdMob (with mediation adapters added in the iOS project).
+///
+/// Unused this version — `ads.provider` is `levelplay`. Kept so we can switch
+/// back without rewriting the AdMob path.
 class AdMobAdsService implements AdsService {
   AdMobAdsService(this._units, this._analytics);
 
@@ -232,12 +236,326 @@ class AdMobAdsService implements AdsService {
   }
 }
 
-/// ironSource / Unity LevelPlay mediation (`06`, question #18). AdMob is the
-/// default; this keeps the same contract until LevelPlay is chosen.
-// TODO(question #18): implement with the LevelPlay Flutter plugin if picked.
-class LevelPlayAdsService extends NoAdsService {
-  const LevelPlayAdsService();
+/// ironSource / Unity LevelPlay (`17`). Interstitial + rewarded only.
+class LevelPlayUnits {
+  const LevelPlayUnits({
+    required this.appKey,
+    required this.interstitial,
+    required this.rewarded,
+  });
+
+  final String appKey;
+  final String interstitial;
+  final String rewarded;
+
+  /// Tunely (dashboard: Audio Converter) production IDs.
+  static const production = LevelPlayUnits(
+    appKey: '2985a82b5',
+    interstitial: 't4n509uk215g88ju',
+    rewarded: 'w88wxfv9286yj7ih',
+  );
+
+  /// Override with `--dart-define=LEVELPLAY_*`; falls back to [production].
+  static LevelPlayUnits fromEnvironment() {
+    const appKey = String.fromEnvironment(
+      'LEVELPLAY_APP_KEY',
+      defaultValue: '2985a82b5',
+    );
+    const interstitial = String.fromEnvironment(
+      'LEVELPLAY_INTERSTITIAL_IOS',
+      defaultValue: 't4n509uk215g88ju',
+    );
+    const rewarded = String.fromEnvironment(
+      'LEVELPLAY_REWARDED_IOS',
+      defaultValue: 'w88wxfv9286yj7ih',
+    );
+    if (appKey.isEmpty || interstitial.isEmpty || rewarded.isEmpty) {
+      return production;
+    }
+    return const LevelPlayUnits(
+      appKey: appKey,
+      interstitial: interstitial,
+      rewarded: rewarded,
+    );
+  }
+}
+
+class LevelPlayAdsService implements AdsService {
+  LevelPlayAdsService(this._units, this._analytics);
+
+  final LevelPlayUnits _units;
+  final Analytics _analytics;
+
+  /// Placement names from `17` §1 (dashboard capping/pacing).
+  static const interstitialPlacement = 'after_task_interstitial';
+  static const rewardedPlacement = 'daily_limit_rewarded';
+
+  LevelPlayInterstitialAd? _interstitial;
+  LevelPlayRewardedAd? _rewarded;
+  bool _started = false;
+  bool _interstitialReady = false;
+  bool _rewardedReady = false;
+  bool _loadingInterstitial = false;
+  bool _loadingRewarded = false;
+  VoidCallback? _onReward;
+  Completer<bool>? _interstitialClosed;
+  Completer<bool>? _rewardedClosed;
 
   @override
   String get provider => 'levelplay';
+
+  @override
+  Future<bool> init() async {
+    if (_started) return true;
+
+    // Doc 17: not child-directed. No AdMob UMP this version.
+    await LevelPlayPrivacySettings.setCOPPA(false);
+    await LevelPlayPrivacySettings.setGDPRConsent(true);
+    _analytics.consentResult(status: 'levelplay_default');
+
+    if (kDebugMode) {
+      await LevelPlay.setMetaData({
+        'is_test_suite': ['enable'],
+      });
+      await LevelPlay.setAdaptersDebug(true);
+    }
+
+    final done = Completer<bool>();
+    final request = LevelPlayInitRequest.builder(_units.appKey).build();
+    await LevelPlay.init(
+      initRequest: request,
+      initListener: _LevelPlayInitListener(
+        onSuccess: () {
+          if (!done.isCompleted) done.complete(true);
+        },
+        onFailed: () {
+          if (!done.isCompleted) done.complete(false);
+        },
+      ),
+    );
+    final ok = await done.future;
+    _started = ok;
+    return ok;
+  }
+
+  @override
+  bool isReady(AdFormat format) => switch (format) {
+    AdFormat.interstitial => _interstitialReady,
+    AdFormat.rewarded => _rewardedReady,
+  };
+
+  @override
+  Future<void> load(AdFormat format) async {
+    if (!_started || isReady(format)) return;
+    _analytics.adRequested(format: format.name, provider: provider);
+    switch (format) {
+      case AdFormat.interstitial:
+        if (_loadingInterstitial) return;
+        _loadingInterstitial = true;
+        _interstitialReady = false;
+        final ad = LevelPlayInterstitialAd(adUnitId: _units.interstitial);
+        ad.setListener(_InterstitialListener(this));
+        _interstitial = ad;
+        await ad.loadAd();
+      case AdFormat.rewarded:
+        if (_loadingRewarded) return;
+        _loadingRewarded = true;
+        _rewardedReady = false;
+        final ad = LevelPlayRewardedAd(adUnitId: _units.rewarded);
+        ad.setListener(_RewardedListener(this));
+        _rewarded = ad;
+        await ad.loadAd();
+    }
+  }
+
+  @override
+  Future<bool> showInterstitial() async {
+    final ad = _interstitial;
+    if (ad == null || !_interstitialReady) return false;
+    if (await LevelPlayInterstitialAd.isPlacementCapped(
+      interstitialPlacement,
+    )) {
+      return false;
+    }
+    if (!await ad.isAdReady()) {
+      _interstitialReady = false;
+      return false;
+    }
+    _interstitialReady = false;
+    final closed = Completer<bool>();
+    _interstitialClosed = closed;
+    await ad.showAd(placementName: interstitialPlacement);
+    return closed.future;
+  }
+
+  @override
+  Future<bool> showRewarded({required VoidCallback onReward}) async {
+    final ad = _rewarded;
+    if (ad == null || !_rewardedReady) return false;
+    if (await LevelPlayRewardedAd.isPlacementCapped(rewardedPlacement)) {
+      return false;
+    }
+    if (!await ad.isAdReady()) {
+      _rewardedReady = false;
+      return false;
+    }
+    _rewardedReady = false;
+    _onReward = onReward;
+    final closed = Completer<bool>();
+    _rewardedClosed = closed;
+    await ad.showAd(placementName: rewardedPlacement);
+    return closed.future;
+  }
+
+  void _fail(AdFormat format, String reason) {
+    _analytics.adFailed(
+      format: format.name,
+      provider: provider,
+      reason: reason,
+    );
+  }
+}
+
+class _LevelPlayInitListener implements LevelPlayInitListener {
+  _LevelPlayInitListener({required this.onSuccess, required this.onFailed});
+
+  final VoidCallback onSuccess;
+  final VoidCallback onFailed;
+
+  @override
+  void onInitSuccess(LevelPlayConfiguration configuration) => onSuccess();
+
+  @override
+  void onInitFailed(LevelPlayInitError error) => onFailed();
+}
+
+class _InterstitialListener implements LevelPlayInterstitialAdListener {
+  _InterstitialListener(this._service);
+
+  final LevelPlayAdsService _service;
+
+  @override
+  void onAdLoaded(LevelPlayAdInfo adInfo) {
+    _service._loadingInterstitial = false;
+    _service._interstitialReady = true;
+    _service._analytics.adLoaded(
+      format: AdFormat.interstitial.name,
+      provider: _service.provider,
+    );
+  }
+
+  @override
+  void onAdLoadFailed(LevelPlayAdError error) {
+    _service._loadingInterstitial = false;
+    _service._interstitialReady = false;
+    _service._fail(AdFormat.interstitial, 'no_fill');
+  }
+
+  @override
+  void onAdDisplayed(LevelPlayAdInfo adInfo) {
+    _service._analytics.adShown(
+      format: AdFormat.interstitial.name,
+      provider: _service.provider,
+      network: adInfo.adNetwork,
+    );
+  }
+
+  @override
+  void onAdDisplayFailed(LevelPlayAdError error, LevelPlayAdInfo adInfo) {
+    _service._fail(AdFormat.interstitial, 'error');
+    final closed = _service._interstitialClosed;
+    if (closed != null && !closed.isCompleted) closed.complete(false);
+    _service._interstitialClosed = null;
+  }
+
+  @override
+  void onAdClicked(LevelPlayAdInfo adInfo) {
+    _service._analytics.adClicked(
+      format: AdFormat.interstitial.name,
+      provider: _service.provider,
+    );
+  }
+
+  @override
+  void onAdClosed(LevelPlayAdInfo adInfo) {
+    _service._analytics.adClosed(
+      format: AdFormat.interstitial.name,
+      provider: _service.provider,
+    );
+    final closed = _service._interstitialClosed;
+    if (closed != null && !closed.isCompleted) closed.complete(true);
+    _service._interstitialClosed = null;
+  }
+
+  @override
+  void onAdInfoChanged(LevelPlayAdInfo adInfo) {}
+}
+
+class _RewardedListener implements LevelPlayRewardedAdListener {
+  _RewardedListener(this._service);
+
+  final LevelPlayAdsService _service;
+
+  @override
+  void onAdLoaded(LevelPlayAdInfo adInfo) {
+    _service._loadingRewarded = false;
+    _service._rewardedReady = true;
+    _service._analytics.adLoaded(
+      format: AdFormat.rewarded.name,
+      provider: _service.provider,
+    );
+  }
+
+  @override
+  void onAdLoadFailed(LevelPlayAdError error) {
+    _service._loadingRewarded = false;
+    _service._rewardedReady = false;
+    _service._fail(AdFormat.rewarded, 'no_fill');
+  }
+
+  @override
+  void onAdDisplayed(LevelPlayAdInfo adInfo) {
+    _service._analytics.adShown(
+      format: AdFormat.rewarded.name,
+      provider: _service.provider,
+      network: adInfo.adNetwork,
+    );
+  }
+
+  @override
+  void onAdDisplayFailed(LevelPlayAdError error, LevelPlayAdInfo adInfo) {
+    _service._fail(AdFormat.rewarded, 'error');
+    final closed = _service._rewardedClosed;
+    if (closed != null && !closed.isCompleted) closed.complete(false);
+    _service._rewardedClosed = null;
+    _service._onReward = null;
+  }
+
+  @override
+  void onAdClicked(LevelPlayAdInfo adInfo) {
+    _service._analytics.adClicked(
+      format: AdFormat.rewarded.name,
+      provider: _service.provider,
+    );
+  }
+
+  @override
+  void onAdClosed(LevelPlayAdInfo adInfo) {
+    _service._analytics.adClosed(
+      format: AdFormat.rewarded.name,
+      provider: _service.provider,
+    );
+    final closed = _service._rewardedClosed;
+    if (closed != null && !closed.isCompleted) closed.complete(true);
+    _service._rewardedClosed = null;
+    _service._onReward = null;
+  }
+
+  @override
+  void onAdInfoChanged(LevelPlayAdInfo adInfo) {}
+
+  @override
+  void onAdRewarded(LevelPlayReward reward, LevelPlayAdInfo adInfo) {
+    _service._onReward?.call();
+  }
 }

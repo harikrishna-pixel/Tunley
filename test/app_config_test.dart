@@ -24,7 +24,7 @@ void main() {
     expect(config.rating.delayMs, 1500);
     expect(config.milestones, [1, 10, 50]);
     expect(config.ads.enabled, isTrue);
-    expect(config.ads.provider, 'admob');
+    expect(config.ads.provider, 'levelplay');
     expect(config.ads.maxPerDay, 6);
     expect(config.moreApps.map((app) => app.id), [
       'shrink',

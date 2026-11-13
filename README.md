@@ -20,7 +20,7 @@ flutter run \
 | `REVENUECAT_IOS_KEY` | Purchases. Without it, debug builds use the demo store and release builds sell nothing |
 | `MIXPANEL_TOKEN_DEV` | Analytics in debug builds (Mixpanel project **Tunely-Dev**) |
 | `MIXPANEL_TOKEN` | Analytics in release builds (Mixpanel project **Tunely**) |
-| `ADMOB_INTERSTITIAL_IOS`, `ADMOB_REWARDED_IOS` | Production ad units (release). Debug uses Google's test units |
+| `LEVELPLAY_APP_KEY`, `LEVELPLAY_INTERSTITIAL_IOS`, `LEVELPLAY_REWARDED_IOS` | ironSource LevelPlay (defaults to Tunely / Audio Converter production IDs). AdMob unused this version |
 
 Without a Mixpanel token, events stay on the device: they print to the console and show in
 Settings › Component gallery › Analytics events.

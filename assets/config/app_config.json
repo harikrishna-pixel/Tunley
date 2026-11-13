@@ -36,7 +36,7 @@
   },
   "ads": {
     "enabled": true,
-    "provider": "admob",
+    "provider": "levelplay",
     "firstSessionAds": false,
     "minConversionsBeforeFirstAd": 3,
     "everyNthConversion": 2,

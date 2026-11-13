@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/ads/ads_service.dart';
@@ -15,10 +14,18 @@ import 'state.dart';
 final adsServiceProvider = Provider<AdsService>((ref) {
   final config = ref.watch(appConfigProvider).ads;
   if (!config.enabled) return const NoAdsService();
-  if (config.provider == 'levelplay') return const LevelPlayAdsService();
-  final units = kReleaseMode ? AdUnits.fromEnvironment() : AdUnits.test;
-  if (units == null) return const NoAdsService();
-  return AdMobAdsService(units, ref.watch(analyticsProvider));
+  // V1: ironSource LevelPlay only (`17`). AdMob path kept but unused.
+  if (config.provider == 'levelplay') {
+    return LevelPlayAdsService(
+      LevelPlayUnits.fromEnvironment(),
+      ref.watch(analyticsProvider),
+    );
+  }
+  // AdMob unused this version:
+  // final units = kReleaseMode ? AdUnits.fromEnvironment() : AdUnits.test;
+  // if (units == null) return const NoAdsService();
+  // return AdMobAdsService(units, ref.watch(analyticsProvider));
+  return const NoAdsService();
 });
 
 class AdsState {
