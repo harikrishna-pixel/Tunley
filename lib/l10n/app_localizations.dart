@@ -4545,6 +4545,18 @@ abstract class AppLocalizations {
   /// **'Prefer no ads? See Pro'**
   String get adsConsentSeePro;
 
+  /// No description provided for @adsConsentPreferNoAds.
+  ///
+  /// In en, this message translates to:
+  /// **'Prefer no ads? '**
+  String get adsConsentPreferNoAds;
+
+  /// No description provided for @adsConsentSeeProLink.
+  ///
+  /// In en, this message translates to:
+  /// **'See Pro'**
+  String get adsConsentSeeProLink;
+
   /// No description provided for @rewardedWatch.
   ///
   /// In en, this message translates to:
@@ -4838,6 +4850,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Contact Us'**
   String get aboutContact;
+
+  /// No description provided for @aboutShareApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Share App'**
+  String get aboutShareApp;
+
+  /// No description provided for @aboutRateUs.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate Us'**
+  String get aboutRateUs;
+
+  /// No description provided for @aboutShareText.
+  ///
+  /// In en, this message translates to:
+  /// **'Convert videos to MP3 and make ringtones with Tunely: {url}'**
+  String aboutShareText(String url);
 
   /// No description provided for @settingsAbout.
   ///
@@ -5348,6 +5378,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Invalid invite code'**
   String get redeemInvalidCode;
+
+  /// No description provided for @redeemUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Invite codes aren\'t available yet.'**
+  String get redeemUnavailable;
 
   /// No description provided for @redeemCodeMaxLength.
   ///

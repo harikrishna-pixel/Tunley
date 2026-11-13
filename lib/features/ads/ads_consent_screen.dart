@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
+
 import '../../app/ads.dart';
 import '../../app/monetization.dart';
 import '../../app/state.dart';
@@ -14,17 +15,22 @@ import '../../core/library/usage_store.dart';
 import '../../l10n/app_localizations.dart';
 import '../paywall/paywall_screen.dart';
 
-/// Consent order (`05` §12): Google's UMP form first where required (EEA,
-/// UK, CH), then our 44 once ever, then the system ATT prompt. Free users only;
-/// runs after onboarding and the first paywall, never during them.
+/// Consent order (`05` §12 / LevelPlay): our 44 once ever → system ATT, then
+/// ads SDK init. Free users only; after onboarding and the first paywall.
+/// ATT must finish before LevelPlay starts (Google / ironSource guidance).
 Future<void> runAdsConsent(BuildContext context, WidgetRef ref) async {
   if (ref.read(isProProvider)) return;
   final usage = ref.read(usageStoreProvider);
   final engine = ref.read(audioEngineProvider);
-  await ref.read(adsProvider.notifier).start();
-  if (await usage.trackingPromptShown()) return;
+  final ads = ref.read(adsProvider.notifier);
+
+  if (await usage.trackingPromptShown()) {
+    await ads.start();
+    return;
+  }
   if (await engine.trackingStatus() != 'notDetermined') {
     await usage.markTrackingPromptShown();
+    await ads.start();
     return;
   }
   if (!context.mounted) return;
@@ -32,6 +38,8 @@ Future<void> runAdsConsent(BuildContext context, WidgetRef ref) async {
   if (!context.mounted) return;
   ref.read(analyticsProvider).trackingPromptShown();
   await context.push('/ads-consent');
+  // Screen closed after ATT (or Pro from "See Pro"); start ads only now.
+  await ads.start();
 }
 
 class AdsConsentScreen extends ConsumerStatefulWidget {
@@ -141,9 +149,33 @@ class _AdsConsentScreenState extends ConsumerState<AdsConsentScreen> {
                     onPressed: _busy ? null : _continue,
                   ),
                   const SizedBox(height: AppSpace.s4),
-                  TextLinkButton(
-                    label: l10n.adsConsentSeePro,
-                    onPressed: _busy ? null : _seePro,
+                  // Match Sign In: plain prefix + link-styled action.
+                  Semantics(
+                    button: true,
+                    child: InkWell(
+                      onTap: _busy ? null : _seePro,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: AppSpace.s12,
+                        ),
+                        child: Text.rich(
+                          TextSpan(
+                            text: l10n.adsConsentPreferNoAds,
+                            style: text.subhead.copyWith(color: colors.text2),
+                            children: [
+                              TextSpan(
+                                text: l10n.adsConsentSeeProLink,
+                                style: text.subhead.copyWith(
+                                  color: colors.link,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                            ],
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),

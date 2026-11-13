@@ -308,10 +308,9 @@ class LevelPlayAdsService implements AdsService {
   Future<bool> init() async {
     if (_started) return true;
 
-    // Doc 17: not child-directed. No AdMob UMP this version.
-    await LevelPlayPrivacySettings.setCOPPA(false);
-    await LevelPlayPrivacySettings.setGDPRConsent(true);
-    _analytics.consentResult(status: 'levelplay_default');
+    // UMP where required (EEA/UK/CH), then pass the result to LevelPlay so it
+    // forwards GDPR/CCPA to mediated networks (doc 17 / Google↔ironSource).
+    await _applyUmConsentToLevelPlay();
 
     if (kDebugMode) {
       await LevelPlay.setMetaData({
@@ -336,6 +335,30 @@ class LevelPlayAdsService implements AdsService {
     final ok = await done.future;
     _started = ok;
     return ok;
+  }
+
+  /// Google UMP form if required, then LevelPlay privacy APIs (before init).
+  Future<void> _applyUmConsentToLevelPlay() async {
+    final ump = Completer<void>();
+    ConsentInformation.instance.requestConsentInfoUpdate(
+      ConsentRequestParameters(),
+      () => ConsentForm.loadAndShowConsentFormIfRequired((_) async {
+        final status = await ConsentInformation.instance.getConsentStatus();
+        _analytics.consentResult(status: status.name);
+        if (!ump.isCompleted) ump.complete();
+      }),
+      (_) {
+        if (!ump.isCompleted) ump.complete();
+      },
+    );
+    await ump.future;
+
+    final consented = await ConsentInformation.instance.canRequestAds();
+    // Doc 17: not child-directed.
+    await LevelPlayPrivacySettings.setCOPPA(false);
+    await LevelPlayPrivacySettings.setGDPRConsent(consented);
+    // No separate "do not sell" signal from UMP here; default not opted out.
+    await LevelPlayPrivacySettings.setCCPA(false);
   }
 
   @override

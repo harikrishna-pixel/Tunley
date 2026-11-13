@@ -2676,6 +2676,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adsConsentSeePro => 'Prefer no ads? See Pro';
 
   @override
+  String get adsConsentPreferNoAds => 'Prefer no ads? ';
+
+  @override
+  String get adsConsentSeeProLink => 'See Pro';
+
+  @override
   String get rewardedWatch => 'Watch a short ad for 1 more';
 
   @override
@@ -2848,6 +2854,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aboutContact => 'Contact Us';
+
+  @override
+  String get aboutShareApp => 'Share App';
+
+  @override
+  String get aboutRateUs => 'Rate Us';
+
+  @override
+  String aboutShareText(String url) {
+    return 'Convert videos to MP3 and make ringtones with Tunely: $url';
+  }
 
   @override
   String get settingsAbout => 'About Us';
@@ -3125,6 +3142,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get redeemInvalidCode => 'Invalid invite code';
+
+  @override
+  String get redeemUnavailable => 'Invite codes aren\'t available yet.';
 
   @override
   String get redeemCodeMaxLength =>

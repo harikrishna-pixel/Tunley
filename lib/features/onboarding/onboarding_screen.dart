@@ -244,20 +244,19 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                         ),
                       ],
                     ),
-                    // `12` §4: offered once, never a blocking step. A friend's
-                    // code brings a free week, so P1 waits this time.
-                    TextLinkButton(
-                      label: l10n.onboardingInviteCode,
-                      muted: true,
-                      onPressed: () async {
-                        await ref
-                            .read(preferencesProvider.notifier)
-                            .completeOnboarding();
-                        if (!context.mounted) return;
-                        // Go straight to redeem — don't flash Home first.
-                        context.pushReplacement('/redeem');
-                      },
-                    ),
+                    // Referral API not ready — hide "Got an invite code?" until
+                    // redeem can grant Pro.
+                    // TextLinkButton(
+                    //   label: l10n.onboardingInviteCode,
+                    //   muted: true,
+                    //   onPressed: () async {
+                    //     await ref
+                    //         .read(preferencesProvider.notifier)
+                    //         .completeOnboarding();
+                    //     if (!context.mounted) return;
+                    //     context.pushReplacement('/redeem');
+                    //   },
+                    // ),
                   ],
                 ],
               ),

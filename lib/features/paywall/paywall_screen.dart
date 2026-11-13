@@ -134,9 +134,10 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
       l10n.pwBenefitNoAds,
     ];
 
+    // Display order (QA): Weekly → Yearly → Lifetime. Yearly stays pre-selected.
     final order = personal.lifetimeListedSecond
         ? [PlanKind.yearly, PlanKind.lifetime, PlanKind.weekly]
-        : [PlanKind.yearly, PlanKind.weekly, PlanKind.lifetime];
+        : [PlanKind.weekly, PlanKind.yearly, PlanKind.lifetime];
 
     String terms() {
       final p = selected;

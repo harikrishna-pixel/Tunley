@@ -266,10 +266,11 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
               ),
             ),
           ),
-          row(
-            l10n.accountInvite,
-            onTap: () => context.push('/invite', extra: 'account'),
-          ),
+          // Referral API not ready — hide Invite friends until rewards work.
+          // row(
+          //   l10n.accountInvite,
+          //   onTap: () => context.push('/invite', extra: 'account'),
+          // ),
         ]),
         const SizedBox(height: AppSpace.s20),
         SectionLabel(l10n.accountSecurity),

@@ -275,6 +275,7 @@ class _ExitOfferState extends ConsumerState<_ExitOffer> {
               const SizedBox(height: AppSpace.s20),
               PrimaryButton(
                 label: l10n.p6Cta(percent),
+                loading: _busy,
                 onPressed: _busy ? null : _claim,
               ),
               const SizedBox(height: AppSpace.s10),

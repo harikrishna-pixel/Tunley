@@ -1872,6 +1872,8 @@
   "adsConsentPrivate": "Your files never leave your iPhone. Ads never see them.",
   "adsConsentTracking": "Next, iPhone asks if apps may track you to show more relevant ads. Either answer is fine; Tunely works the same.",
   "adsConsentSeePro": "Prefer no ads? See Pro",
+  "adsConsentPreferNoAds": "Prefer no ads? ",
+  "adsConsentSeeProLink": "See Pro",
   "rewardedWatch": "Watch a short ad for 1 more",
   "rewardedEarned": "+1 free conversion today",
   "moreAppsTitle": "More from Marberx",
@@ -1963,6 +1965,16 @@
   "aboutPrivacy": "Privacy Policy",
   "aboutTerms": "Terms of Use",
   "aboutContact": "Contact Us",
+  "aboutShareApp": "Share App",
+  "aboutRateUs": "Rate Us",
+  "aboutShareText": "Convert videos to MP3 and make ringtones with Tunely: {url}",
+  "@aboutShareText": {
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
   "settingsAbout": "About Us",
   "fieldFirstName": "First name",
   "fieldLastName": "Last name",
@@ -2079,6 +2091,7 @@
   "redeemInvalid": "This code isn't valid, or an invite was already used on this iPhone.",
   "redeemValidCode": "Valid invite code",
   "redeemInvalidCode": "Invalid invite code",
+  "redeemUnavailable": "Invite codes aren't available yet.",
   "redeemCodeMaxLength": "Invite code can contain a maximum of 10 characters.",
   "redeemCta": "Apply code",
   "redeemSkip": "Skip",

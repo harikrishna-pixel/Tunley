@@ -5,10 +5,12 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
+// ignore: unused_import — used again when redeem API is restored below.
 import '../../app/account.dart';
 import '../../app/state.dart';
 import '../../core/account/account_api.dart';
 import '../../core/design_system/design_system.dart';
+// ignore: unused_import — used again when redeem API is restored below.
 import '../../core/rules/account_rules.dart';
 import '../../l10n/app_localizations.dart';
 import 'account_widgets.dart';
@@ -61,6 +63,16 @@ class _RedeemScreenState extends ConsumerState<RedeemScreen> {
   }
 
   Future<void> _apply() async {
+    // Referral redeem API not ready (`apiBaseUrl` TBD / question #25).
+    // DemoAccountApi only accepts codes created in this session, so real-looking
+    // codes always show "Invalid invite code." Restore the block below when the
+    // API ships.
+    if (!mounted) return;
+    TunelyToast.show(
+      context,
+      message: AppLocalizations.of(context).redeemUnavailable,
+    );
+    /*
     setState(() {
       _busy = true;
       _error = null;
@@ -89,8 +101,6 @@ class _RedeemScreenState extends ConsumerState<RedeemScreen> {
     } on AccountException catch (e) {
       if (mounted) {
         setState(() {
-          // Treat redeem failures as invalid so the user sees a clear
-          // "Invalid invite code" instead of a generic server message.
           _error = switch (e.error) {
             AccountError.offline => AccountError.offline,
             AccountError.rateLimited => AccountError.rateLimited,
@@ -103,6 +113,7 @@ class _RedeemScreenState extends ConsumerState<RedeemScreen> {
     } finally {
       if (mounted) setState(() => _busy = false);
     }
+    */
   }
 
   void _close() =>
@@ -189,7 +200,10 @@ class _RedeemScreenState extends ConsumerState<RedeemScreen> {
       );
     }
 
+    // Buttons live in the scroll body so the keyboard can resize the
+    // scaffold without a fixed footer jumping up/down on dismiss.
     return FormScaffold(
+      resizeToAvoidBottomInset: true,
       header: header,
       content: [
         Center(
@@ -263,12 +277,12 @@ class _RedeemScreenState extends ConsumerState<RedeemScreen> {
           const SizedBox(height: AppSpace.s12),
           StatusBox(message: l10n.redeemValidCode),
         ],
-      ],
-      footer: [
+        const SizedBox(height: AppSpace.s24),
         PrimaryButton(label: l10n.redeemCta, onPressed: _busy ? null : _apply),
         const SizedBox(height: AppSpace.s4),
         TextLinkButton(label: l10n.redeemSkip, muted: true, onPressed: _close),
       ],
+      footer: const [],
     );
   }
 }

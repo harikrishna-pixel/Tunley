@@ -57,14 +57,16 @@ class SettingsScreen extends ConsumerWidget {
       ..preferencesChanged(field: 'save_folder', value: 'changed');
   }
 
-  /// Settings › Rate Tunely: the App Store review page when the listing
-  /// exists, otherwise Apple's in-app review sheet.
+  /// Settings › Rate Tunely: in-app App Store page (SKStoreProductViewController).
+  /// Never openStoreListing — that leaves the app / opens Safari.
   Future<void> _rate(WidgetRef ref) async {
-    final review = InAppReview.instance;
     final id = ref.read(appConfigProvider).appStoreId;
     if (id != null) {
-      await review.openStoreListing(appStoreId: id);
-    } else if (await review.isAvailable()) {
+      final opened = await ref.read(audioEngineProvider).openAppStorePage(id);
+      if (opened) return;
+    }
+    final review = InAppReview.instance;
+    if (await review.isAvailable()) {
       await review.requestReview();
     }
   }
@@ -156,18 +158,20 @@ class SettingsScreen extends ConsumerWidget {
         section(l10n.settingsHelpMore),
         ListGroup(
           children: [
-            SettingsRow(
-              icon: PhosphorIcons.gift(),
-              label: l10n.settingsInvite,
-              value: l10n.settingsInviteDetail,
-              valueHighlight: true,
-              onTap: () => context.push('/invite', extra: 'settings'),
-            ),
-            SettingsRow(
-              icon: PhosphorIcons.key(),
-              label: l10n.settingsHaveCode,
-              onTap: () => context.push('/redeem'),
-            ),
+            // Referral API not ready (apiBaseUrl TBD). Hide invite / redeem
+            // until rewards actually work — otherwise we promise Pro we can't grant.
+            // SettingsRow(
+            //   icon: PhosphorIcons.gift(),
+            //   label: l10n.settingsInvite,
+            //   value: l10n.settingsInviteDetail,
+            //   valueHighlight: true,
+            //   onTap: () => context.push('/invite', extra: 'settings'),
+            // ),
+            // SettingsRow(
+            //   icon: PhosphorIcons.key(),
+            //   label: l10n.settingsHaveCode,
+            //   onTap: () => context.push('/redeem'),
+            // ),
             SettingsRow(
               icon: PhosphorIcons.bellRinging(),
               label: l10n.settingsHowRingtone,
@@ -280,9 +284,18 @@ class _AccountCard extends ConsumerWidget {
         borderRadius: BorderRadius.circular(AppRadius.card),
         child: InkWell(
           borderRadius: BorderRadius.circular(AppRadius.card),
-          onTap: () => user == null
-              ? context.push('/invite', extra: 'settings')
-              : context.push('/account'),
+          // Invite rewards API not ready — signed-out account used to open
+          // Invite friends. Keep signed-in → account; signed-out → toast.
+          onTap: () {
+            if (user != null) {
+              context.push('/account');
+              return;
+            }
+            TunelyToast.show(
+              context,
+              message: l10n.redeemUnavailable,
+            );
+          },
           child: Container(
             padding: const EdgeInsets.all(AppSpace.s16),
             decoration: BoxDecoration(

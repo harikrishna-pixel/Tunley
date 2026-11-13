@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:share_plus/share_plus.dart';
 
+import '../../app/config.dart';
 import '../../app/state.dart';
 import '../../core/design_system/design_system.dart';
 import '../../core/engine/audio_engine.dart';
@@ -10,7 +13,7 @@ import '../../l10n/app_localizations.dart';
 import '../help/help_screen.dart';
 import 'settings_screen.dart';
 
-/// Settings › About Us — brand, version, privacy / terms / contact.
+/// Settings › About Us — brand, version, privacy / terms / contact / share / rate.
 class AboutScreen extends ConsumerWidget {
   const AboutScreen({super.key});
 
@@ -22,6 +25,33 @@ class AboutScreen extends ConsumerWidget {
         context,
         message: AppLocalizations.of(context).couldNotOpen,
       );
+    }
+  }
+
+  Future<void> _share(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context);
+    final url = ref.read(appConfigProvider).appStoreUrl ?? '';
+    final box = context.findRenderObject() as RenderBox?;
+    await SharePlus.instance.share(
+      ShareParams(
+        text: l10n.aboutShareText(url).trim(),
+        sharePositionOrigin: box == null
+            ? null
+            : box.localToGlobal(Offset.zero) & box.size,
+      ),
+    );
+  }
+
+  /// In-app App Store page (SKStoreProductViewController), same as More apps.
+  Future<void> _rate(WidgetRef ref) async {
+    final id = ref.read(appConfigProvider).appStoreId;
+    if (id != null) {
+      final opened = await ref.read(audioEngineProvider).openAppStorePage(id);
+      if (opened) return;
+    }
+    final review = InAppReview.instance;
+    if (await review.isAvailable()) {
+      await review.requestReview();
     }
   }
 
@@ -104,6 +134,16 @@ class AboutScreen extends ConsumerWidget {
                   const SizedBox(height: AppSpace.s24),
                   ListGroup(
                     children: [
+                      SettingsRow(
+                        icon: PhosphorIcons.shareNetwork(),
+                        label: l10n.aboutShareApp,
+                        onTap: () => _share(context, ref),
+                      ),
+                      SettingsRow(
+                        icon: PhosphorIcons.star(PhosphorIconsStyle.fill),
+                        label: l10n.aboutRateUs,
+                        onTap: () => _rate(ref),
+                      ),
                       SettingsRow(
                         icon: PhosphorIcons.shieldCheck(),
                         label: l10n.aboutPrivacy,
