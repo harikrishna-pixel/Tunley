@@ -2295,6 +2295,12 @@ abstract class AppLocalizations {
   /// **'Lock Pro (testing)'**
   String get debugLockPro;
 
+  /// No description provided for @debugLevelPlayTestSuite.
+  ///
+  /// In en, this message translates to:
+  /// **'LevelPlay Test Suite'**
+  String get debugLevelPlayTestSuite;
+
   /// No description provided for @editExitTitle.
   ///
   /// In en, this message translates to:

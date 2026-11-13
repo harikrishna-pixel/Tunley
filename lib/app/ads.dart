@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/ads/ads_service.dart';
@@ -84,6 +85,9 @@ class AdsController extends Notifier<AdsState> {
     if (_isPro || state.started) return Future.value();
     return _starting ??= () async {
       final ok = await _service.init();
+      if (kDebugMode) {
+        debugPrint('[TunelyAds] start → started=$ok provider=${_service.provider}');
+      }
       if (ref.mounted) state = state.copyWith(started: ok);
       _starting = null;
     }();
@@ -103,7 +107,11 @@ class AdsController extends Notifier<AdsState> {
     DateTime? now,
   }) {
     final config = ref.read(appConfigProvider).ads;
-    return AdPolicy.canShowAdBreak(
+    // Debug: allow first session + from the 1st conversion so ads can be verified.
+    // Release keeps app_config caps (3rd conversion, not first session).
+    // Also ignore paywall/house blockers in debug so P4 doesn't hide ads while testing.
+    final debugLoose = kDebugMode;
+    final allowed = AdPolicy.canShowAdBreak(
       AdBreakRequest(
         memory: state.memory,
         now: now ?? DateTime.now(),
@@ -112,15 +120,29 @@ class AdsController extends Notifier<AdsState> {
         firstSession: ref.read(paywallProvider).memory.sessions <= 1,
         lifetimeConversions: lifetimeConversions ?? 0,
         afterErrorInFlow: afterErrorInFlow,
-        paywallInFlow: paywallInFlow,
-        houseCardOnScreen: houseCardOnScreen,
-        firstSessionAds: config.firstSessionAds,
-        minConversionsBeforeFirstAd: config.minConversionsBeforeFirstAd,
-        everyNthConversion: config.everyNthConversion,
-        minSecondsBetween: config.minSecondsBetween,
+        paywallInFlow: debugLoose ? false : paywallInFlow,
+        houseCardOnScreen: debugLoose ? false : houseCardOnScreen,
+        firstSessionAds: debugLoose ? true : config.firstSessionAds,
+        minConversionsBeforeFirstAd: debugLoose
+            ? 1
+            : config.minConversionsBeforeFirstAd,
+        everyNthConversion: debugLoose ? 1 : config.everyNthConversion,
+        minSecondsBetween: debugLoose ? 0 : config.minSecondsBetween,
         maxPerDay: config.maxPerDay,
       ),
     );
+    if (kDebugMode && !allowed) {
+      debugPrint(
+        '[TunelyAds] canAdBreak=false '
+        'pro=$_isPro started=${state.started} enabled=${config.enabled} '
+        'lifetime=${lifetimeConversions ?? 0} '
+        'paywallInFlow=$paywallInFlow house=$houseCardOnScreen '
+        'error=$afterErrorInFlow '
+        'conversionsSinceAd=${state.memory.conversionsSinceAd} '
+        'adsToday=${state.memory.adsToday}',
+      );
+    }
+    return allowed;
   }
 
   bool isReady(AdFormat format) => _service.isReady(format);

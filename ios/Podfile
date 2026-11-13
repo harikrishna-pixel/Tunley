@@ -37,6 +37,9 @@ target 'Runner' do
   use_frameworks! :linkage => :static
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+  # LevelPlay ← AdMob network (Test Suite showed Google SDK/Adapter Not found).
+  # Pins with IronSourceSDK 9.8.0 from unity_levelplay_mediation 9.5.0.
+  pod 'IronSourceAdMobAdapter', '5.19.0.0'
   target 'RunnerTests' do
     inherit! :search_paths
   end

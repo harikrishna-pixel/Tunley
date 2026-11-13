@@ -921,6 +921,7 @@
   "settingsDebug": "Debug",
   "debugUnlockPro": "Unlock Pro (testing)",
   "debugLockPro": "Lock Pro (testing)",
+  "debugLevelPlayTestSuite": "LevelPlay Test Suite",
   "editExitTitle": "Confirm Exit?",
   "editExitBody": "Current edits will not be saved. Are you sure you want to exit?",
   "editExitConfirm": "Confirm Exit",

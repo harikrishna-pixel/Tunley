@@ -5,7 +5,10 @@ import 'package:go_router/go_router.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
+import 'package:unity_levelplay_mediation/unity_levelplay_mediation.dart';
+
 import '../../app/account.dart';
+import '../../app/ads.dart';
 import '../../app/config.dart';
 import '../../app/state.dart';
 import '../../core/design_system/design_system.dart';
@@ -257,6 +260,14 @@ class SettingsScreen extends ConsumerWidget {
                 icon: PhosphorIcons.waveform(),
                 label: l10n.engineDebugTitle,
                 onTap: () => context.push('/debug/engine'),
+              ),
+              SettingsRow(
+                icon: PhosphorIcons.megaphone(),
+                label: l10n.debugLevelPlayTestSuite,
+                onTap: () async {
+                  await ref.read(adsProvider.notifier).start();
+                  await LevelPlay.launchTestSuite();
+                },
               ),
             ],
           ),

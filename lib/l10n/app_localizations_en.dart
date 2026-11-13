@@ -1276,6 +1276,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get debugLockPro => 'Lock Pro (testing)';
 
   @override
+  String get debugLevelPlayTestSuite => 'LevelPlay Test Suite';
+
+  @override
   String get editExitTitle => 'Confirm Exit?';
 
   @override

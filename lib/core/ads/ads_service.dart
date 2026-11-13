@@ -297,6 +297,8 @@ class LevelPlayAdsService implements AdsService {
   bool _rewardedReady = false;
   bool _loadingInterstitial = false;
   bool _loadingRewarded = false;
+  Completer<void>? _interstitialLoad;
+  Completer<void>? _rewardedLoad;
   VoidCallback? _onReward;
   Completer<bool>? _interstitialClosed;
   Completer<bool>? _rewardedClosed;
@@ -317,6 +319,10 @@ class LevelPlayAdsService implements AdsService {
         'is_test_suite': ['enable'],
       });
       await LevelPlay.setAdaptersDebug(true);
+      debugPrint(
+        '[TunelyAds] init appKey=${_units.appKey} '
+        'interstitial=${_units.interstitial}',
+      );
     }
 
     final done = Completer<bool>();
@@ -325,9 +331,16 @@ class LevelPlayAdsService implements AdsService {
       initRequest: request,
       initListener: _LevelPlayInitListener(
         onSuccess: () {
+          if (kDebugMode) {
+            debugPrint('[TunelyAds] LevelPlay init OK');
+            unawaited(LevelPlay.validateIntegration());
+          }
           if (!done.isCompleted) done.complete(true);
         },
-        onFailed: () {
+        onFailed: (error) {
+          if (kDebugMode) {
+            debugPrint('[TunelyAds] LevelPlay init FAILED: $error');
+          }
           if (!done.isCompleted) done.complete(false);
         },
       ),
@@ -373,21 +386,57 @@ class LevelPlayAdsService implements AdsService {
     _analytics.adRequested(format: format.name, provider: provider);
     switch (format) {
       case AdFormat.interstitial:
-        if (_loadingInterstitial) return;
+        if (_loadingInterstitial) {
+          await _interstitialLoad?.future;
+          return;
+        }
         _loadingInterstitial = true;
         _interstitialReady = false;
+        final pending = Completer<void>();
+        _interstitialLoad = pending;
         final ad = LevelPlayInterstitialAd(adUnitId: _units.interstitial);
         ad.setListener(_InterstitialListener(this));
         _interstitial = ad;
         await ad.loadAd();
+        // loadAd returns when the request is sent; wait for loaded/failed.
+        await pending.future.timeout(
+          const Duration(seconds: 15),
+          onTimeout: () {
+            _loadingInterstitial = false;
+            if (!pending.isCompleted) pending.complete();
+          },
+        );
       case AdFormat.rewarded:
-        if (_loadingRewarded) return;
+        if (_loadingRewarded) {
+          await _rewardedLoad?.future;
+          return;
+        }
         _loadingRewarded = true;
         _rewardedReady = false;
+        final pending = Completer<void>();
+        _rewardedLoad = pending;
         final ad = LevelPlayRewardedAd(adUnitId: _units.rewarded);
         ad.setListener(_RewardedListener(this));
         _rewarded = ad;
         await ad.loadAd();
+        await pending.future.timeout(
+          const Duration(seconds: 15),
+          onTimeout: () {
+            _loadingRewarded = false;
+            if (!pending.isCompleted) pending.complete();
+          },
+        );
+    }
+  }
+
+  void _completeLoad(AdFormat format) {
+    switch (format) {
+      case AdFormat.interstitial:
+        final c = _interstitialLoad;
+        if (c != null && !c.isCompleted) c.complete();
+      case AdFormat.rewarded:
+        final c = _rewardedLoad;
+        if (c != null && !c.isCompleted) c.complete();
     }
   }
 
@@ -395,19 +444,20 @@ class LevelPlayAdsService implements AdsService {
   Future<bool> showInterstitial() async {
     final ad = _interstitial;
     if (ad == null || !_interstitialReady) return false;
-    if (await LevelPlayInterstitialAd.isPlacementCapped(
-      interstitialPlacement,
-    )) {
-      return false;
-    }
     if (!await ad.isAdReady()) {
       _interstitialReady = false;
+      if (kDebugMode) {
+        debugPrint('[TunelyAds] interstitial show skipped: SDK not ready');
+      }
       return false;
     }
     _interstitialReady = false;
     final closed = Completer<bool>();
     _interstitialClosed = closed;
-    await ad.showAd(placementName: interstitialPlacement);
+    // No named placement: dashboard may not have after_task_interstitial yet;
+    // app-side AdPolicy already enforces caps.
+    if (kDebugMode) debugPrint('[TunelyAds] showing interstitial');
+    await ad.showAd();
     return closed.future;
   }
 
@@ -415,9 +465,6 @@ class LevelPlayAdsService implements AdsService {
   Future<bool> showRewarded({required VoidCallback onReward}) async {
     final ad = _rewarded;
     if (ad == null || !_rewardedReady) return false;
-    if (await LevelPlayRewardedAd.isPlacementCapped(rewardedPlacement)) {
-      return false;
-    }
     if (!await ad.isAdReady()) {
       _rewardedReady = false;
       return false;
@@ -426,7 +473,7 @@ class LevelPlayAdsService implements AdsService {
     _onReward = onReward;
     final closed = Completer<bool>();
     _rewardedClosed = closed;
-    await ad.showAd(placementName: rewardedPlacement);
+    await ad.showAd();
     return closed.future;
   }
 
@@ -443,13 +490,13 @@ class _LevelPlayInitListener implements LevelPlayInitListener {
   _LevelPlayInitListener({required this.onSuccess, required this.onFailed});
 
   final VoidCallback onSuccess;
-  final VoidCallback onFailed;
+  final void Function(LevelPlayInitError error) onFailed;
 
   @override
   void onInitSuccess(LevelPlayConfiguration configuration) => onSuccess();
 
   @override
-  void onInitFailed(LevelPlayInitError error) => onFailed();
+  void onInitFailed(LevelPlayInitError error) => onFailed(error);
 }
 
 class _InterstitialListener implements LevelPlayInterstitialAdListener {
@@ -461,17 +508,27 @@ class _InterstitialListener implements LevelPlayInterstitialAdListener {
   void onAdLoaded(LevelPlayAdInfo adInfo) {
     _service._loadingInterstitial = false;
     _service._interstitialReady = true;
+    if (kDebugMode) {
+      debugPrint(
+        '[TunelyAds] interstitial LOADED network=${adInfo.adNetwork}',
+      );
+    }
     _service._analytics.adLoaded(
       format: AdFormat.interstitial.name,
       provider: _service.provider,
     );
+    _service._completeLoad(AdFormat.interstitial);
   }
 
   @override
   void onAdLoadFailed(LevelPlayAdError error) {
     _service._loadingInterstitial = false;
     _service._interstitialReady = false;
+    if (kDebugMode) {
+      debugPrint('[TunelyAds] interstitial load FAILED: $error');
+    }
     _service._fail(AdFormat.interstitial, 'no_fill');
+    _service._completeLoad(AdFormat.interstitial);
   }
 
   @override
@@ -527,13 +584,18 @@ class _RewardedListener implements LevelPlayRewardedAdListener {
       format: AdFormat.rewarded.name,
       provider: _service.provider,
     );
+    _service._completeLoad(AdFormat.rewarded);
   }
 
   @override
   void onAdLoadFailed(LevelPlayAdError error) {
     _service._loadingRewarded = false;
     _service._rewardedReady = false;
+    if (kDebugMode) {
+      debugPrint('[TunelyAds] rewarded load FAILED: $error');
+    }
     _service._fail(AdFormat.rewarded, 'no_fill');
+    _service._completeLoad(AdFormat.rewarded);
   }
 
   @override

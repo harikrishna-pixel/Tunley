@@ -1,5 +1,11 @@
 PODS:
   - Flutter (1.0.0)
+  - Google-Mobile-Ads-SDK (13.12.0):
+    - GoogleUserMessagingPlatform (>= 1.1)
+  - GoogleUserMessagingPlatform (3.1.0)
+  - IronSourceAdMobAdapter (5.19.0.0):
+    - Google-Mobile-Ads-SDK (= 13.12.0)
+    - IronSourceSDK/Ads (~> 9.0)
   - IronSourceAdQualitySDK (9.12.0)
   - IronSourceSDK (9.8.0.0):
     - IronSourceSDK/AdQuality (= 9.8.0.0)
@@ -15,11 +21,15 @@ PODS:
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
+  - IronSourceAdMobAdapter (= 5.19.0.0)
   - tunely_engine (from `.symlinks/plugins/tunely_engine/ios`)
   - unity_levelplay_mediation (from `.symlinks/plugins/unity_levelplay_mediation/ios`)
 
 SPEC REPOS:
   trunk:
+    - Google-Mobile-Ads-SDK
+    - GoogleUserMessagingPlatform
+    - IronSourceAdMobAdapter
     - IronSourceAdQualitySDK
     - IronSourceSDK
 
@@ -33,11 +43,14 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: 71a624a5bc0c04062bf19101d501e466baf2fb47
+  Google-Mobile-Ads-SDK: cbfc0aa6883afbad2ff3dcccce75b673ff8d3f65
+  GoogleUserMessagingPlatform: befe603da6501006420c206222acd449bba45a9c
+  IronSourceAdMobAdapter: ef028b5eabb149fa1adb85edeb3a7c8449358864
   IronSourceAdQualitySDK: 52d2e9dc204033b9b3d56f331ccdf879931ff173
   IronSourceSDK: da7a40dcfd9e052c8ea2bb8614ed146374f5674d
   tunely_engine: e92571c49dfa8aba4a119acd4127d61dc9dc2ea1
   unity_levelplay_mediation: 280c264ce05e1d0475c76898e445fe5795ea5817
 
-PODFILE CHECKSUM: ea24338ad16cd4279c65bce907596441302e9198
+PODFILE CHECKSUM: c2bf0019b66d0d8fb393d47500d371ce208d2972
 
 COCOAPODS: 1.16.2

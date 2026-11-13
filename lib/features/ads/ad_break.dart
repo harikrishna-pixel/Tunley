@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -28,6 +29,8 @@ Future<void> maybeAdBreak(
   bool houseCardOnScreen = false,
 }) async {
   final ads = ref.read(adsProvider.notifier);
+  // Quiet-launch consent may have been skipped this session; start if we can.
+  await ads.start();
   final lifetime = await ref.read(usageStoreProvider).lifetimeConversions();
   if (!context.mounted) return;
   final allowed = ads.canAdBreak(
@@ -36,7 +39,34 @@ Future<void> maybeAdBreak(
     houseCardOnScreen: houseCardOnScreen,
     lifetimeConversions: lifetime,
   );
-  if (!allowed || !ads.isReady(AdFormat.interstitial)) return;
+  if (!allowed) {
+    if (kDebugMode && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Ads skipped (policy / not started / Pro)')),
+      );
+    }
+    return;
+  }
+  // Wait for a load if preload is still in flight (was skipping silently).
+  if (!ads.isReady(AdFormat.interstitial)) {
+    await ads.preload(AdFormat.interstitial);
+  }
+  if (!context.mounted) return;
+  if (!ads.isReady(AdFormat.interstitial)) {
+    if (kDebugMode) {
+      debugPrint(
+        '[TunelyAds] skip notice 42: interstitial not ready (no fill / load fail)',
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Ad load failed — LevelPlay no fill. Check dashboard / Test Suite.',
+          ),
+        ),
+      );
+    }
+    return;
+  }
 
   final analytics = ref.read(analyticsProvider);
   analytics.adBreakShown(
