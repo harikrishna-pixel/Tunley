@@ -3199,4 +3199,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingInviteCode => 'Got an invite code?';
+
+  @override
+  String get splashPleaseWait => 'Please wait';
 }

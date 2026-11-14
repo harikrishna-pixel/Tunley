@@ -12,6 +12,7 @@ import '../../core/design_system/design_system.dart';
 import '../../core/engine/audio_engine.dart';
 import '../../core/analytics/analytics.dart';
 import '../../core/analytics/events.dart';
+import '../../core/library/library_repository.dart';
 import '../../l10n/app_localizations.dart';
 import '../common/media_widgets.dart';
 import '../errors/error_screen.dart';
@@ -31,11 +32,16 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
   bool _left = false;
   Timer? _tick;
 
+  /// So short jobs still flash the Converting UI (Janaki #99).
+  static const _minVisible = Duration(milliseconds: 1500);
+  late final DateTime _shownAt;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_started) return;
     _started = true;
+    _shownAt = DateTime.now();
     afterRouteTransition(context, () {
       final draft = ref.read(draftProvider);
       if (draft != null) {
@@ -64,8 +70,10 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
       case JobStatus.running:
         return;
       case JobStatus.succeeded:
+        final item = next.item;
+        if (item == null) return;
         _left = true;
-        context.pushReplacement('/result', extra: next.item);
+        unawaited(_goToResult(item));
       case JobStatus.failed:
         _left = true;
         if (next.error == EngineErrorCode.cancelled) {
@@ -86,6 +94,13 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
           );
         }
     }
+  }
+
+  Future<void> _goToResult(LibraryItem item) async {
+    final wait = _minVisible - DateTime.now().difference(_shownAt);
+    if (wait > Duration.zero) await Future<void>.delayed(wait);
+    if (!mounted) return;
+    context.pushReplacement('/result', extra: item);
   }
 
   Future<void> _confirmCancel() async {

@@ -311,34 +311,48 @@ class _ValueDemo extends StatelessWidget {
                     width: 196,
                     height: 270,
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [colors.surface2, colors.border],
-                      ),
                       borderRadius: BorderRadius.circular(AppRadius.hero),
                       boxShadow: colors.shadow,
                     ),
+                    clipBehavior: Clip.antiAlias,
                     child: Stack(
+                      fit: StackFit.expand,
                       children: [
-                        Center(
-                          child: PhosphorIcon(
-                            PhosphorIcons.filmSlate(PhosphorIconsStyle.fill),
-                            color: colors.text3,
-                            size: 56,
-                          ),
+                        Image.asset(
+                          'assets/onboarding/dancer.jpg',
+                          fit: BoxFit.cover,
                         ),
                         Positioned(
-                          left: 14,
-                          right: 14,
-                          bottom: 14,
-                          child: Text(
-                            l10n.o1DemoFile,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: text.caption.copyWith(
-                              color: colors.text2,
-                              fontWeight: FontWeight.w500,
+                          left: 10,
+                          bottom: 10,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: const Color(0x80000000),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                PhosphorIcon(
+                                  PhosphorIcons.videoCamera(
+                                    PhosphorIconsStyle.fill,
+                                  ),
+                                  color: colors.heroText,
+                                  size: 12,
+                                ),
+                                const SizedBox(width: 5),
+                                Text(
+                                  l10n.o1DemoFile,
+                                  style: text.footnote.copyWith(
+                                    color: colors.heroText,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -687,32 +701,36 @@ class _Promises extends StatelessWidget {
 class _Privacy extends StatelessWidget {
   const _Privacy();
 
+  /// Design O5 grid (Onb5): beach, dancer (selected), dog / friends, cake, hiker.
+  static const _tiles = <({String asset, bool picked, double opacity})>[
+    (asset: 'assets/onboarding/beach.jpg', picked: false, opacity: 0.45),
+    (asset: 'assets/onboarding/dancer.jpg', picked: true, opacity: 1),
+    (asset: 'assets/onboarding/dog.jpg', picked: false, opacity: 0.45),
+    (asset: 'assets/onboarding/friends.jpg', picked: false, opacity: 0.45),
+    (asset: 'assets/onboarding/cake.jpg', picked: false, opacity: 0.45),
+    (asset: 'assets/onboarding/hiker.jpg', picked: false, opacity: 0.45),
+  ];
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final colors = context.colors;
     final text = context.appText;
-    Widget tile({bool picked = false, bool dim = true}) {
+    Widget tile(({String asset, bool picked, double opacity}) item) {
       return Expanded(
         child: AspectRatio(
           aspectRatio: 0.92,
-          child: Container(
-            decoration: BoxDecoration(
-              color: picked ? colors.accentSoft : colors.surface2,
-              borderRadius: BorderRadius.circular(AppRadius.hero),
-              border: picked
-                  ? Border.all(color: colors.accent, width: 3)
-                  : null,
-            ),
-            child: Opacity(
-              opacity: picked || !dim ? 1 : 0.5,
-              child: Center(
-                child: PhosphorIcon(
-                  PhosphorIcons.image(PhosphorIconsStyle.fill),
-                  color: picked ? colors.accentOnSoft : colors.text3,
-                  size: 30,
-                ),
+          child: Opacity(
+            opacity: item.opacity,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(AppRadius.hero),
+                border: item.picked
+                    ? Border.all(color: colors.accent, width: 3)
+                    : null,
               ),
+              clipBehavior: Clip.antiAlias,
+              child: Image.asset(item.asset, fit: BoxFit.cover),
             ),
           ),
         ),
@@ -725,21 +743,21 @@ class _Privacy extends StatelessWidget {
           children: [
             Row(
               children: [
-                tile(dim: false),
+                tile(_tiles[0]),
                 const SizedBox(width: AppSpace.s10),
-                tile(picked: true),
+                tile(_tiles[1]),
                 const SizedBox(width: AppSpace.s10),
-                tile(dim: false),
+                tile(_tiles[2]),
               ],
             ),
             const SizedBox(height: AppSpace.s10),
             Row(
               children: [
-                tile(),
+                tile(_tiles[3]),
                 const SizedBox(width: AppSpace.s10),
-                tile(),
+                tile(_tiles[4]),
                 const SizedBox(width: AppSpace.s10),
-                tile(),
+                tile(_tiles[5]),
               ],
             ),
           ],

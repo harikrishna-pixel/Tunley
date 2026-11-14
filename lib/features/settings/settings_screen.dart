@@ -7,7 +7,6 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import 'package:unity_levelplay_mediation/unity_levelplay_mediation.dart';
 
-import '../../app/account.dart';
 import '../../app/ads.dart';
 import '../../app/config.dart';
 import '../../app/state.dart';
@@ -18,7 +17,6 @@ import '../../core/analytics/analytics.dart';
 import '../../core/analytics/events.dart';
 import '../../l10n/app_localizations.dart';
 import '../../app/monetization.dart';
-import '../account/account_widgets.dart';
 import '../paywall/checkout.dart';
 import '../paywall/paywall_screen.dart';
 import '../paywall/pro_gate.dart';
@@ -129,10 +127,10 @@ class SettingsScreen extends ConsumerWidget {
           child: Text(l10n.tabSettings, style: text.largeTitle),
         ),
         const SizedBox(height: AppSpace.s16),
-        const _AccountCard(),
-        const SizedBox(height: AppSpace.s12),
+        // Sign in / account / invite / redeem hidden until referral API is ready.
         if (!isPro)
           _ProCard(onTap: () => openPaywall(context, PaywallSource.settings)),
+        if (!isPro) const SizedBox(height: AppSpace.s12),
         section(l10n.settingsPreferences),
         ListGroup(
           children: [
@@ -161,20 +159,6 @@ class SettingsScreen extends ConsumerWidget {
         section(l10n.settingsHelpMore),
         ListGroup(
           children: [
-            // Referral API not ready (apiBaseUrl TBD). Hide invite / redeem
-            // until rewards actually work — otherwise we promise Pro we can't grant.
-            // SettingsRow(
-            //   icon: PhosphorIcons.gift(),
-            //   label: l10n.settingsInvite,
-            //   value: l10n.settingsInviteDetail,
-            //   valueHighlight: true,
-            //   onTap: () => context.push('/invite', extra: 'settings'),
-            // ),
-            // SettingsRow(
-            //   icon: PhosphorIcons.key(),
-            //   label: l10n.settingsHaveCode,
-            //   onTap: () => context.push('/redeem'),
-            // ),
             SettingsRow(
               icon: PhosphorIcons.bellRinging(),
               label: l10n.settingsHowRingtone,
@@ -273,97 +257,6 @@ class SettingsScreen extends ConsumerWidget {
           ),
         ],
       ],
-    );
-  }
-}
-
-/// Account row (23): optional, only for invite rewards (`12`). Signed out it
-/// opens 46, which explains before any form.
-class _AccountCard extends ConsumerWidget {
-  const _AccountCard();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context);
-    final colors = context.colors;
-    final text = context.appText;
-    final user = ref.watch(accountProvider).user;
-    return Semantics(
-      button: true,
-      child: Material(
-        color: colors.surface,
-        borderRadius: BorderRadius.circular(AppRadius.card),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(AppRadius.card),
-          // Invite rewards API not ready — signed-out account used to open
-          // Invite friends. Keep signed-in → account; signed-out → toast.
-          onTap: () {
-            if (user != null) {
-              context.push('/account');
-              return;
-            }
-            TunelyToast.show(
-              context,
-              message: l10n.redeemUnavailable,
-            );
-          },
-          child: Container(
-            padding: const EdgeInsets.all(AppSpace.s16),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(AppRadius.card),
-              border: Border.all(color: colors.border),
-            ),
-            child: Row(
-              children: [
-                if (user == null)
-                  Container(
-                    width: 44,
-                    height: 44,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: colors.accentSoft,
-                      shape: BoxShape.circle,
-                    ),
-                    child: PhosphorIcon(
-                      PhosphorIcons.user(),
-                      color: colors.accentOnSoft,
-                      size: 22,
-                    ),
-                  )
-                else
-                  InitialsAvatar(user: user, size: 44),
-                const SizedBox(width: AppSpace.s14),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        user == null
-                            ? l10n.settingsAccountSignedOut
-                            : '${user.firstName} ${user.lastName}',
-                        style: text.subhead.copyWith(
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      Text(
-                        user?.email ?? l10n.settingsAccountOptional,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: text.caption.copyWith(color: colors.text2),
-                      ),
-                    ],
-                  ),
-                ),
-                PhosphorIcon(
-                  PhosphorIcons.caretRight(),
-                  color: colors.text3,
-                  size: 18,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

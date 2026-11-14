@@ -41,10 +41,10 @@ class HomeScreen extends ConsumerWidget {
         l10n.heroTitleRingtone,
         l10n.heroCtaRingtone,
         PhosphorIcons.bellRinging(),
+        // CTA is "Choose a video or song" — show Videos / Audio / Recent (07).
         const PickerIntent(
           tab: PickerTab.videos,
           mode: ConvertMode.ringtone,
-          videosOnly: true,
         ),
       ),
       UserGoal.mp3FromVideos => (

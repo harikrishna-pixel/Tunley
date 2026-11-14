@@ -315,25 +315,15 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                         child: InkResponse(
                           onTap: _close,
                           radius: 22,
+                          // Design: plain X only (no circle), 44 pt hit target.
                           child: SizedBox(
                             width: 44,
                             height: 44,
                             child: Center(
-                              child: Container(
-                                width: 28,
-                                height: 28,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: colors.surface.withValues(
-                                    alpha: 0.45,
-                                  ),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: PhosphorIcon(
-                                  PhosphorIcons.x(PhosphorIconsStyle.bold),
-                                  color: colors.text.withValues(alpha: 0.65),
-                                  size: 12,
-                                ),
+                              child: PhosphorIcon(
+                                PhosphorIcons.x(PhosphorIconsStyle.bold),
+                                color: colors.heroText.withValues(alpha: 0.85),
+                                size: 20,
                               ),
                             ),
                           ),
@@ -486,24 +476,35 @@ class _Timeline extends StatelessWidget {
       start: DateTime.now(),
       trialDays: yearly.trialDays!,
     );
+    // Three equal columns (design grid); title+detail left-aligned per column.
     Widget step(IconData icon, String title, String detail) => Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Icon(icon, size: 16, color: colors.link),
-              const SizedBox(width: AppSpace.s4),
-              Text(
-                title,
-                style: text.subhead.copyWith(
-                  color: colors.link,
-                  fontWeight: FontWeight.w800,
+              Icon(icon, size: 13, color: colors.link),
+              const SizedBox(width: 5),
+              Expanded(
+                child: Text(
+                  title,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: text.caption.copyWith(
+                    color: colors.link,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
               ),
             ],
           ),
-          Text(detail, style: text.footnote.copyWith(color: colors.text2)),
+          const SizedBox(height: 3),
+          Text(
+            detail,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: text.footnote.copyWith(color: colors.text2),
+          ),
         ],
       ),
     );
@@ -513,13 +514,16 @@ class _Timeline extends StatelessWidget {
         vertical: AppSpace.s12,
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           step(PhosphorIcons.lockOpen(), l10n.pwToday, l10n.pwTodayDetail),
+          const SizedBox(width: 6),
           step(
             PhosphorIcons.bell(),
             l10n.pwDay(timeline.dayNumber(timeline.reminderAt) - 1),
             l10n.pwReminder,
           ),
+          const SizedBox(width: 6),
           step(
             PhosphorIcons.crown(PhosphorIconsStyle.fill),
             l10n.pwDay(timeline.dayNumber(timeline.chargeAt) - 1),

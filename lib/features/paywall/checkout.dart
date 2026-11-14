@@ -192,7 +192,8 @@ Future<bool?> showPurchaseResult(
     builder: (dialogContext) {
       final colors = dialogContext.colors;
       final text = dialogContext.appText;
-      final (icon, soft, strong, title, body) = switch (kind) {
+      // No-purchases (none): no search/magnifier icon (Sabitha #93).
+      final (IconData? icon, soft, strong, title, body) = switch (kind) {
         PurchaseResultKind.failed => (
           PhosphorIcons.creditCard(),
           colors.dangerSoft,
@@ -215,7 +216,7 @@ Future<bool?> showPurchaseResult(
           l10n.p9PendingBody,
         ),
         PurchaseResultKind.none => (
-          PhosphorIcons.magnifyingGlass(),
+          null,
           colors.surface2,
           colors.text2,
           l10n.p9NoneTitle,
@@ -245,16 +246,18 @@ Future<bool?> showPurchaseResult(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Center(
-            child: Container(
-              width: 64,
-              height: 64,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(color: soft, shape: BoxShape.circle),
-              child: Icon(icon, color: strong, size: 28),
+          if (icon != null) ...[
+            Center(
+              child: Container(
+                width: 64,
+                height: 64,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(color: soft, shape: BoxShape.circle),
+                child: Icon(icon, color: strong, size: 28),
+              ),
             ),
-          ),
-          const SizedBox(height: AppSpace.s16),
+            const SizedBox(height: AppSpace.s16),
+          ],
           Text(title, textAlign: TextAlign.center, style: text.dialogTitle),
           const SizedBox(height: AppSpace.s8),
           Text(

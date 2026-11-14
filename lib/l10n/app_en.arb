@@ -2124,5 +2124,6 @@
   "settingsInvite": "Invite friends",
   "settingsInviteDetail": "Both get 1 week Pro",
   "settingsHaveCode": "Have an invite code?",
-  "onboardingInviteCode": "Got an invite code?"
+  "onboardingInviteCode": "Got an invite code?",
+  "splashPleaseWait": "Please wait"
 }

@@ -255,12 +255,7 @@ class _MoreAppsScreenState extends ConsumerState<MoreAppsScreen> {
                       ),
                     ),
                   ],
-                  const SizedBox(height: AppSpace.s16),
-                  Text(
-                    l10n.moreAppsFooter,
-                    textAlign: TextAlign.center,
-                    style: text.footnote.copyWith(color: colors.text3),
-                  ),
+                  // Bottom footer removed — duplicated intro (Janaki #100 / attached UI).
                 ],
               ),
             ),

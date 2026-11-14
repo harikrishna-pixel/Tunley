@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
 import 'theme_context.dart';
 
-/// Half-width of a trim handle — kept clear of the view edges so handles
-/// stay fully visible at 0% / 100%.
-const _handleInset = 8.0;
+/// Inset so circular thumbs stay fully inside the view at 0% / 100%
+/// (design `19_F2_Trim_and_fade`).
+const _handleInset = 12.0;
+const _handleThumbRadius = 10.0;
+const _handleLineWidth = 3.0;
 
 /// Selectable waveform. Peaks are 0..1. [start] and [end] are fractions.
 class WaveformView extends StatefulWidget {
@@ -99,7 +101,6 @@ class _WaveformViewState extends State<WaveformView> {
                     outside: colors.border,
                     handle: colors.accent,
                     playheadColor: colors.text,
-                    grip: colors.accentText,
                     inset: _handleInset,
                   ),
                   child: const SizedBox.expand(),
@@ -137,7 +138,6 @@ class _WaveformPainter extends CustomPainter {
     required this.outside,
     required this.handle,
     required this.playheadColor,
-    required this.grip,
     required this.inset,
   });
 
@@ -149,7 +149,6 @@ class _WaveformPainter extends CustomPainter {
   final Color outside;
   final Color handle;
   final Color playheadColor;
-  final Color grip;
   final double inset;
 
   double _usable(Size size) => (size.width - inset * 2).clamp(1.0, size.width);
@@ -194,28 +193,26 @@ class _WaveformPainter extends CustomPainter {
     }
   }
 
+  /// Thin line + round thumb (no || "pause" grip lines — Sabitha #52).
   void _handle(Canvas canvas, Size size, double x) {
-    final rect = RRect.fromRectAndRadius(
-      Rect.fromCenter(
-        center: Offset(x, size.height / 2),
-        width: 14,
-        height: 56,
+    final paint = Paint()..color = handle;
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+        Rect.fromLTWH(
+          x - _handleLineWidth / 2,
+          0,
+          _handleLineWidth,
+          size.height,
+        ),
+        const Radius.circular(1.5),
       ),
-      const Radius.circular(7),
+      paint,
     );
-    canvas.drawRRect(rect, Paint()..color = handle);
-    final gripPaint = Paint()
-      ..color = grip
-      ..strokeWidth = 1.5
-      ..strokeCap = StrokeCap.round;
-    final midY = size.height / 2;
-    for (final dx in [-2.0, 2.0]) {
-      canvas.drawLine(
-        Offset(x + dx, midY - 8),
-        Offset(x + dx, midY + 8),
-        gripPaint,
-      );
-    }
+    canvas.drawCircle(
+      Offset(x, size.height / 2),
+      _handleThumbRadius,
+      paint,
+    );
   }
 
   @override

@@ -81,15 +81,29 @@ class AdsController extends Notifier<AdsState> {
   }
 
   /// UMP consent (form only where required), then the SDK. Free users only.
+  /// Times out so offline / hung UMP never blocks navigation (Result Back etc.).
   Future<void> start() {
     if (_isPro || state.started) return Future.value();
     return _starting ??= () async {
-      final ok = await _service.init();
-      if (kDebugMode) {
-        debugPrint('[TunelyAds] start → started=$ok provider=${_service.provider}');
+      try {
+        final ok = await _service.init().timeout(
+          const Duration(seconds: 3),
+          onTimeout: () {
+            if (kDebugMode) {
+              debugPrint('[TunelyAds] start timed out (offline / UMP hang)');
+            }
+            return false;
+          },
+        );
+        if (kDebugMode) {
+          debugPrint(
+            '[TunelyAds] start → started=$ok provider=${_service.provider}',
+          );
+        }
+        if (ref.mounted) state = state.copyWith(started: ok);
+      } finally {
+        _starting = null;
       }
-      if (ref.mounted) state = state.copyWith(started: ok);
-      _starting = null;
     }();
   }
 

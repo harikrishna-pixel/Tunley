@@ -30,6 +30,7 @@ Future<void> maybeAdBreak(
 }) async {
   final ads = ref.read(adsProvider.notifier);
   // Quiet-launch consent may have been skipped this session; start if we can.
+  // Cap wait so offline / hung init never blocks Back / Done / ringtone.
   await ads.start();
   final lifetime = await ref.read(usageStoreProvider).lifetimeConversions();
   if (!context.mounted) return;
@@ -47,9 +48,12 @@ Future<void> maybeAdBreak(
     }
     return;
   }
-  // Wait for a load if preload is still in flight (was skipping silently).
+  // Wait briefly if preload is in flight; skip if no fill (don't block nav).
   if (!ads.isReady(AdFormat.interstitial)) {
-    await ads.preload(AdFormat.interstitial);
+    await ads.preload(AdFormat.interstitial).timeout(
+      const Duration(seconds: 3),
+      onTimeout: () {},
+    );
   }
   if (!context.mounted) return;
   if (!ads.isReady(AdFormat.interstitial)) {

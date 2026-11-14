@@ -755,12 +755,12 @@ class _EmptyFilesState extends ConsumerState<_EmptyFiles> {
                             ),
                           ],
                         ),
-                        Text(
-                          shrink.pitch == null
-                              ? l10n.moreFromMarberxShort
-                              : l10n.moreFromMarberx(shrink.pitch!),
-                          style: text.footnote.copyWith(color: colors.text2),
-                        ),
+                        // Sabitha #85: no "More from Marberx" company line on the ad.
+                        if (shrink.pitch != null)
+                          Text(
+                            shrink.pitch!,
+                            style: text.footnote.copyWith(color: colors.text2),
+                          ),
                       ],
                     ),
                   ),

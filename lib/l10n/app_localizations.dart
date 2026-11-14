@@ -5480,6 +5480,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Got an invite code?'**
   String get onboardingInviteCode;
+
+  /// No description provided for @splashPleaseWait.
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait'**
+  String get splashPleaseWait;
 }
 
 class _AppLocalizationsDelegate

@@ -132,18 +132,9 @@ class AboutScreen extends ConsumerWidget {
                     ),
                   ],
                   const SizedBox(height: AppSpace.s24),
+                  // Order per Sabitha reference: legal/contact first, Share & Rate last.
                   ListGroup(
                     children: [
-                      SettingsRow(
-                        icon: PhosphorIcons.shareNetwork(),
-                        label: l10n.aboutShareApp,
-                        onTap: () => _share(context, ref),
-                      ),
-                      SettingsRow(
-                        icon: PhosphorIcons.star(PhosphorIconsStyle.fill),
-                        label: l10n.aboutRateUs,
-                        onTap: () => _rate(ref),
-                      ),
                       SettingsRow(
                         icon: PhosphorIcons.shieldCheck(),
                         label: l10n.aboutPrivacy,
@@ -162,6 +153,16 @@ class AboutScreen extends ConsumerWidget {
                           ref,
                           screen: 'about',
                         ),
+                      ),
+                      SettingsRow(
+                        icon: PhosphorIcons.shareNetwork(),
+                        label: l10n.aboutShareApp,
+                        onTap: () => _share(context, ref),
+                      ),
+                      SettingsRow(
+                        icon: PhosphorIcons.star(PhosphorIconsStyle.fill),
+                        label: l10n.aboutRateUs,
+                        onTap: () => _rate(ref),
                       ),
                     ],
                   ),

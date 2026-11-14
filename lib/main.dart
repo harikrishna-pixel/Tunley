@@ -30,10 +30,23 @@ import 'core/library/preferences_store.dart';
 import 'core/library/usage_store.dart';
 import 'core/notifications/trial_reminder.dart';
 import 'features/paywall/checkout.dart';
+import 'features/splash/splash_screen.dart';
+
+/// Max wait for any single boot step so TestFlight never sticks on splash.
+const _bootStepTimeout = Duration(seconds: 8);
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final crashes = await createCrashReporter();
+  // Flutter splash (loader + Please wait) while the rest of boot runs.
+  runApp(const TunelySplashApp());
+
+  final crashes = await createCrashReporter().timeout(
+    _bootStepTimeout,
+    onTimeout: () {
+      if (kDebugMode) debugPrint('[Tunely] crash reporter timed out');
+      return DebugCrashReporter();
+    },
+  );
   FlutterError.onError = (details) {
     FlutterError.presentError(details);
     crashes.record(details.exception, details.stack, fatal: true);
@@ -51,10 +64,21 @@ Future<void> main() async {
   final prefsStore = PreferencesStore(sharedPrefs);
   final pickedStore = PickedStore(sharedPrefs, paths);
   final purchases = _purchasesService();
-  await purchases.init();
+  await purchases.init().timeout(
+    _bootStepTimeout,
+    onTimeout: () {
+      if (kDebugMode) debugPrint('[Tunely] purchases.init timed out');
+    },
+  );
   final reminder = LocalTrialReminder();
   final analytics = await createAnalytics(
     euResidency: config.analyticsEuResidency,
+  ).timeout(
+    _bootStepTimeout,
+    onTimeout: () {
+      if (kDebugMode) debugPrint('[Tunely] analytics timed out');
+      return DebugAnalytics();
+    },
   );
 
   final container = ProviderContainer(
@@ -75,10 +99,17 @@ Future<void> main() async {
   final router = createRouter(
     onboarded: container.read(preferencesProvider).onboardingDone,
   );
-  await reminder.init(
-    onOpened: () => router.push('/trial-reminder', extra: 'push'),
-    onBatchOpened: () => router.go('/files'),
-  );
+  await reminder
+      .init(
+        onOpened: () => router.push('/trial-reminder', extra: 'push'),
+        onBatchOpened: () => router.go('/files'),
+      )
+      .timeout(
+        _bootStepTimeout,
+        onTimeout: () {
+          if (kDebugMode) debugPrint('[Tunely] trial reminder.init timed out');
+        },
+      );
   await container.read(paywallProvider.notifier).startSession();
   await container.read(freeLimitProvider.notifier).refresh();
   unawaited(container.read(analyticsSyncProvider).start());
